@@ -1,0 +1,13 @@
+﻿
+@{
+    ViewData["Title"] = "About";
+}
+
+<h1>About</h1>
+
+@{
+    if (TempData["message"] != null)
+    {
+        <h2>@TempData["message"]</h2>
+    }
+}

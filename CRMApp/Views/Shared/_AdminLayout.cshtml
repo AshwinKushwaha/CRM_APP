@@ -1,0 +1,34 @@
+﻿<!DOCTYPE html>
+
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/crm_main.css" asp-append-version="true" />
+    <title>@ViewBag.Title</title>
+</head>
+<body>
+    <nav class="navbar navbar-light bg-light" style="position: fixed; top: 2rem; width: 83%; border-radius: 10px;">
+        <div class="container-fluid d-flex">
+            <div class="navbar-brand align-items-start">
+                Welcome, <span class="text-black fw-bold">@ViewBag.Username</span>
+            </div>
+            <div class="dropdown nav-item">
+                <button class="btn btn-outline-secondary dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false"></button>
+                <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+                    <li><a class="dropdown-item" asp-action="Register" asp-controller="Account">Register</a></li>
+                    <li><a class="dropdown-item" asp-action="Logout" asp-controller="Account">Logout</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+    <div>
+        @RenderBody()
+    </div>
+
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>

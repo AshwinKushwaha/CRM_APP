@@ -1,0 +1,84 @@
+﻿@model CRMApp.Models.User;
+
+@{
+    Layout = "_AdminLayout";
+}
+
+<div class="container d-flex justify-content-center ">
+
+    <div class="login-container ">
+        <div class="login-card" style="width: 26rem;">
+            <div class="login-header">
+                <h2>Sign Up</h2>
+                <p>Enter credentials to register account</p>
+            </div>
+
+            <form class="login-form" id="loginForm" novalidate asp-action="Login" asp-controller="Account" method="post">
+                <div class="form-group">
+                    <div class="input-wrapper">
+                        <input asp-for="Username" required autocomplete="username">
+                        <label for="username">Username</label>
+                    </div>
+                    <span class="error-message" id="emailError"></span>
+                </div>
+                <div class="form-group">
+                    <div class="input-wrapper">
+                        <input type="email" id="email" name="email" required autocomplete="email">
+                        <label for="email">Email Address</label>
+                    </div>
+                    <span class="error-message" id="emailError"></span>
+                </div>
+
+                <div class="form-group">
+                    <div class="input-wrapper password-wrapper">
+                        <input type="password" id="password" name="password" required autocomplete="current-password">
+                        <label for="password">Password</label>
+                        <button type="button" class="password-toggle" id="passwordToggle" aria-label="Toggle password visibility">
+                            <span class="eye-icon"></span>
+                        </button>
+                    </div>
+                    <span class="error-message" id="passwordError"></span>
+                </div>
+                <div class="form-group">
+                    <div class="input-wrapper">
+                        <select name="role" id="role" class="form-control">
+                            <option value="">--Select Role--</option>
+                            <option value="admin">Admin</option>
+                            <option value="salesrep">Sales Representative</option>
+                            <option value="support">Support</option>
+                        </select>
+                        
+                        
+                    </div>
+                    <span class="error-message" id="passwordError"></span>
+                </div>
+
+                @* <div class="form-options">
+                    <label class="remember-wrapper">
+                        <input type="checkbox" id="remember" name="remember">
+                        <span class="checkbox-label">
+                            <span class="checkmark"></span>
+                            Remember me
+                        </span>
+                    </label>
+                     <a href="#" class="forgot-password">Forgot password?</a> 
+                </div> *@
+
+                <button type="submit" class="login-btn">
+                    <span class="btn-text">Register User</span>
+                    <span class="btn-loader"></span>
+                </button>
+            </form>
+
+            @* <div class="signup-link">
+            <p>Don't have an account? <a href="#">Create one</a></p>
+            </div> *@
+
+            <div class="success-message" id="successMessage">
+                <div class="success-icon">✓</div>
+                <h3>Login Successful!</h3>
+                <p>Redirecting to your dashboard...</p>
+            </div>
+        </div>
+    </div>
+</div>
