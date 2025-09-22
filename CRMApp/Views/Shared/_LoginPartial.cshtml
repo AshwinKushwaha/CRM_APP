@@ -1,0 +1,53 @@
+﻿@using Microsoft.AspNetCore.Identity
+@using CRMApp.Areas.Identity.Data
+
+@inject SignInManager<ApplicationUser> SignInManager
+@inject UserManager<ApplicationUser> UserManager
+
+
+@if (SignInManager.IsSignedIn(User))
+{
+    
+    <div class="nav-item d-inline-flex">
+        <div>
+            <a id="manage" class="nav-link text-dark active" asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage">Hello @UserManager.GetUserName(User)!</a>
+        </div>
+        <div >
+            <a asp-action="Index" asp-controller="Customer" class="nav-link text-dark">Search</a>
+        </div>
+        <div class="dropdown">
+            <button class="btn btn-outline-secondary dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false"></button>
+            <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+                @if (User.IsInRole("admin"))
+                {
+                    <li class="nav-item">
+                        <a class="dropdown-item text-dark" id="register" asp-area="Identity" asp-page="/Account/Register">Register</a>
+                    </li>
+                }
+                
+                <li class="nav-item">
+                    <a class="dropdown-item text-dark" id="login" asp-area="Identity" asp-page="/Account/Logout">Logout</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+    
+    
+    
+    
+}
+else
+{
+    <div class="dropdown nav-item">
+        <button class="btn btn-outline-secondary dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false"></button>
+        <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+            @* <li class="nav-item">
+                <a class="dropdown-item text-dark" id="register" asp-area="Identity" asp-page="/Account/Register">Register</a>
+            </li> *@
+            <li class="nav-item">
+                <a class="dropdown-item text-dark" id="login" asp-area="Identity" asp-page="/Account/Login">Login</a>
+            </li>
+        </ul>
+    </div>
+}
+

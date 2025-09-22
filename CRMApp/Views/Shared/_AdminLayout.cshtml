@@ -1,4 +1,7 @@
-﻿<!DOCTYPE html>
+﻿
+
+
+<!DOCTYPE html>
 
 <html>
 <head>
@@ -12,18 +15,20 @@
     <nav class="navbar navbar-light bg-light" style="position: fixed; top: 2rem; width: 83%; border-radius: 10px;">
         <div class="container-fluid d-flex">
             <div class="navbar-brand align-items-start">
-                Welcome, <span class="text-black fw-bold">@ViewBag.Username</span>
+                Welcome <span class="text-black fw-bold"></span>
             </div>
-            <div class="dropdown nav-item">
+            <partial name="_LoginPartial" />
+            
+            @* <div class="dropdown nav-item">
                 <button class="btn btn-outline-secondary dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false"></button>
                 <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
                     <li><a class="dropdown-item" asp-action="Register" asp-controller="Account">Register</a></li>
                     <li><a class="dropdown-item" asp-action="Logout" asp-controller="Account">Logout</a></li>
                 </ul>
-            </div>
+            </div> *@
         </div>
     </nav>
-    <div>
+    <div class="container">
         @RenderBody()
     </div>
 
