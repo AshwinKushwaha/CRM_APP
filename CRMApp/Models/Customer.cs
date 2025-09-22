@@ -6,7 +6,6 @@ namespace CRMApp.Models
     public class Customer
     {
         [Key]
-        [BindNever]
         public int Id { get; set; }
 
         [Required]
@@ -18,7 +17,7 @@ namespace CRMApp.Models
         [Required]
         public string Phone { get; set; }
 
-        [BindNever]
+        
         public DateTime CreatedAt { get; set; }
 
         [BindNever]

@@ -3,6 +3,7 @@ using CRMApp.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using System.Runtime.CompilerServices;
 
 namespace CRMApp.Controllers
 {
@@ -16,7 +17,7 @@ namespace CRMApp.Controllers
             this.context = context;
         }
 
-        [Authorize(Roles = "admin , salesrep, support")]
+        [Authorize]
         public IActionResult Index()
         {
             var cust = context.Customers.ToList();
@@ -25,17 +26,25 @@ namespace CRMApp.Controllers
         }
 
 
+        //[HttpGet("{id?}")]
         [Authorize(Roles = "admin, salesrep")]
         public IActionResult Create()
         {
+            //Customer cust = new Customer();
+            //if (id != null)
+            //{
+            //    cust = context.Customers.First(p => p.Id == id);
+            //}
+
             return View();
         }
 
         [HttpPost]
-        public IActionResult Create(Customer cust)
+        public IActionResult Create([Bind("Name, Email, Phone")]Customer cust)
         {
             if (ModelState.IsValid)
             {
+                cust.CreatedAt = DateTime.Now;
                 context.Add(cust);
                 context.SaveChanges();
                 return RedirectToAction("Index");
@@ -44,9 +53,62 @@ namespace CRMApp.Controllers
         }
 
         [Authorize(Roles = "admin, salesrep")]
-        public IActionResult Edit()
+        public IActionResult Edit(int? id)
+        { 
+            if(id == null)
+            {
+
+                return NotFound();
+            }
+
+            var cust = context.Customers.Find(id);
+            if(cust == null)
+            {
+                return NotFound();
+            }
+            return View(cust);
+        }
+
+        [HttpPost]
+        public IActionResult Edit(int? id, Customer cust)
+        {
+            if(id != cust.Id)
+            {
+                return NotFound();
+            }
+            if (ModelState.IsValid)
+            {
+                cust.UpdatedAt = DateTime.Now;
+                context.Customers.Update(cust);
+                context.SaveChanges();
+                return RedirectToAction("Index", "Customer");
+            }
+
+            return View(cust);
+        }
+
+
+        [HttpPost]
+        public IActionResult Delete(int id)
+        {
+            var cust = context.Customers.Find(id);
+            if(cust == null)
+            {
+                return NotFound();
+            }
+
+            context.Customers.Remove(cust);
+            context.SaveChanges();
+
+            return RedirectToAction("Index","Customer");
+        }
+
+
+
+        public IActionResult Details(int id)
         {
             return View();
         }
+        
     }
 }
