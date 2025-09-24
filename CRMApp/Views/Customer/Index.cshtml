@@ -14,9 +14,12 @@
 }
 
 <div class="d-flex justify-content-center">
-	<form style="width: 100%;">
-		<input class="form-control" type="text" placeholder="Search bar" />
-	</form>
+	<form asp-action="Index" style="width: 100%;">
+		<div class="d-flex gap-1">
+			<input class="form-control" type="text" placeholder="Search bar" name="input"/>
+			<button type="submit" class="btn btn-outline-primary">Search</button>
+		</div>
+	</form> 
 </div>
 
 

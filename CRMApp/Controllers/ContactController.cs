@@ -48,23 +48,5 @@ namespace CRMApp.Controllers
 
         }
 
-        //public IActionResult EditContact(int id)
-        //{
-        //	var contact = _contactService.GetContacts(id);
-        //	return View("ContactForm", contact);
-        //}
-
-        //[HttpPost]
-        //public IActionResult SaveContact(CustomerContact Custcontact)
-        //{
-        //	if (ModelState.IsValid)
-        //	{
-        //		_contactService.CreateContact(Custcontact);
-        //		return RedirectToAction("Details", "Customer",new {CustomerId = Custcontact.CustomerId});
-        //	}
-
-        //	return View(Custcontact);
-        //}
-
     }
 }

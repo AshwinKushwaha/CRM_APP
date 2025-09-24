@@ -32,9 +32,17 @@ namespace CRMApp.Controllers
             return View(cust);
         }
 
+        [HttpPost]
+		public IActionResult Index(string input)
+        {
+            var result = _customerService.GetCustomers(input);
+			ViewBag.Count = result.Count;
 
-        //[HttpGet("{id?}")]
-        [Authorize(Roles = "admin, salesrep")]
+			return View(result);
+        }
+
+		//[HttpGet("{id?}")]
+		[Authorize(Roles = "admin, salesrep")]
         public IActionResult Create()
         {
             //Customer cust = new Customer();
@@ -119,5 +127,8 @@ namespace CRMApp.Controllers
             return View(viewModel);
         }
 
-    }
+
+		
+
+	}
 }

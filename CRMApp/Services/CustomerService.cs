@@ -6,12 +6,15 @@ namespace CRMApp.Services
 {
 	public interface ICustomerService
 	{
+		List<Customer> GetCustomers(string? input);
 		List<Customer> GetCustomers();
 		Customer GetCustomer(int id);
 		bool UpsertCustomer(int? id, Customer customer);
 		bool UpsertCustomer(Customer customer);
 
 		bool DeleteCustomer(int id);
+
+		
 
 
 	}
@@ -41,7 +44,20 @@ namespace CRMApp.Services
 
 		public Customer GetCustomer(int id)
 		{
+
 			return context.Customers.Find(id);
+		}
+
+		public List<Customer> GetCustomers(string? input)
+		{
+			
+				return context.Customers.Where(c => (!string.IsNullOrEmpty(input))
+				&& (c.Name.Contains(input)) ||
+				(c.Email.Contains(input)) ||
+				(c.Phone.Contains(input))
+				).ToList();
+			
+			
 		}
 
 		public List<Customer> GetCustomers()
