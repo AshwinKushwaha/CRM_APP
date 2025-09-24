@@ -1,5 +1,7 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Microsoft.AspNetCore.Mvc.ModelBinding;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Text.Json.Serialization;
 
 namespace CRMApp.Models
 {
@@ -7,12 +9,26 @@ namespace CRMApp.Models
 	{
 		[Key]
 		public int Id { get; set; }
-		//[ForeignKey()]
+
+		
 		public int CustomerId { get; set; }
-		public string Name { get; set; }
+		
+		[Required(ErrorMessage = "Customer Name is required")]
+		
+		public string CustName { get; set; }
+
+		[Required]
 		public Relation Relation { get; set; } 
+
+		[Required]
 		public Type ContactType { get; set; }
+
+		[Required(ErrorMessage = "Contact is Required")]
 		public string Contact { get; set; }
+
+		[ForeignKey("CustomerId")]
+		[JsonIgnore]
+		public Customer Customer { get; set; }
 
 	}
 

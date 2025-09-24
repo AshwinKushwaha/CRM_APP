@@ -1,26 +1,33 @@
 ﻿using CRMApp.Areas.Identity.Data;
 using CRMApp.Models;
+using CRMApp.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System.Runtime.CompilerServices;
+using CRMApp.ViewModels;
 
 namespace CRMApp.Controllers
 {
     public class CustomerController : Controller
     {
-        private readonly ApplicationUserIdentityContext context;
+		private readonly ICustomerService _customerService;
+		private readonly IContactService _contactService;
+
+		//private readonly ApplicationUserIdentityContext context;
 
 
-        public CustomerController(ApplicationUserIdentityContext context)
+		public CustomerController(ICustomerService customerService,IContactService contactService)
         {
-            this.context = context;
-        }
+			_customerService = customerService;
+			_contactService = contactService;
+			//this.context = context;
+		}
 
         [Authorize]
         public IActionResult Index()
         {
-            var cust = context.Customers.ToList();
+            var cust = _customerService.GetCustomers();
             ViewBag.Count = cust.Count;
             return View(cust);
         }
@@ -44,25 +51,17 @@ namespace CRMApp.Controllers
         {
             if (ModelState.IsValid)
             {
-                cust.CreatedAt = DateTime.Now;
-                context.Add(cust);
-                context.SaveChanges();
+                _customerService.UpsertCustomer(cust);
                 return RedirectToAction("Index");
             }
             return View();
         }
 
         [Authorize(Roles = "admin, salesrep")]
-        public IActionResult Edit(int? id)
+        public IActionResult Edit(int id)
         { 
-            if(id == null)
-            {
-
-                return NotFound();
-            }
-
-            var cust = context.Customers.Find(id);
-            if(cust == null)
+            var cust = _customerService.GetCustomer(id);
+            if (cust == null)
             {
                 return NotFound();
             }
@@ -72,15 +71,13 @@ namespace CRMApp.Controllers
         [HttpPost]
         public IActionResult Edit(int? id, Customer cust)
         {
-            if(id != cust.Id)
+            if (id != cust.Id)
             {
                 return NotFound();
             }
             if (ModelState.IsValid)
             {
-                cust.UpdatedAt = DateTime.Now;
-                context.Customers.Update(cust);
-                context.SaveChanges();
+                _customerService.UpsertCustomer(id, cust);
                 return RedirectToAction("Index", "Customer");
             }
 
@@ -91,24 +88,36 @@ namespace CRMApp.Controllers
         [HttpPost]
         public IActionResult Delete(int id)
         {
-            var cust = context.Customers.Find(id);
-            if(cust == null)
+            if (!_customerService.DeleteCustomer(id))
             {
                 return NotFound();
             }
+            _customerService.DeleteCustomer(id);
 
-            context.Customers.Remove(cust);
-            context.SaveChanges();
-
-            return RedirectToAction("Index","Customer");
+			return RedirectToAction("Index", "Customer");
         }
 
 
 
         public IActionResult Details(int id)
         {
-            return View();
+           
+            var cust = _customerService.GetCustomer(id);
+            var contacts = _contactService.GetContacts(id);
+            var cnt = new CustomerContact();
+            if (cust == null)
+            {
+                return NotFound();
+            }
+
+            var viewModel = new CustomerViewModel()
+            {
+                Customer = cust,
+                CustomerContact = cnt,
+                Contacts = contacts
+            };
+            return View(viewModel);
         }
-        
+
     }
 }
