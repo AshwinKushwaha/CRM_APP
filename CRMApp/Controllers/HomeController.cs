@@ -18,7 +18,19 @@ namespace CRMApp.Controllers
         }
 
         public IActionResult Index()
-        { 
+        {
+            if (User.IsInRole("admin"))
+            {
+                return View("AdminDashboard");
+            }
+            if (User.IsInRole("salesrep"))
+            {
+                return View("SalesDashboard");
+            }
+            if (User.IsInRole("support"))
+            {
+                return View("SupportDashboard");
+            }
             return View();
         }
 

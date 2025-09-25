@@ -1,9 +1,11 @@
 ﻿using CRMApp.Models;
 using CRMApp.Services;
 using CRMApp.ViewModels;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Localization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.EntityFrameworkCore;
 
 namespace CRMApp.Controllers
@@ -23,11 +25,12 @@ namespace CRMApp.Controllers
 
 
         [HttpPost]
-        public IActionResult AddContact(CustomerViewModel viewModel)
+        public async Task<IActionResult> AddContact(CustomerViewModel viewModel)
         {
             if (viewModel.CustomerContact != null)
             {
-                _contactService.CreateContact(viewModel.CustomerContact);
+                
+               await _contactService.CreateContact(viewModel.CustomerContact);
                 return RedirectToAction("Details", "Customer", new { Id = viewModel.CustomerContact.CustomerId });
             }
 

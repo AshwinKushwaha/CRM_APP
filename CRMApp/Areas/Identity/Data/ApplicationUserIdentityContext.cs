@@ -17,6 +17,7 @@ public class ApplicationUserIdentityContext : IdentityDbContext<ApplicationUser>
 
     public DbSet<Customer> Customers { get; set; }
     public DbSet<CustomerContact> CustomerContacts { get; set; }
+    public DbSet<ActivityLog> ActivityLogs { get; set; }
 
 
     protected override void OnModelCreating(ModelBuilder builder)
@@ -30,6 +31,8 @@ public class ApplicationUserIdentityContext : IdentityDbContext<ApplicationUser>
             .HasOne(p => p.Customer)
             .WithMany(c => c.Contacts)
             .HasForeignKey(p => p.CustomerId);
+
+        builder.Entity<ActivityLog>().ToTable("ActivityLogs");
 
         // Customize the ASP.NET Identity model and override the defaults if needed.
         // For example, you can rename the ASP.NET Identity table names and more.

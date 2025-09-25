@@ -9,45 +9,74 @@ namespace CRMApp.Services
 		List<Customer> GetCustomers(string? input);
 		List<Customer> GetCustomers();
 		Customer GetCustomer(int id);
-		bool UpsertCustomer(int? id, Customer customer);
-		bool UpsertCustomer(Customer customer);
+		Task UpsertCustomer(int? id, Customer customer);
+		Task UpsertCustomer(Customer customer);
 
 		bool DeleteCustomer(int id);
 
-		
+		int GetCount();
+		int GetUserCount();
 
 
 	}
 	public class CustomerService : ICustomerService
 	{
 		private readonly ApplicationUserIdentityContext context;
+		private readonly IActivityLogger _activityLogger;
+		private readonly IContactService _contactService;
 
-		public CustomerService(ApplicationUserIdentityContext context)
+		public CustomerService(ApplicationUserIdentityContext context,IActivityLogger activityLogger,IContactService contactService)
         {
 			this.context = context;
+			_activityLogger = activityLogger;
+			_contactService = contactService;
 		}
 
-		
+
+
+		public Customer GetCustomer(int id)
+		{
+			return context.Customers.Find(id);
+		}
+
+		public List<Customer> GetCustomers()
+		{
+			return context.Customers.ToList();
+		}
+
+		public int GetUserCount()
+		{
+			return context.Users.Count();
+		}
+		public int GetCount()
+		{
+			return context.Customers.Count();
+		}
 
 		public bool DeleteCustomer(int id)
 		{
 			var cust = GetCustomer(id);
+			var deletedCustomerName = cust.Name;
+			var userId = _contactService.GetCurrentUserAsync();
+			
 			if (cust == null)
 			{
 				return false;
 			}
-			context.Customers.Remove(cust);
-			context.SaveChanges();
+			else
+			{
+				context.Customers.Remove(cust);
+				context.SaveChanges();
+				_activityLogger.LogAsync(Module.Customer, userId.Result.Id, $"Deleted Customer: {deletedCustomerName}", true);
 
-			return true;
+				return true;
+			}
+			
 		}
 
-		public Customer GetCustomer(int id)
-		{
+		
 
-			return context.Customers.Find(id);
-		}
-
+		
 		public List<Customer> GetCustomers(string? input)
 		{
 			
@@ -60,34 +89,34 @@ namespace CRMApp.Services
 			
 		}
 
-		public List<Customer> GetCustomers()
-		{
-			return context.Customers.ToList();
-		}
+		
 
-		public bool UpsertCustomer(int? id, Customer customer) // for updation
+		public async Task UpsertCustomer(int? id, Customer customer) // for updation
 		{
-			
-			 if (customer.Id > 0)
+			var userId = _contactService.GetCurrentUserAsync();
+			if (customer.Id > 0)
 			{
 				customer.UpdatedAt = DateTime.Now;
 				context.Customers.Update(customer);
-				context.SaveChanges();
+				await context.SaveChangesAsync();
+				await _activityLogger.LogAsync(Module.Customer, userId.Result.Id, $"Updated Customer: {customer.Name}", false);
 			}
 			
-			return true;
+			
 			
 		}
 
-		public bool UpsertCustomer(Customer customer) // for creation
+		public async Task UpsertCustomer(Customer customer) // for creation
 		{
+			var userId = _contactService.GetCurrentUserAsync();
 			if (customer.Id == 0)
 			{
 				customer.CreatedAt = DateTime.Now;
 				context.Customers.Add(customer);
-				context.SaveChanges();
+				await context.SaveChangesAsync();
+				await _activityLogger.LogAsync(Module.Customer, userId.Result.Id, $"Added Customer: {customer.Name}", false);
 			}
-			return true;
+			
 		}
 	}
 }

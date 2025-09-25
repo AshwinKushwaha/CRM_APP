@@ -55,11 +55,11 @@ namespace CRMApp.Controllers
         }
 
         [HttpPost]
-        public IActionResult Create([Bind("Name, Email, Phone")]Customer cust)
+        public async  Task<IActionResult> Create([Bind("Name, Email, Phone")]Customer cust)
         {
             if (ModelState.IsValid)
             {
-                _customerService.UpsertCustomer(cust);
+                await _customerService.UpsertCustomer(cust);
                 return RedirectToAction("Index");
             }
             return View();
@@ -77,7 +77,7 @@ namespace CRMApp.Controllers
         }
 
         [HttpPost]
-        public IActionResult Edit(int? id, Customer cust)
+        public async Task<IActionResult> Edit(int? id, Customer cust)
         {
             if (id != cust.Id)
             {
@@ -85,7 +85,7 @@ namespace CRMApp.Controllers
             }
             if (ModelState.IsValid)
             {
-                _customerService.UpsertCustomer(id, cust);
+                await _customerService.UpsertCustomer(id, cust);
                 return RedirectToAction("Index", "Customer");
             }
 
@@ -93,6 +93,7 @@ namespace CRMApp.Controllers
         }
 
 
+        [Authorize(Roles = "admin")]
         [HttpPost]
         public IActionResult Delete(int id)
         {
@@ -100,13 +101,13 @@ namespace CRMApp.Controllers
             {
                 return NotFound();
             }
-            _customerService.DeleteCustomer(id);
+            
 
 			return RedirectToAction("Index", "Customer");
         }
 
 
-
+        [Authorize]
         public IActionResult Details(int id)
         {
            

@@ -1,0 +1,79 @@
+﻿
+@{
+    ViewData["Title"] = "AdminDashboard";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+
+
+<div class="container d-flex justify-content-center " >
+	<div class="flex-column" style="width: 100%;">
+		<div>
+			<h1 class="text-center">Admin Dashboard</h1>
+		</div>
+		@* <div class="d-flex justify-content-around"> *@
+			<div class="d-grid">
+				<div class="row d-flex justify-content-between ms-0">
+				<div class="col-2" style="width: 55em;">
+						<div class="card" >
+							<h3 class="text-center mt-2">Overview</h3>
+							<div class="card-body">
+								<div class="d-grid">
+									<div class="row d-inline-flex justify-content-center">
+									<div class="col-sm-3" style="width: 15rem;">
+										<div class="card" style="background: lightgrey;">
+											<div class="card-body">
+												<h4 class="text-center">Total Users: </h4>
+												<p class="text-center fw-bold h5">@ViewBag.UserCount</p>
+											</div>
+										</div>
+									</div>
+
+								
+										<div class="col-sm-3" style="width: 15rem;">
+										<div class="card" style="background: lightgrey;">
+												<div class="card-body">
+												<h4 class="text-center">Total Customers: </h4>
+												<p class="text-center fw-bold h5">@ViewBag.CustomerCount</p>
+												</div>
+											</div>
+										</div>
+									<div class="col-sm-3" style="width: 15rem;" >
+										<div class="card" style="background: lightgrey;">
+											<div class="card-body">
+												<h4 class="text-center">Total Contacts: </h4>
+												<p class="text-center fw-bold h5">@ViewBag.ContactCount</p>
+											</div>
+										</div>
+										</div>
+										
+									</div>
+
+								</div>
+							</div>
+						</div>
+					</div>
+				<div class="col-2" style="width:25em;">
+						<div class="card">
+							<h3 class="text-center">
+							Activity Feed
+							</h3>
+
+						</div>
+					</div>
+				</div>
+			</div>
+		@* </div> *@
+		
+	</div>
+	
+</div>
+@* @section Scripts {
+	<script>
+		$(".active-tab").click().addClass("bg-info")
+		
+	</script>
+	<script>
+		$(".active-search").click().addClass("bg-info")
+	</script>
+} *@

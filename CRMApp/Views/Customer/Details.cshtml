@@ -50,7 +50,11 @@
 <div class="card">
 
 	<div class="text-end me-3 mt-3">
-		<a data-bs-toggle="modal" data-bs-target="#createModal" class="btn btn-success">Add New Contact</a>
+		<form method="post">
+			<input type="hidden" name="addNewContact" value="true"/>
+			<button type="submit" data-bs-toggle="modal" data-bs-target="#createModal" class="btn btn-success">Add New Contact</button>
+		</form>
+		
 	</div>
 	<div class="d-flex justify-content-center">
 		<table class="table table-hover table-bordered table-striped mt-4" style="width:85%;">
@@ -93,12 +97,19 @@
 							<div class="d-flex justify-content-center">
 								@if (User.IsInRole("admin") || User.IsInRole("salesrep"))
 								{
-									<a data-bs-toggle="modal" data-bs-target="#EditModal-@item.Id" class="btn btn-outline-success" >Edit</a>
+									<form method="post">
+										<input type="hidden" name="selectedContactId" value=@item.Id />
+										<button type="submit" data-bs-toggle="modal" data-bs-target="#EditModal" class="btn btn-outline-success">Edit</button>
+									</form>
+									
 								}
 
 								@if (User.IsInRole("admin"))
 								{
-									<a data-bs-toggle="modal" data-bs-target="#confirmDeleteModal-@item.Id" class="btn btn-outline-danger">Delete</a>
+									<form method="post">
+										<input type="hidden" name="deleteContactId" value=@item.Id />
+									<button type="submit" data-bs-toggle="modal" data-bs-target="#confirmDeleteModal" class="btn btn-outline-danger">Delete</button>
+									</form>
 								}
 							</div>
 
@@ -126,57 +137,104 @@
 
 </div>
 
-<div class="modal fade" id="createModal" tabindex="-1" aria-hidden="true">
-	<div class="modal-dialog">
-		<div class="modal-content">
-			<partial name="_ContactForm" model="new CRMApp.ViewModels.CustomerViewModel{CustomerContact = new CustomerContact{Id =0 , CustomerId = Model.Customer.Id}}" />
+
+@*Create Modal section *@
+
+@{
+	bool isAddNew = false;
+	if (Context.Request.HasFormContentType)
+	{
+		isAddNew = Context.Request.Form["addNewContact"] == "true";
+	}
+}
+
+@if (isAddNew)
+{
+	<div class="modal fade show d-block" id="createModal" tabindex="-1" aria-hidden="true" aria-modal="true" role="dialog">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<partial name="_ContactForm" model="new CRMApp.ViewModels.CustomerViewModel{CustomerContact = new CustomerContact{Id =0 , CustomerId = Model.Customer.Id}}" />
+			</div>
 		</div>
 	</div>
-</div>
+	<div class="modal-backdrop fade show"></div>
+}
 
-@foreach (var item in Model.Contacts)
+
+
+
+
+@*Edit Modal Section*@
+@{
+	string selectedId = null;
+	CRMApp.Models.CustomerContact selectedContact = null;
+
+	if (Context.Request.HasFormContentType)
+	{
+		selectedId = Context.Request.Form["selectedContactId"];
+		selectedContact = Model.Contacts.FirstOrDefault(c => c.Id.ToString() == selectedId);
+	}
+}
+	
+@if(selectedContact != null)
 {
-	<div class="modal fade" id="EditModal-@item.Id" tabindex="-1" aria-hidden="true">
+	<div class="modal fade show d-block" id="EditModal" tabindex="-1" aria-hidden="true"  aria-modal="true" role="dialog">
 		<div class="modal-dialog">
 			<div class="modal-content">
 				<partial name="_ContactForm" model="new CRMApp.ViewModels.CustomerViewModel{
 							CustomerContact = new CustomerContact {
-								Id = item.Id,
-								CustomerId = item.CustomerId,
-								Contact = item.Contact,
-								CustName = item.CustName,
-								ContactType = item.ContactType,
-								Relation = item.Relation
+								Id = selectedContact.Id,
+								CustomerId = selectedContact.CustomerId,
+								Contact = selectedContact.Contact,
+								CustName = selectedContact.CustName,
+								ContactType = selectedContact.ContactType,
+								Relation = selectedContact.Relation
 							}
 				}" />
 			</div>
 		</div>
 	</div>
+	<div class="modal-backdrop fade show"></div>
 }
 
-@foreach (var item in Model.Contacts)
+
+@*Delete Modal Section*@
+@* @foreach (var item in Model.Contacts)
+{ *@
+@{
+	string deleteId = null;
+	CRMApp.Models.CustomerContact deleteContact = null;
+	if (Context.Request.HasFormContentType)
+	{
+		deleteId = Context.Request.Form["deleteContactId"];
+		deleteContact = Model.Contacts.FirstOrDefault(c => c.Id.ToString() == deleteId);
+	}
+
+}
+@if (deleteContact != null)
 {
-	<div class="modal fade" id="confirmDeleteModal-@item.Id" tabindex="-1" aria-labelledby="deleteModalLabel-@item.Id" aria-hidden="true">
+	<div class="modal fade show d-block" id="confirmDeleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true" aria-modal="true" role="dialog">
 		<div class="modal-dialog">
 			<div class="modal-content">
 				<form asp-action="DeleteContact" asp-controller="Contact" method="post">
-					<input type="hidden" name="id" value="@item.Id" />
+				<input type="hidden" name="id" value="@deleteContact.Id" />
 					<div class="modal-header">
-						<h5 class="modal-title" id="deleteModalLabel-@item.Id">Confirm Delete</h5>
+						<h5 class="modal-title" id="deleteModalLabel">Confirm Delete</h5>
 						<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 					</div>
 					<div class="modal-body">
-						Are you sure you want to delete <strong>@item.CustName</strong>?
+						Are you sure you want to delete <strong>@deleteContact.CustName</strong>?
 					</div>
 					<div class="modal-footer">
-						<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+						<a href="" class="btn btn-secondary">Cancel</a>
 						<button type="submit" class="btn btn-danger">Delete</button>
 					</div>
 				</form>
 			</div>
 		</div>
 	</div>
-}
+<div class="modal-backdrop fade show"></div>}
+@* } *@
 @section Scripts {
 
 	<script>

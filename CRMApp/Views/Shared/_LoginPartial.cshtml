@@ -12,9 +12,13 @@
         <div>
             <a id="manage" class="nav-link text-dark active" asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage">Hello @UserManager.GetUserName(User)!</a>
         </div>
-        <div >
-            <a asp-action="Index" asp-controller="Customer" class="nav-link text-dark">Search</a>
+        <div>
+            <a asp-action="Index" asp-controller="Dashboard" class="nav-link text-dark active-tab">Dashboard</a>
         </div>
+        <div >
+            <a asp-action="Index" asp-controller="Customer" class="nav-link text-dark active-search">Search</a>
+        </div>
+        
         <div class="dropdown">
             <button class="btn btn-outline-secondary dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false"></button>
             <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
@@ -50,4 +54,5 @@ else
         </ul>
     </div>
 }
+
 

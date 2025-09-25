@@ -7,7 +7,7 @@
     @* <p> @Model.CustomerContact.CustomerId</p> *@
     <div class="modal-header">
         <h5 class="modal-title">@((Model.CustomerContact ?.Id ?? 0) == 0 ? "Add Contact" : "Edit Contact")</h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        <a href="" class="btn btn-close"></a>
     </div>
 
     <div class="modal-body">
@@ -35,7 +35,7 @@
     </div>
 
     <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+        <a href="" class="btn btn-secondary">Cancel</a>
         <button type="button" class="btn btn-danger" id="btnSave">Save</button>
     </div>
 </form>

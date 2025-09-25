@@ -27,6 +27,7 @@ builder.Services.AddSession();
 //    );
 builder.Services.AddScoped<ICustomerService, CustomerService>();
 builder.Services.AddScoped<IContactService, ContactService>();
+builder.Services.AddScoped<IActivityLogger, ActivityLogService>();
 
 var app = builder.Build();
 
