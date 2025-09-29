@@ -1,0 +1,48 @@
+﻿@model CRMApp.ViewModels.CustomerViewModel
+
+<form id="frmContact" asp-action="AddContact" asp-controller="Contact" method="post">
+    <div asp-validation-summary="ModelOnly"></div>
+    <input type="hidden" asp-for="CustomerContact.Id" />
+    <input type="hidden" asp-for="CustomerContact.CustomerId" />
+    @* <p> @Model.CustomerContact.CustomerId</p> *@
+    <div class="modal-header">
+        <h5 class="modal-title">@((Model.CustomerContact ?.Id ?? 0) == 0 ? "Add Contact" : "Edit Contact")</h5>
+        <a href="" class="btn btn-close"></a>
+    </div>
+
+    <div class="modal-body">
+        <div class="form-group">
+            <label asp-for="CustomerContact.CustName">Customer Name:</label>
+            <input asp-for="CustomerContact.CustName" class="form-control" />
+            <span asp-validation-for="CustomerContact.CustName" class="text-danger"></span>
+        </div>
+
+        <div class="form-group">
+            <label asp-for="CustomerContact.Relation">Customer Relation:</label>
+            @Html.DropDownListFor(m => m.CustomerContact.Relation, Html.GetEnumSelectList<Relation>(), "--Select Relation--", new { @class = "form-control" })
+        </div>
+
+        <div class="form-group">
+            <label asp-for="CustomerContact.ContactType">Contact Type:</label>
+            @Html.DropDownListFor(m => m.CustomerContact.ContactType, Html.GetEnumSelectList<CRMApp.Models.Type>(), "--Select Contact Type--", new { @class = "form-control" })
+        </div>
+
+        <div class="form-group">
+            <label asp-for="CustomerContact.Contact">Contact:</label>
+            <input asp-for="CustomerContact.Contact" class="form-control" />
+            <span asp-validation-for="CustomerContact.Contact" class="text-danger"></span>
+        </div>
+    </div>
+
+    <div class="modal-footer">
+        <a href="" class="btn btn-secondary">Cancel</a>
+        <button type="button" class="btn btn-danger" id="btnSave">Save</button>
+    </div>
+</form>
+
+
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+  
+}

@@ -99,7 +99,7 @@ namespace CRMApp.Areas.Identity.Pages.Account
                 ModelState.AddModelError(string.Empty, ErrorMessage);
             }
 
-            returnUrl ??= Url.Content("~/");
+            returnUrl ??= Url.Content("~/Dashboard/Index");
 
             // Clear the existing external cookie to ensure a clean login process
             await HttpContext.SignOutAsync(IdentityConstants.ExternalScheme);
@@ -126,7 +126,7 @@ namespace CRMApp.Areas.Identity.Pages.Account
             //    return RedirectToAction("Index", "Admin");
             //}
 
-            returnUrl ??= Url.Content("~/");
+            returnUrl ??= Url.Content("~/Dashboard/Index");
 
             ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
 
@@ -141,12 +141,12 @@ namespace CRMApp.Areas.Identity.Pages.Account
                     var user = await _userManager.FindByNameAsync(Input.Username);
                     var roles = await _userManager.GetRolesAsync(user);
 
-                    if (roles.Contains(Roles.Admin))
-                    {
-                        return RedirectToAction("Index", "Admin");
-                    }
+                    //if (roles.Contains(Roles.Admin))
+                    //{
+                    //    return RedirectToAction("Index", "Dashboard");
+                    //}
 
-                    return LocalRedirect(returnUrl);
+                    return LocalRedirect("~/Dashboard/Index");
                 }
                 if (result.RequiresTwoFactor)
                 {

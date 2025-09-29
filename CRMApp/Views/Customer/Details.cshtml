@@ -1,0 +1,309 @@
+﻿@model CRMApp.ViewModels.CustomerViewModel
+
+@{
+	ViewData["Title"] = "Details";
+	Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<div>
+	<h1 class="text-center">Customer Details</h1>
+	<hr />
+	<dl class="row">
+		<dt class="col-sm-2">
+			@Html.DisplayNameFor(model => model.Customer.Name)
+		</dt>
+		<dd class="col-sm-10">
+			@Html.DisplayFor(model => model.Customer.Name)
+		</dd>
+		<dt class="col-sm-2">
+			@Html.DisplayNameFor(model => model.Customer.Email)
+		</dt>
+		<dd class="col-sm-10">
+			@Html.DisplayFor(model => model.Customer.Email)
+		</dd>
+		<dt class="col-sm-2">
+			@Html.DisplayNameFor(model => model.Customer.Phone)
+		</dt>
+		<dd class="col-sm-10">
+			@Html.DisplayFor(model => model.Customer.Phone)
+		</dd>
+		<dt class="col-sm-2">
+			@Html.DisplayNameFor(model => model.Customer.CreatedAt)
+		</dt>
+		<dd class="col-sm-10">
+			@Html.DisplayFor(model => model.Customer.CreatedAt)
+		</dd>
+		<dt class="col-sm-2">
+			@Html.DisplayNameFor(model => model.Customer.UpdatedAt)
+		</dt>
+		<dd class="col-sm-10">
+			@Html.DisplayFor(model => model.Customer.UpdatedAt)
+		</dd>
+	</dl>
+</div>
+@* <div>
+    <a asp-action="Edit" asp-route-id="@Model?.Customer.Id" class="btn btn-primary">Edit</a>
+    @* <a asp-action="Index">Back to List</a>
+</div> *@
+<h1 class="text-center">Contact Details</h1>
+<hr />
+<div class="card">
+
+	<div class="text-end me-3 mt-3">
+		<form method="post">
+			<input type="hidden" name="addNewContact" value="true"/>
+			<button type="submit" data-bs-toggle="modal" data-bs-target="#createModal" class="btn btn-success">Add New Contact</button>
+		</form>
+		
+	</div>
+	<div class="d-flex justify-content-center">
+		<table class="table table-hover table-bordered table-striped mt-4" style="width:85%;">
+			<thead>
+				<tr>
+
+					<th>
+						@Html.DisplayNameFor(model => model.CustomerContact.CustName)
+					</th>
+					<th>
+						@Html.DisplayNameFor(model => model.CustomerContact.Relation)
+					</th>
+					<th>
+						@Html.DisplayNameFor(model => model.CustomerContact.ContactType)
+					</th>
+					<th>
+						@Html.DisplayNameFor(model => model.CustomerContact.Contact)
+					</th>
+					<th></th>
+				</tr>
+			</thead>
+			<tbody>
+				@foreach (var item in Model.Contacts)
+				{
+					<tr>
+						<td>
+							@Html.DisplayFor(modelItem => item.CustName)
+						</td>
+						<td>
+							@Html.DisplayFor(modelItem => item.Relation)
+						</td>
+						<td>
+							@Html.DisplayFor(modelItem => item.ContactType)
+						</td>
+						<td>
+							@Html.DisplayFor(modelItem => item.Contact)
+						</td>
+
+						<td>
+							<div class="d-flex justify-content-center">
+								@if (User.IsInRole("admin") || User.IsInRole("salesrep"))
+								{
+									<form method="post">
+										<input type="hidden" name="selectedContactId" value=@item.Id />
+										<button type="submit" data-bs-toggle="modal" data-bs-target="#EditModal" class="btn btn-outline-success">Edit</button>
+									</form>
+									
+								}
+
+								@if (User.IsInRole("admin"))
+								{
+									<form method="post">
+										<input type="hidden" name="deleteContactId" value=@item.Id />
+									<button type="submit" data-bs-toggle="modal" data-bs-target="#confirmDeleteModal" class="btn btn-outline-danger">Delete</button>
+									</form>
+								}
+							</div>
+
+							@*
+
+						<a asp-action="Details" asp-route-id="@item.Id" class="btn btn-outline-primary">Details</a> *@
+							@* @if (User.IsInRole("admin"))
+						{
+
+						} *@
+
+						</td>
+					</tr>
+				}
+			</tbody>
+		</table>
+	</div>
+</div>
+<br />
+<h1 class="text-center">Notes</h1>
+<hr />
+
+	<div class="card">
+	<div class="text-end me-3 mt-3">
+
+		<a class="btn btn-success" data-bs-toggle="modal" data-bs-target="#createNoteModal">Create New</a>
+
+	</div>
+	<div class="d-flex justify-content-center">
+		
+		<table class="table table-striped table-hover table-dark table-bordered mt-3" style="width:85%;">
+			<thead>
+				<tr>
+					<th>
+						@Html.DisplayNameFor(model => model.Note.Description)
+					</th>
+					<th>
+						@Html.DisplayNameFor(model => model.Note.CreatedAt)
+					</th>
+					
+					<th></th>
+				</tr>
+			</thead>
+			<tbody>
+				@foreach (var item in Model.Notes)
+				{
+					<tr>
+						<td>
+							@Html.DisplayFor(modelItem => item.Description)
+						</td>
+						<td>
+							@Html.DisplayFor(modelItem => item.CreatedAt)
+						</td>
+					
+						<td>
+							<a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
+							<a asp-action="Details" asp-route-id="@item.Id">Details</a> |
+							<a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+						</td>
+					</tr>
+				}
+			</tbody>
+		</table>
+
+	</div>
+	</div>
+
+
+
+
+@*Create Modal section *@
+
+@{
+	bool isAddNew = false;
+	if (Context.Request.HasFormContentType)
+	{
+		isAddNew = Context.Request.Form["addNewContact"] == "true";
+	}
+}
+
+@if (isAddNew)
+{
+	<div class="modal fade show d-block" id="createModal" tabindex="-1" aria-hidden="true" aria-modal="true" role="dialog">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<partial name="_ContactForm" model="new CRMApp.ViewModels.CustomerViewModel{CustomerContact = new CustomerContact{Id =0 , CustomerId = Model.Customer.Id}}" />
+			</div>
+		</div>
+	</div>
+	<div class="modal-backdrop fade show"></div>
+}
+
+
+
+
+
+@*Edit Modal Section*@
+@{
+	string selectedId = null;
+	CRMApp.Models.CustomerContact selectedContact = null;
+
+	if (Context.Request.HasFormContentType)
+	{
+		selectedId = Context.Request.Form["selectedContactId"];
+		selectedContact = Model.Contacts.FirstOrDefault(c => c.Id.ToString() == selectedId);
+	}
+}
+	
+@if(selectedContact != null)
+{
+	<div class="modal fade show d-block" id="EditModal" tabindex="-1" aria-hidden="true"  aria-modal="true" role="dialog">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<partial name="_ContactForm" model="new CRMApp.ViewModels.CustomerViewModel{
+							CustomerContact = new CustomerContact {
+								Id = selectedContact.Id,
+								CustomerId = selectedContact.CustomerId,
+								Contact = selectedContact.Contact,
+								CustName = selectedContact.CustName,
+								ContactType = selectedContact.ContactType,
+								Relation = selectedContact.Relation
+							}
+				}" />
+			</div>
+		</div>
+	</div>
+	<div class="modal-backdrop fade show"></div>
+}
+
+
+@*Delete Modal Section*@
+@* @foreach (var item in Model.Contacts)
+{ *@
+@{
+	string deleteId = null;
+	CRMApp.Models.CustomerContact deleteContact = null;
+	if (Context.Request.HasFormContentType)
+	{
+		deleteId = Context.Request.Form["deleteContactId"];
+		deleteContact = Model.Contacts.FirstOrDefault(c => c.Id.ToString() == deleteId);
+	}
+
+}
+@if (deleteContact != null)
+{
+	<div class="modal fade show d-block" id="confirmDeleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true" aria-modal="true" role="dialog">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<form asp-action="DeleteContact" asp-controller="Contact" method="post">
+				<input type="hidden" name="id" value="@deleteContact.Id" />
+					<div class="modal-header">
+						<h5 class="modal-title" id="deleteModalLabel">Confirm Delete</h5>
+						<a href="" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></a>
+					</div>
+					<div class="modal-body">
+						Are you sure you want to delete <strong>@deleteContact.CustName</strong>?
+					</div>
+					<div class="modal-footer">
+						<a href="" class="btn btn-secondary">Cancel</a>
+						<button type="submit" class="btn btn-danger">Delete</button>
+					</div>
+				</form>
+			</div>
+		</div>
+	</div>
+<div class="modal-backdrop fade show"></div>}
+@* } *@
+
+<div class="modal fade show d-block" id="createNoteModal" tabindex="-1" aria-hidden="true" aria-modal="true" role="dialog">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<partial name="_NoteForm" model="new CRMApp.ViewModels.CustomerViewModel{Note = new Note{Id = 0, CustomerId = Model.Customer.Id }}" />
+		</div>
+	</div>
+</div>
+<div class="modal-backdrop fade show"></div>
+
+
+
+@section Scripts {
+
+	<script>
+		$(document).ready(function () {
+			$("#btnSave").click(function (e) {
+
+				debugger;
+				e.preventDefault();
+				debugger;
+				var form = $("#frmContact");
+				if (form.valid()) {
+					form.submit();
+				}
+
+			})
+		});
+	</script>
+}

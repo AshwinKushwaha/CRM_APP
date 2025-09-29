@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using CRMApp.Areas.Identity.Data;
+using CRMApp.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -24,6 +25,11 @@ builder.Services.AddSession();
 
 //}
 //    );
+builder.Services.AddScoped<ICustomerService, CustomerService>();
+builder.Services.AddScoped<IContactService, ContactService>();
+builder.Services.AddScoped<IActivityLogger, ActivityLogService>();
+builder.Services.AddScoped<IUserService, UserService>();
+builder.Services.AddScoped<INoteService, NoteService>();
 
 var app = builder.Build();
 
