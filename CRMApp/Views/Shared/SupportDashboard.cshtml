@@ -1,8 +1,96 @@
-﻿
+﻿@model CRMApp.ViewModels.ActivityLogViewModel;
+
 @{
     ViewData["Title"] = "SupportDashboard";
     Layout = "~/Views/Shared/_AdminLayout.cshtml";
 }
 
-<h1>SupportDashboard</h1>
+<div class="container d-flex justify-content-center ">
+	<div class="flex-column" style="width: 100%;">
+		<div>
+			<h1 class="text-center">Support Dashboard</h1>
+		</div>
+		@* <div class="d-flex justify-content-around"> *@
+		<div class="d-grid">
+			<div class="row d-flex justify-content-between ms-0">
+				<div class="col-2" style="width: 55em;">
+					<div class="card">
+						<h3 class="text-center mt-2">Overview</h3>
+						<div class="card-body">
+							<div class="d-grid">
+								<div class="row d-inline-flex justify-content-center">
+
+									<div class="col-sm-2" style="width: 15rem;">
+										<div class="card" style="background: lightgrey;" id="customer-tile">
+											<div class="card-body">
+												<h4 class="text-center">Total Customers </h4>
+												<p class="text-center fw-bold h5">@ViewBag.CustomerCount</p>
+											</div>
+										</div>
+									</div>
+									<div class="col-sm-2" style="width: 15rem;">
+										<div class="card" style="background: lightgrey;" id="contact-tile">
+											<div class="card-body">
+												<h4 class="text-center">Total Contacts </h4>
+												<p class="text-center fw-bold h5">@ViewBag.ContactCount</p>
+											</div>
+										</div>
+									</div>
+
+								</div>
+
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="col-2" style="width:25em;">
+					<div class="card shadow-sm" style="overflow-y: auto; height: 600px;">
+						<h3 class="text-center mt-2">
+							Activity Feed
+						</h3>
+						@if (Model.activityLogs.Count == 0)
+						{
+							<p class="text-center fw-light mt-5">No Activity To Show</p>
+						}
+						else
+						{
+							@foreach (var item in Model.activityLogs)
+							{
+
+								<div class="container mt-1 mb-1">
+									<div class="card">
+										<div class="card-header d-inline-flex justify-content-between">
+											<span class="fw-bold">@item.ModuleId</span>
+										</div>
+										<div class="card-body">
+											@if ((bool)item.IsDeleted)
+											{
+												<span class="text-danger">@item.Action  </span>  <span class="fst-italic text-end text-danger">On @Model.FormatDate(item.TimeStamp) at @item.TimeStamp.ToString("h:mm tt")</span>
+											}
+											else
+											{
+												<span class="text-success">@item.Action </span> <span class="fst-italic text-end text-success">On @Model.FormatDate(item.TimeStamp) at @item.TimeStamp.ToString("h:mm tt")</span>
+											}
+
+										</div>
+
+									</div>
+								</div>
+							}
+						}
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+
+
+	@section Scripts {
+		<script>
+			$("#customer-tile").click(function () {
+				window.location.href = "/Customer/Index"
+			})
+		</script>
+	}
 

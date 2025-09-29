@@ -13,14 +13,16 @@ namespace CRMApp.Controllers
     {
 		private readonly ICustomerService _customerService;
 		private readonly IContactService _contactService;
+		private readonly INoteService _noteService;
 
 		//private readonly ApplicationUserIdentityContext context;
 
 
-		public CustomerController(ICustomerService customerService,IContactService contactService)
+		public CustomerController(ICustomerService customerService,IContactService contactService, INoteService noteService)
         {
 			_customerService = customerService;
 			_contactService = contactService;
+			_noteService = noteService;
 			//this.context = context;
 		}
 
@@ -55,11 +57,11 @@ namespace CRMApp.Controllers
         }
 
         [HttpPost]
-        public async  Task<IActionResult> Create([Bind("Name, Email, Phone")]Customer cust)
+        public   IActionResult Create([Bind("Name, Email, Phone")]Customer cust)
         {
             if (ModelState.IsValid)
             {
-                await _customerService.UpsertCustomer(cust);
+                _customerService.UpsertCustomer(cust);
                 return RedirectToAction("Index");
             }
             return View();
@@ -77,7 +79,7 @@ namespace CRMApp.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Edit(int? id, Customer cust)
+        public  IActionResult Edit(int? id, Customer cust)
         {
             if (id != cust.Id)
             {
@@ -85,7 +87,7 @@ namespace CRMApp.Controllers
             }
             if (ModelState.IsValid)
             {
-                await _customerService.UpsertCustomer(id, cust);
+                 _customerService.UpsertCustomer(id, cust);
                 return RedirectToAction("Index", "Customer");
             }
 
@@ -113,6 +115,7 @@ namespace CRMApp.Controllers
            
             var cust = _customerService.GetCustomer(id);
             var contacts = _contactService.GetContacts(id);
+            var notes = _noteService.GetNoteByCustomerId(cust.Id);
             var cnt = new CustomerContact();
             if (cust == null)
             {
@@ -123,7 +126,8 @@ namespace CRMApp.Controllers
             {
                 Customer = cust,
                 CustomerContact = cnt,
-                Contacts = contacts
+                Contacts = contacts,
+                Notes = notes
             };
             return View(viewModel);
         }

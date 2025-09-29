@@ -131,11 +131,53 @@
 <br />
 <h1 class="text-center">Notes</h1>
 <hr />
-<div class="d-flex justify-content-around">
+
 	<div class="card">
+	<div class="text-end me-3 mt-3">
+
+		<a class="btn btn-success" data-bs-toggle="modal" data-bs-target="#createNoteModal">Create New</a>
+
+	</div>
+	<div class="d-flex justify-content-center">
+		
+		<table class="table table-striped table-hover table-dark table-bordered mt-3" style="width:85%;">
+			<thead>
+				<tr>
+					<th>
+						@Html.DisplayNameFor(model => model.Note.Description)
+					</th>
+					<th>
+						@Html.DisplayNameFor(model => model.Note.CreatedAt)
+					</th>
+					
+					<th></th>
+				</tr>
+			</thead>
+			<tbody>
+				@foreach (var item in Model.Notes)
+				{
+					<tr>
+						<td>
+							@Html.DisplayFor(modelItem => item.Description)
+						</td>
+						<td>
+							@Html.DisplayFor(modelItem => item.CreatedAt)
+						</td>
+					
+						<td>
+							<a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
+							<a asp-action="Details" asp-route-id="@item.Id">Details</a> |
+							<a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+						</td>
+					</tr>
+				}
+			</tbody>
+		</table>
+
+	</div>
 	</div>
 
-</div>
+
 
 
 @*Create Modal section *@
@@ -220,7 +262,7 @@
 				<input type="hidden" name="id" value="@deleteContact.Id" />
 					<div class="modal-header">
 						<h5 class="modal-title" id="deleteModalLabel">Confirm Delete</h5>
-						<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+						<a href="" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></a>
 					</div>
 					<div class="modal-body">
 						Are you sure you want to delete <strong>@deleteContact.CustName</strong>?
@@ -235,6 +277,18 @@
 	</div>
 <div class="modal-backdrop fade show"></div>}
 @* } *@
+
+<div class="modal fade show d-block" id="createNoteModal" tabindex="-1" aria-hidden="true" aria-modal="true" role="dialog">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<partial name="_NoteForm" model="new CRMApp.ViewModels.CustomerViewModel{Note = new Note{Id = 0, CustomerId = Model.Customer.Id }}" />
+		</div>
+	</div>
+</div>
+<div class="modal-backdrop fade show"></div>
+
+
+
 @section Scripts {
 
 	<script>

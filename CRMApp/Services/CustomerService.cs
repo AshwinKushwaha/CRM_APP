@@ -9,8 +9,8 @@ namespace CRMApp.Services
 		List<Customer> GetCustomers(string? input);
 		List<Customer> GetCustomers();
 		Customer GetCustomer(int id);
-		Task UpsertCustomer(int? id, Customer customer);
-		Task UpsertCustomer(Customer customer);
+		bool UpsertCustomer(int? id, Customer customer);
+		bool UpsertCustomer(Customer customer);
 
 		bool DeleteCustomer(int id);
 
@@ -66,8 +66,8 @@ namespace CRMApp.Services
 			else
 			{
 				context.Customers.Remove(cust);
+				_activityLogger.LogAsync(Module.Customer, userId.Result.Id, $"Deleted by {userId.Result.NormalizedUserName} ({deletedCustomerName})", true);
 				context.SaveChanges();
-				_activityLogger.LogAsync(Module.Customer, userId.Result.Id, $"Deleted Customer: {deletedCustomerName}", true);
 
 				return true;
 			}
@@ -91,32 +91,32 @@ namespace CRMApp.Services
 
 		
 
-		public async Task UpsertCustomer(int? id, Customer customer) // for updation
+		public  bool UpsertCustomer(int? id, Customer customer) // for updation
 		{
 			var userId = _contactService.GetCurrentUserAsync();
 			if (customer.Id > 0)
 			{
 				customer.UpdatedAt = DateTime.Now;
 				context.Customers.Update(customer);
-				await context.SaveChangesAsync();
-				await _activityLogger.LogAsync(Module.Customer, userId.Result.Id, $"Updated Customer: {customer.Name}", false);
+				 _activityLogger.LogAsync(Module.Customer, userId.Result.Id, $"Updated by {userId.Result.NormalizedUserName} ({customer.Name})", false);
+				 context.SaveChanges();
 			}
-			
-			
+
+			return true;
 			
 		}
 
-		public async Task UpsertCustomer(Customer customer) // for creation
+		public  bool UpsertCustomer(Customer customer) // for creation
 		{
 			var userId = _contactService.GetCurrentUserAsync();
 			if (customer.Id == 0)
 			{
 				customer.CreatedAt = DateTime.Now;
 				context.Customers.Add(customer);
-				await context.SaveChangesAsync();
-				await _activityLogger.LogAsync(Module.Customer, userId.Result.Id, $"Added Customer: {customer.Name}", false);
+				 _activityLogger.LogAsync(Module.Customer, userId.Result.Id, $"Added by {userId.Result.NormalizedUserName} ({customer.Name})", false);
+				 context.SaveChanges();
 			}
-			
+			return true;
 		}
 	}
 }

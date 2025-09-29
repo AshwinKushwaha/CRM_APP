@@ -20,17 +20,21 @@ namespace CRMApp.Controllers
         }
         public IActionResult Index()
         {
-            return View();
+            if (User.IsInRole("admin"))
+            {
+				var contacts = _contactService.GetAllContacts();
+				return View(contacts);
+			}
+            return RedirectToAction("Index", "Dashboard");
         }
 
 
         [HttpPost]
-        public async Task<IActionResult> AddContact(CustomerViewModel viewModel)
+        public  IActionResult AddContact(CustomerViewModel viewModel)
         {
             if (viewModel.CustomerContact != null)
             {
-                
-               await _contactService.CreateContact(viewModel.CustomerContact);
+                _contactService.CreateContact(viewModel.CustomerContact);
                 return RedirectToAction("Details", "Customer", new { Id = viewModel.CustomerContact.CustomerId });
             }
 

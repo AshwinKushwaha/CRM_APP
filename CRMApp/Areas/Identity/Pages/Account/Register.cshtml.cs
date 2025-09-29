@@ -20,6 +20,7 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Extensions.Logging;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using CRMApp.Services;
 
 namespace CRMApp.Areas.Identity.Pages.Account
 {
@@ -31,16 +32,18 @@ namespace CRMApp.Areas.Identity.Pages.Account
         private readonly IUserEmailStore<ApplicationUser> _emailStore;
         private readonly ILogger<RegisterModel> _logger;
         private readonly RoleManager<IdentityRole> _roleManager;
+		private readonly IActivityLogger _activityLogger;
 
-        //private readonly IEmailSender _emailSender;
+		//private readonly IEmailSender _emailSender;
 
 
-        public RegisterModel(
+		public RegisterModel(
             UserManager<ApplicationUser> userManager,
             IUserStore<ApplicationUser> userStore,
             SignInManager<ApplicationUser> signInManager,
             ILogger<RegisterModel> logger,
-            RoleManager<IdentityRole> roleManager
+            RoleManager<IdentityRole> roleManager,
+            IActivityLogger activityLogger
             //IEmailSender emailSender
 
          )
@@ -51,9 +54,10 @@ namespace CRMApp.Areas.Identity.Pages.Account
             _signInManager = signInManager;
             _logger = logger;
             _roleManager = roleManager;
-            //_emailSender = emailSender;
+			_activityLogger = activityLogger;
+			//_emailSender = emailSender;
 
-        }
+		}
 
 
         public List<SelectListItem> RoleList { get; set; }
@@ -149,6 +153,8 @@ namespace CRMApp.Areas.Identity.Pages.Account
                 if (result.Succeeded)
                 {
                     _logger.LogInformation("User created a new account with password.");
+
+                    _activityLogger.LogAsync(Models.Module.User, _userManager.GetUserAsync(User).Result.Id, $"Registered by {_userManager.GetUserAsync(User).Result.UserName}", false);
 
                     var userId = await _userManager.GetUserIdAsync(user);
                     await _userManager.AddToRoleAsync(user, Input.Role);
