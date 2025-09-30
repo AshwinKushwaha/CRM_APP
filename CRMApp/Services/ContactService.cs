@@ -1,5 +1,6 @@
 ﻿using CRMApp.Areas.Identity.Data;
 using CRMApp.Models;
+using CRMApp.ViewModels;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -9,6 +10,7 @@ namespace CRMApp.Services
 	public interface IContactService
 	{
 		List<CustomerContact> GetContacts(int id);
+		List<CustomerContact> GetContacts(ContactFilter contactFilter,string input,int id);
 		List<CustomerContact> GetAllContacts();
 		CustomerContact GetContact(int id);
 		bool CreateContact(CustomerContact contact);
@@ -96,6 +98,31 @@ namespace CRMApp.Services
 		public List<CustomerContact> GetAllContacts()
 		{
 			return context.CustomerContacts.ToList();
+		}
+
+		public List<CustomerContact> GetContacts(ContactFilter contactFilter, string input, int customerId)
+		{
+			switch (contactFilter)
+			{
+				case ContactFilter.Contact:
+					return context.CustomerContacts.Where(c => (!string.IsNullOrEmpty(input)) && (c.CustomerId == customerId) && (c.Contact.Contains(input))).ToList();
+				case ContactFilter.CustName:
+					return context.CustomerContacts.Where(c => (!string.IsNullOrEmpty(input)) && (c.CustomerId == customerId) && (c.CustName.Contains(input))).ToList();
+				//case ContactFilter.Relation:
+				//	return context.CustomerContacts.Where(c => (!string.IsNullOrEmpty(input)) && (c.CustomerId == customerId) && (c.Relation.ToString().Contains(input))).ToList();
+				//case ContactFilter.ContactType:
+				//	return context.CustomerContacts.Where(c => (!string.IsNullOrEmpty(input)) && (c.CustomerId == customerId) && (c.ContactType.ToString().Contains(input))).ToList();
+				case ContactFilter.All:
+				default:
+					return context.CustomerContacts.Where(c => (!string.IsNullOrEmpty(input)) && 
+					(c.CustomerId == customerId) && 
+					
+					(c.CustName.Contains(input)) ||
+					(c.Contact.Contains(input)) 
+					
+					).ToList();
+
+			}
 		}
 	}
 }

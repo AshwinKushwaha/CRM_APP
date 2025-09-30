@@ -38,5 +38,11 @@ namespace CRMApp.Controllers
 			_noteService.DeleteNote(id);
 			return RedirectToAction("Details", "Customer", new { Id = deletedNote.CustomerId });
 		}
+
+		//[HttpPost]
+		//public IActionResult SearchNote(NoteFilter filter, string input)
+		//{
+		//	var result = 
+		//}
 	}
 }

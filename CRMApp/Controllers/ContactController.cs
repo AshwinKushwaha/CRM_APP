@@ -13,17 +13,23 @@ namespace CRMApp.Controllers
     public class ContactController : Controller
     {
         private readonly IContactService _contactService;
+		private readonly ICustomerService _customerService;
 
-        public ContactController(IContactService contactService)
+		public ContactController(IContactService contactService,ICustomerService customerService)
         {
             _contactService = contactService;
-        }
+			_customerService = customerService;
+		}
         public IActionResult Index()
         {
             if (User.IsInRole("admin"))
             {
 				var contacts = _contactService.GetAllContacts();
-				return View(contacts);
+                var viewModel = new ContactViewModel(_customerService)
+                {
+                    Contacts = contacts
+                };
+				return View(viewModel);
 			}
             return RedirectToAction("Index", "Dashboard");
         }

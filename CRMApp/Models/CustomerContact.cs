@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc.ModelBinding;
+using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Text.Json.Serialization;
@@ -14,7 +15,7 @@ namespace CRMApp.Models
 		public int CustomerId { get; set; }
 		
 		[Required(ErrorMessage = "Customer Name is required")]
-		
+		[DisplayName("Contact Name")]
 		public string CustName { get; set; }
 
 		[Required]

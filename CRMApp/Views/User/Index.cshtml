@@ -8,7 +8,14 @@
 
 <h1 class="text-center">User List</h1>
 <hr />
-
+<div >
+    <form>
+       <div class="d-flex mb-4 mt-2 gap-1">
+            <input type="text" placeholder="Search Bar.." class="form-control" />
+            <button type="submit" class="btn btn-outline-primary">Search</button>
+       </div>
+    </form>
+</div>
 <table class="table table-bordered table-striped table-dark table-hover">
     <thead>
         <tr>
@@ -35,7 +42,6 @@
                 </td>
 
                 <td class="d-flex justify-content-center gap-2 ps-0 pe-0">
-                    <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-success">Edit</a>
                     <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-danger">Delete</a>
                 </td>
             </tr>
