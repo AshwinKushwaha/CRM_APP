@@ -11,8 +11,10 @@ namespace CRMApp.Models
 
 		public int CustomerId { get; set; }
 
+		[Required]
 		public string Description { get; set; }
 
+		
 		public string CreatedBy { get; set; }
 
 		public DateTime CreatedAt { get; set; }

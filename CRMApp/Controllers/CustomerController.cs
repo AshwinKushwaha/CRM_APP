@@ -121,6 +121,7 @@ namespace CRMApp.Controllers
             {
                 return NotFound();
             }
+            ViewBag.CurrentUser = _contactService.GetCurrentUserAsync().Result.NormalizedUserName;
 
             var viewModel = new CustomerViewModel()
             {
