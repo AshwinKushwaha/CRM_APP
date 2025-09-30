@@ -31,6 +31,7 @@ namespace CRMApp.Models
 	{
 		User,
 		Customer,
-		Contact
+		Contact,
+		Note
 	}
 }

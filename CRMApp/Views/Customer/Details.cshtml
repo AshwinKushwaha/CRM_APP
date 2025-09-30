@@ -135,7 +135,10 @@
 	<div class="card">
 	<div class="text-end me-3 mt-3">
 
-		<a class="btn btn-success" data-bs-toggle="modal" data-bs-target="#createNoteModal">Create New</a>
+		<form method="post">
+			<input type="hidden" name="addNewNote" value="true" />
+			<button type="submit" data-bs-toggle="modal" data-bs-target="#createNoteModal" class="btn btn-success">Add New Note</button>
+		</form>
 
 	</div>
 	<div class="d-flex justify-content-center">
@@ -164,10 +167,16 @@
 							@Html.DisplayFor(modelItem => item.CreatedAt)
 						</td>
 					
-						<td>
-							<a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-							<a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-							<a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+						<td class="d-flex justify-content-center gap-1">
+							<form method="post">
+								<input type="hidden" name="selectedNoteId" value=@item.Id />
+								<button type="submit" data-bs-toggle="modal" data-bs-target="#EditNoteModal" class="btn btn-outline-success">Edit</button>
+							</form>
+
+							<form method="post">
+								<input type="hidden" name="deleteNoteId" value=@item.Id />
+								<button type="submit" data-bs-toggle="modal" data-bs-target="#confirmNoteDeleteModal" class="btn btn-outline-danger">Delete</button>
+							</form>
 						</td>
 					</tr>
 				}
@@ -278,16 +287,96 @@
 <div class="modal-backdrop fade show"></div>}
 @* } *@
 
-<div class="modal fade show d-block" id="createNoteModal" tabindex="-1" aria-hidden="true" aria-modal="true" role="dialog">
-	<div class="modal-dialog">
-		<div class="modal-content">
-			<partial name="_NoteForm" model="new CRMApp.ViewModels.CustomerViewModel{Note = new Note{Id = 0, CustomerId = Model.Customer.Id }}" />
+
+@{
+	bool isAddNewNote = false;
+	if (Context.Request.HasFormContentType)
+	{
+		isAddNewNote = Context.Request.Form["addNewNote"] == "true";
+	}
+	var currentUser = ViewBag.CurrentUser;
+	
+}
+
+@if (isAddNewNote)
+{
+	<div class="modal fade show d-block" id="createNoteModal" tabindex="-1" aria-hidden="true" aria-modal="true" role="dialog">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<partial name="_NoteForm" model="new CRMApp.ViewModels.CustomerViewModel{Note = new Note{Id = 0, CustomerId = Model.Customer.Id }, CurrentUsername = currentUser}" />
+			</div>
 		</div>
 	</div>
-</div>
-<div class="modal-backdrop fade show"></div>
+	<div class="modal-backdrop fade show"></div>
+}
 
+@{
+	string selectedNoteId = null;
+	CRMApp.Models.Note selectedNote = null;
 
+	if (Context.Request.HasFormContentType)
+	{
+		selectedNoteId = Context.Request.Form["selectedNoteId"];
+		selectedNote = Model.Notes.FirstOrDefault(c => c.Id.ToString() == selectedNoteId);
+	}
+	
+}
+
+@if (selectedNote != null)
+{
+	<div class="modal fade show d-block" id="EditNoteModal" tabindex="-1" aria-hidden="true" aria-modal="true" role="dialog">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<partial name="_NoteForm" model="new CRMApp.ViewModels.CustomerViewModel{
+							Note = new Note{
+								Id = selectedNote.Id,
+								CustomerId = selectedNote.CustomerId,
+								Description = selectedNote.Description,
+								CreatedAt = selectedNote.CreatedAt,
+								CreatedBy = selectedNote.CreatedBy
+							},
+CurrentUsername = currentUser
+				}" />
+			</div>
+		</div>
+	</div>
+	<div class="modal-backdrop fade show"></div>
+}
+
+@{
+	string deleteNoteId = null;
+	CRMApp.Models.Note deleteNote = null;
+	if (Context.Request.HasFormContentType)
+	{
+		deleteNoteId = Context.Request.Form["deleteNoteId"];
+		deleteNote = Model.Notes.FirstOrDefault(c => c.Id.ToString() == deleteNoteId);
+	}
+
+}
+@if (deleteNote != null)
+{
+	<div class="modal fade show d-block" id="confirmNoteDeleteModal" tabindex="-1" aria-labelledby="deleteNoteModalLabel" aria-hidden="true" aria-modal="true" role="dialog">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<form asp-action="DeleteNote" asp-controller="Note" method="post">
+					<input type="hidden" name="id" value="@deleteNote.Id" />
+					<div class="modal-header">
+						<h5 class="modal-title" id="deleteNoteModalLabel">Confirm Delete</h5>
+						<a href="" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></a>
+					</div>
+					<div class="modal-body">
+						Are you sure you want to delete note <strong>@deleteNote.Id</strong>?
+					</div>
+					<div class="modal-footer">
+						<a href="" class="btn btn-secondary">Cancel</a>
+						<button type="submit" class="btn btn-danger">Delete</button>
+					</div>
+				</form>
+			</div>
+		</div>
+	</div>
+	<div class="modal-backdrop fade show"></div>
+}
 
 @section Scripts {
 
@@ -303,6 +392,14 @@
 					form.submit();
 				}
 
+			})
+			$("#btnNoteSave").click(function(e){
+				debugger;
+				e.preventDefault();
+				var form = $("#frmNote");
+				if(form.valid()){
+					form.submit()
+				}
 			})
 		});
 	</script>

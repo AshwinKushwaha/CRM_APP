@@ -1,1 +1,34 @@
-﻿@model CR
+﻿@model CRMApp.ViewModels.CustomerViewModel;
+
+<form id="frmNote" asp-action="SaveNote" asp-controller="Note" method="post">
+	<div asp-validation-summary="ModelOnly"></div>
+	<input type="hidden" asp-for="Note.Id"/>
+	<input type="hidden" asp-for="Note.CustomerId"/>
+	<input type="hidden" asp-for="Note.CreatedBy" />
+	<input type="hidden" asp-for="Note.CreatedAt" />
+	<div class="modal-header">
+		<h5 class="modal-title">@((Model.Note?.Id ?? 0) == 0 ? "Add Note" : "Edit Note")</h5>
+		<a href="" class="btn btn-close"></a>
+	</div>
+
+	<div class="modal-body">
+		<div class="form-group">
+			<label asp-for="Note.Description">Description</label>
+			<textarea asp-for="Note.Description" class="form-control"></textarea>
+			<span asp-validation-for="Note.Description" class="text-danger"></span>
+		</div>
+		<div class="mb-3 text-success" style="font-size: 0.85em; margin-top:-15px; padding:0;">By: @Model.CurrentUsername On @Model.FormatDate(DateTime.Now) at @DateTime.Now.ToString("hh:mm tt")</div>
+	</div>
+	
+	
+	
+	
+		<div class="modal-footer">
+			<a href="" class="btn btn-secondary">Cancel</a>
+			<button type="button" class="btn btn-danger" id="btnNoteSave">Save</button>
+		</div>
+</form>
+
+@section Scripts {
+	<partial name="_ValidationScriptsPartial" />
+}
