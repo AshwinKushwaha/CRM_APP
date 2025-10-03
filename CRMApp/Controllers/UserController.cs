@@ -14,6 +14,7 @@ namespace CRMApp.Controllers
         {
             _userService = userService;
         }
+
         public IActionResult Index()
 		{
 			var users = _userService.GetAllUsers();
@@ -22,6 +23,24 @@ namespace CRMApp.Controllers
 				Users = users
 			};
 			return View(userViewModel);
+		}
+
+		[HttpPost]
+		public IActionResult Index(UserViewModel userViewModel)
+		{
+			var users = _userService.GetUsers(userViewModel.UserFilter, userViewModel.UserInput);
+			var viewModel = new UserViewModel()
+			{
+				Users = users
+			};
+			return View(viewModel);
+		}
+
+		[HttpPost]
+		public IActionResult DeleteUser(string id)
+		{
+			_userService.DeleteUser(id);
+			return RedirectToAction("Index");
 		}
 	}
 }

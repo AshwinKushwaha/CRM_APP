@@ -30,6 +30,7 @@ builder.Services.AddScoped<IContactService, ContactService>();
 builder.Services.AddScoped<IActivityLogger, ActivityLogService>();
 builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<INoteService, NoteService>();
+builder.Services.AddHttpContextAccessor();
 
 var app = builder.Build();
 
