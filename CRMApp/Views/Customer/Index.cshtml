@@ -1,4 +1,4 @@
-﻿@model IEnumerable<CRMApp.Models.Customer>
+﻿@model CRMApp.ViewModels.SearchViewModel;
 
 @{
 	ViewData["Title"] = "Index";
@@ -14,9 +14,12 @@
 }
 
 <div class="d-flex justify-content-center">
-	<form asp-action="Index" style="width: 100%;">
+	<form asp-action="Index" style="width: 100%;" method="post">
 		<div class="d-flex gap-1">
-			<input class="form-control" type="text" placeholder="Search bar" name="input"/>
+			@* <select asp-items="Html.GetEnumSelectList<CRMApp.Controllers.Filter>()" class="form-control text-start" style="width:5%;">
+			</select> *@
+			<select asp-for="filter" asp-items="Html.GetEnumSelectList<CRMApp.ViewModels.Filter>()" class="form-control" style="width: 8%;"></select>
+			<input class="form-control" asp-for="Input" placeholder="Search bar" />
 			<button type="submit" class="btn btn-outline-primary">Search</button>
 		</div>
 	</form> 
@@ -37,25 +40,25 @@
 			<thead>
 				<tr>
 					<th>
-						@Html.DisplayNameFor(model => model.Name)
+						@Html.DisplayNameFor(model => model.Customer.Name)
 					</th>
 					<th>
-						@Html.DisplayNameFor(model => model.Email)
+						@Html.DisplayNameFor(model => model.Customer.Email)
 					</th>
 					<th>
-						@Html.DisplayNameFor(model => model.Phone)
+						@Html.DisplayNameFor(model => model.Customer.Phone)
 					</th>
 					<th>
-						@Html.DisplayNameFor(model => model.CreatedAt)
+						@Html.DisplayNameFor(model => model.Customer.CreatedAt)
 					</th>
 					<th>
-						@Html.DisplayNameFor(model => model.UpdatedAt)
+						@Html.DisplayNameFor(model => model.Customer.UpdatedAt)
 					</th>
 					<th></th>
 				</tr>
 			</thead>
 			<tbody>
-				@foreach (var item in Model)
+				@foreach (var item in Model.Customers)
 				{
 					<tr>
 						<td>
@@ -92,7 +95,7 @@
 		</table>
 	}
 }
-@foreach (var item in Model)
+@foreach (var item in Model.Customers)
 {
 	<div class="modal fade" id="confirmDeleteModal-@item.Id" tabindex="-1" aria-labelledby="deleteModalLabel-@item.Id" aria-hidden="true">
 		<div class="modal-dialog">

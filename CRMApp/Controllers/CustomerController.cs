@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System.Runtime.CompilerServices;
 using CRMApp.ViewModels;
+using CRMApp.Migrations;
 
 namespace CRMApp.Controllers
 {
@@ -29,18 +30,25 @@ namespace CRMApp.Controllers
         [Authorize]
         public IActionResult Index()
         {
-            var cust = _customerService.GetCustomers();
-            ViewBag.Count = cust.Count;
-            return View(cust);
+            var viewModel = new SearchViewModel
+            {
+                Customers = _customerService.GetCustomers()
+            };
+            ViewBag.Count = viewModel.Customers.Count;
+            return View(viewModel);
         }
 
         [HttpPost]
-		public IActionResult Index(string input)
+		public IActionResult Index(SearchViewModel viewModel)
         {
-            var result = _customerService.GetCustomers(input);
+            var result =  _customerService.GetCustomers(viewModel.filter, viewModel.Input);
 			ViewBag.Count = result.Count;
+            var searchViewModel = new SearchViewModel
+            {
+                Customers = result
+            };
 
-			return View(result);
+			return View(searchViewModel);
         }
 
 		//[HttpGet("{id?}")]
@@ -133,8 +141,48 @@ namespace CRMApp.Controllers
             return View(viewModel);
         }
 
+        [HttpPost]
+        public IActionResult Details(CustomerViewModel viewModel, int id)
+        {
+            var cust = _customerService.GetCustomer(id);
+            var contacts = new List<CustomerContact>();
+			var notes = new List<Note>();
 
-		
+			if (viewModel.ContactFilter != null)
+            {
+                contacts = _contactService.GetContacts((ContactFilter)viewModel.ContactFilter, viewModel.ContactInput, id);
+            }
+            else
+            {
+				contacts = _contactService.GetContacts(id);
+			}
 
-	}
+            if(viewModel.NoteFilter != null)
+            {
+				notes = _noteService.GetNotes((NoteFilter)viewModel.NoteFilter, viewModel.NoteInput, id);
+            }
+            else
+            {
+                notes = _noteService.GetNoteByCustomerId(id);
+            }
+
+
+           
+            var cnt = new CustomerContact();
+            ViewBag.CurrentUser = _contactService.GetCurrentUserAsync().Result.NormalizedUserName;
+
+            var customerViewModel = new CustomerViewModel()
+            {
+                Customer = cust,
+                CustomerContact = cnt,
+                Contacts = contacts,
+                Notes = notes
+            };
+            return View(customerViewModel);
+        }
+
+
+    }
+
+    
 }

@@ -6,7 +6,61 @@
 @{
     
 }
-<h1>Hello World</h1>
+
+<section class="hero text-center bg-primary text-white p-5" style="border-radius: 10px;">
+    <h1>Streamline Your Customer Relationships</h1>
+    <p>CRMTool helps you manage contacts, track interactions, and grow your business efficiently.</p>
+    <a href="/Account/Register" class="btn btn-secondary">Get Started</a>
+</section>
+<section id="features" class="container py-5 card mb-3 mt-3 d-flex justify-content-center">
+    <h2 class="text-center mb-4">Key Features</h2>
+    <div class="row d-flex justify-content-center" >
+        @* <div class="d-flex justify-content-center "> *@
+
+        
+        <div class="col-md-4 card me-3 ms-5 shadow-sm bg-light">
+            <h4 class="text-center">Contact Management</h4>
+            <p>Store and organize customer details with powerful search and filter options.</p>
+        </div>
+        <div class="col-md-4 card me-3 shadow-sm bg-light">
+            <h4 class="text-center">Notes & Activity Logs</h4>
+           Store and updates with time-stamped notes for each customer.</p>
+        </div>
+        <div class="col-md-4 card shadow-sm mt-2 bg-light">
+            <h4 class="text-center">Role-Based Access</h4>
+            <p>Secure your data with admin, sales, and support roles tailored to your team.</p>
+        </div>
+        @* </div> *@
+    </div>
+</section>
+
+<section id="benefits" class="bg-light py-5" style="border-radius: 10px;">
+    <div class="container text-center">
+        <h2>Why Choose CRMTool?</h2>
+        <p>Our CRM is designed to be simple, fast, and scalable for growing businesses.</p>
+        <ul class="list-unstyled">
+            <li>✅ Easy to use interface</li>
+            <li>✅ Real-time updates and filtering</li>
+            <li>✅ Secure and scalable architecture</li>
+        </ul>
+    </div>
+</section>
+<section id="contact" class="container py-5 card mt-3 shadow-sm ">
+    <h2 class="text-center mb-4">Get in Touch</h2>
+    <form>
+        <div class="mb-3">
+            <input type="text" class="form-control" placeholder="Your Name" />
+        </div>
+        <div class="mb-3">
+            <input type="email" class="form-control" placeholder="Your Email" />
+        </div>
+        <div class="mb-3">
+            <textarea class="form-control" rows="4" placeholder="Your Message"></textarea>
+        </div>
+        <button type="submit" class="btn btn-primary">Send Message</button>
+    </form>
+</section>
+
 
 @section scripts{
     <script>

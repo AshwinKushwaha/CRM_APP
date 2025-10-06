@@ -1,4 +1,5 @@
 ﻿using CRMApp.Models;
+using Microsoft.AspNetCore.Mvc.ModelBinding;
 
 namespace CRMApp.ViewModels
 {
@@ -21,9 +22,29 @@ namespace CRMApp.ViewModels
 
 			return $"{date.Day}{suffix} {date:MMMM}, {date:yyyy}";
 		}
-
+		
 		public string CurrentUsername { get; set; }
+		
+		public ContactFilter? ContactFilter { get; set; }
+		
+		public NoteFilter? NoteFilter { get; set; }
+
+		public string? ContactInput { get; set; }
+		public string? NoteInput {  get; set; }
 	}
 
-	
+	public enum ContactFilter
+	{
+		All,
+		CustName,
+		//Relation,
+		//ContactType,
+		Contact
+	}
+
+	public enum NoteFilter
+	{
+		All,
+		Description
+	}
 }

@@ -1,5 +1,6 @@
 ﻿using CRMApp.Areas.Identity.Data;
 using CRMApp.Models;
+using CRMApp.ViewModels;
 using Microsoft.AspNetCore.Identity;
 
 namespace CRMApp.Services
@@ -9,6 +10,7 @@ namespace CRMApp.Services
 		List<Note> GetAllNotes();
 
 		List<Note> GetNoteByCustomerId(int customerId);
+		List<Note> GetNotes(NoteFilter filter, string input, int customerId);
 
 		bool SaveNote(Note note);
 
@@ -54,6 +56,19 @@ namespace CRMApp.Services
 		public Note GetNoteById(int noteId)
 		{
 			return _context.Notes.Find(noteId);
+		}
+
+		public List<Note> GetNotes(NoteFilter filter, string input, int customerId)
+		{
+			switch (filter)
+			{
+				case NoteFilter.Description:
+					
+				case NoteFilter.All:
+				default:
+					return _context.Notes.Where(c => (!string.IsNullOrWhiteSpace(input)) && (c.CustomerId == customerId) && (c.Description.Contains(input))).ToList();
+					
+			}
 		}
 
 		public bool SaveNote(Note note)

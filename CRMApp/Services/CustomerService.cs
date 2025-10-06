@@ -1,12 +1,13 @@
 ﻿using CRMApp.Areas.Identity.Data;
 using CRMApp.Models;
+using CRMApp.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 
 namespace CRMApp.Services
 {
 	public interface ICustomerService
 	{
-		List<Customer> GetCustomers(string? input);
+		List<Customer> GetCustomers(Filter filter,string? input);
 		List<Customer> GetCustomers();
 		Customer GetCustomer(int id);
 		bool UpsertCustomer(int? id, Customer customer);
@@ -16,6 +17,7 @@ namespace CRMApp.Services
 
 		int GetCount();
 		int GetUserCount();
+		
 
 
 	}
@@ -77,19 +79,34 @@ namespace CRMApp.Services
 		
 
 		
-		public List<Customer> GetCustomers(string? input)
+		public List<Customer> GetCustomers(Filter filter,string? input)
 		{
-			
-				return context.Customers.Where(c => (!string.IsNullOrEmpty(input))
+			switch (filter)
+			{
+				
+
+				case Filter.Name:
+					return context.Customers.Where(c => (!string.IsNullOrEmpty(input)) && (c.Name.Contains(input))).ToList();
+
+				case Filter.Email:
+					return context.Customers.Where(c => (!string.IsNullOrEmpty(input)) && (c.Email.Contains(input))).ToList();
+
+				case Filter.Phone:
+					return context.Customers.Where(c => (!string.IsNullOrEmpty(input)) && (c.Phone.Contains(input))).ToList();
+
+				case Filter.All:
+
+				default:
+					return context.Customers.Where(c => (!string.IsNullOrEmpty(input))
 				&& (c.Name.Contains(input)) ||
 				(c.Email.Contains(input)) ||
 				(c.Phone.Contains(input))
 				).ToList();
+			}
 			
 			
 		}
 
-		
 
 		public  bool UpsertCustomer(int? id, Customer customer) // for updation
 		{
