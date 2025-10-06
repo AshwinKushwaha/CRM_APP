@@ -6,13 +6,13 @@ namespace CRMApp.ViewModels
 	{
 		public List<Customer> Customers {  get; set; }
 
-		public Filter filter { get; set; }
+		public CustomerFilter CustomerFilter { get; set; }
 
 		public Customer Customer { get; set; }
 
 		public string Input { get; set; }
 	}
-	public enum Filter
+	public enum CustomerFilter
 	{
 		All,
 		Name,

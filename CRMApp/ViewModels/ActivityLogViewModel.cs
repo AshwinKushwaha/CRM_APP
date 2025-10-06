@@ -7,7 +7,7 @@ namespace CRMApp.ViewModels
 	{
 		
 		private readonly IContactService _contactService;
-		private string _userName;
+		
 
 		public ActivityLogViewModel(IContactService contactService)
         {
@@ -15,10 +15,6 @@ namespace CRMApp.ViewModels
 			_contactService = contactService;
 		}
         public List<ActivityLog> activityLogs {  get; set; }
-
-		
-
-		public string UserName { get; set; }
 
 
 

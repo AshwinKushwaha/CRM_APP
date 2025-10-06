@@ -6,7 +6,7 @@ namespace CRMApp.Services
 {
 	public interface ICustomerService
 	{
-		List<Customer> GetCustomers(Filter filter,string? input);
+		List<Customer> GetCustomers(CustomerFilter filter,string? input);
 		List<Customer> GetCustomers();
 		Customer GetCustomer(int id);
 		bool UpsertCustomer(int? id, Customer customer);
@@ -78,20 +78,20 @@ namespace CRMApp.Services
 		
 
 		
-		public List<Customer> GetCustomers(Filter filter,string? input)
+		public List<Customer> GetCustomers(CustomerFilter filter,string? input)
 		{
 			switch (filter)
 			{
-				case Filter.Name:
+				case CustomerFilter.Name:
 					return context.Customers.Where(c => (!string.IsNullOrEmpty(input)) && (c.Name.Contains(input))).ToList();
 
-				case Filter.Email:
+				case CustomerFilter.Email:
 					return context.Customers.Where(c => (!string.IsNullOrEmpty(input)) && (c.Email.Contains(input))).ToList();
 
-				case Filter.Phone:
+				case CustomerFilter.Phone:
 					return context.Customers.Where(c => (!string.IsNullOrEmpty(input)) && (c.Phone.Contains(input))).ToList();
 
-				case Filter.All:
+				case CustomerFilter.All:
 
 				default:
 					return context.Customers.Where(c => (!string.IsNullOrEmpty(input))

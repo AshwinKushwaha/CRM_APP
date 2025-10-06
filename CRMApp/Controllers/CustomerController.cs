@@ -35,7 +35,7 @@ namespace CRMApp.Controllers
         [HttpPost]
 		public IActionResult Index(SearchViewModel viewModel)
         {
-            var result =  _customerService.GetCustomers(viewModel.filter, viewModel.Input);
+            var result =  _customerService.GetCustomers(viewModel.CustomerFilter, viewModel.Input);
 			ViewBag.Count = result.Count;
             var searchViewModel = new SearchViewModel
             {
