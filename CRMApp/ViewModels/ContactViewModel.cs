@@ -11,6 +11,7 @@ namespace CRMApp.ViewModels
         {
 			_customerService = customerService;
 		}
+
         public List<CustomerContact> Contacts { get; set; }
 		public CustomerContact customerContact { get; set; }
 

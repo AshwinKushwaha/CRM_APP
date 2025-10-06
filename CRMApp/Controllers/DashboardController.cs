@@ -1,9 +1,6 @@
-﻿using CRMApp.Areas.Identity.Data;
-using CRMApp.Services;
+﻿using CRMApp.Services;
 using CRMApp.ViewModels;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Routing;
 
 namespace CRMApp.Controllers
 {
@@ -31,7 +28,6 @@ namespace CRMApp.Controllers
             if (User.IsInRole("admin"))
             {
 				var allActivityLogs = _activityLogger.GetAllActivityLogs();
-                //var userName = _activityLogger.GetUserName(activityLogs);
 
                 var adminActivityViewModel = new ActivityLogViewModel(_contactService)
 				{
@@ -41,14 +37,14 @@ namespace CRMApp.Controllers
             }
             if (User.IsInRole("salesrep"))
             {
-                var userActivityLogs = _activityLogger.GetActivityLogsByCurrentuser();
+                var userActivityLogs = _activityLogger.GetActivityLogsByCurrentUser();
                 var userActivityViewModel = new ActivityLogViewModel(_contactService)
                 {
                     activityLogs = userActivityLogs
 				};
                 return View("SalesDashboard", userActivityViewModel);
             }
-            var activityLogs = _activityLogger.GetActivityLogsByCurrentuser();
+            var activityLogs = _activityLogger.GetActivityLogsByCurrentUser();
             var activityViewModel = new ActivityLogViewModel(_contactService)
             {
                 activityLogs = activityLogs

@@ -1,9 +1,7 @@
 ﻿using CRMApp.Areas.Identity.Data;
 using CRMApp.Models;
 using CRMApp.ViewModels;
-using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.EntityFrameworkCore;
 
 namespace CRMApp.Services
 {
@@ -17,7 +15,6 @@ namespace CRMApp.Services
 		bool DeleteContact(int id);
 		int GetCount();
 		Task<ApplicationUser> GetCurrentUserAsync();
-		//string GetUserName();
 	}
 	public class ContactService : IContactService
 	{
@@ -43,16 +40,21 @@ namespace CRMApp.Services
 		{
 
 			var userId = GetCurrentUserAsync();
+			if(userId == null)
+			{
+				Console.WriteLine("User is Null");
+				return false;
+			}
             if (contact.Id == 0)
 			{
 				context.CustomerContacts.Add(contact);
-				_activityLogger.LogAsync(Module.Contact, userId.Result.Id, $"Added by {userId.Result.NormalizedUserName} ({contact.CustName})",false);
+				_activityLogger.LogAsync(Module.Contact, userId.Result.Id, $"Added by {userId.Result.NormalizedUserName} ({contact.ContactName})",false);
 				
 			}
 			else
 			{
 				context.CustomerContacts.Update(contact);
-				_activityLogger.LogAsync(Module.Contact, userId.Result.Id, $"Updated by {userId.Result.NormalizedUserName} ({contact.CustName})", false);
+				_activityLogger.LogAsync(Module.Contact, userId.Result.Id, $"Updated by {userId.Result.NormalizedUserName} ({contact.ContactName})", false);
 				
 			}
 			context.SaveChanges();
@@ -69,7 +71,7 @@ namespace CRMApp.Services
 		{
 			var contact = GetContact(id);
 			var userId = GetCurrentUserAsync();
-			var deletedContactName = contact.CustName;
+			var deletedContactName = contact.ContactName;
 			if (contact == null)
 			{
 				return false;
@@ -107,17 +109,13 @@ namespace CRMApp.Services
 				case ContactFilter.Contact:
 					return context.CustomerContacts.Where(c => (!string.IsNullOrEmpty(input)) && (c.CustomerId == customerId) && (c.Contact.Contains(input))).ToList();
 				case ContactFilter.CustName:
-					return context.CustomerContacts.Where(c => (!string.IsNullOrEmpty(input)) && (c.CustomerId == customerId) && (c.CustName.Contains(input))).ToList();
-				//case ContactFilter.Relation:
-				//	return context.CustomerContacts.Where(c => (!string.IsNullOrEmpty(input)) && (c.CustomerId == customerId) && (c.Relation.ToString().Contains(input))).ToList();
-				//case ContactFilter.ContactType:
-				//	return context.CustomerContacts.Where(c => (!string.IsNullOrEmpty(input)) && (c.CustomerId == customerId) && (c.ContactType.ToString().Contains(input))).ToList();
+					return context.CustomerContacts.Where(c => (!string.IsNullOrEmpty(input)) && (c.CustomerId == customerId) && (c.ContactName.Contains(input))).ToList();
 				case ContactFilter.All:
 				default:
 					return context.CustomerContacts.Where(c => (!string.IsNullOrEmpty(input)) && 
 					(c.CustomerId == customerId) && 
 					
-					(c.CustName.Contains(input)) ||
+					(c.ContactName.Contains(input)) ||
 					(c.Contact.Contains(input)) 
 					
 					).ToList();

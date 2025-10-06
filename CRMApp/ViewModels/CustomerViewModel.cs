@@ -1,5 +1,4 @@
 ﻿using CRMApp.Models;
-using Microsoft.AspNetCore.Mvc.ModelBinding;
 
 namespace CRMApp.ViewModels
 {
@@ -37,8 +36,6 @@ namespace CRMApp.ViewModels
 	{
 		All,
 		CustName,
-		//Relation,
-		//ContactType,
 		Contact
 	}
 

@@ -18,13 +18,7 @@ builder.Services.AddRazorPages();
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 builder.Services.AddSession();
-//builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme).AddCookie(option =>
-//{
-//    option.LoginPath = "/Account/Login";
-//    option.AccessDeniedPath = "/Account/AccessDenied";
 
-//}
-//    );
 builder.Services.AddScoped<ICustomerService, CustomerService>();
 builder.Services.AddScoped<IContactService, ContactService>();
 builder.Services.AddScoped<IActivityLogger, ActivityLogService>();
@@ -53,7 +47,7 @@ else
     var roleManager = scope.ServiceProvider.GetRequiredService<RoleManager<IdentityRole>>();
     if (!await roleManager.RoleExistsAsync(Roles.Admin))
     {
-        //await roleManager.CreateAsync(new IdentityRole(Roles.Admin));
+        await roleManager.CreateAsync(new IdentityRole(Roles.Admin));
     }
     if (!await roleManager.RoleExistsAsync(Roles.Support))
     {
@@ -77,7 +71,6 @@ app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}");
 
-//app.MapDefaultControllerRoute();
 
 app.MapRazorPages();
 

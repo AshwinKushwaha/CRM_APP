@@ -15,7 +15,7 @@ public class ApplicationUserIdentityContext : IdentityDbContext<ApplicationUser>
     {
     }
 
-    public DbSet<Customer> Customers { get; set; }
+    public virtual DbSet<Customer> Customers { get; set; }
     public DbSet<CustomerContact> CustomerContacts { get; set; }
     public DbSet<ActivityLog> ActivityLogs { get; set; }
     public DbSet<Note> Notes { get; set; }
