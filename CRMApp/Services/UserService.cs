@@ -1,6 +1,5 @@
 ﻿using CRMApp.Areas.Identity.Data;
 using CRMApp.ViewModels;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 
 namespace CRMApp.Services

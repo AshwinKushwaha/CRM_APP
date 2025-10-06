@@ -1,12 +1,8 @@
-﻿using CRMApp.Areas.Identity.Data;
-using CRMApp.Models;
+﻿using CRMApp.Models;
 using CRMApp.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using System.Runtime.CompilerServices;
 using CRMApp.ViewModels;
-using CRMApp.Migrations;
 
 namespace CRMApp.Controllers
 {
@@ -16,7 +12,6 @@ namespace CRMApp.Controllers
 		private readonly IContactService _contactService;
 		private readonly INoteService _noteService;
 
-		//private readonly ApplicationUserIdentityContext context;
 
 
 		public CustomerController(ICustomerService customerService,IContactService contactService, INoteService noteService)
@@ -24,7 +19,6 @@ namespace CRMApp.Controllers
 			_customerService = customerService;
 			_contactService = contactService;
 			_noteService = noteService;
-			//this.context = context;
 		}
 
         [Authorize]
@@ -51,16 +45,10 @@ namespace CRMApp.Controllers
 			return View(searchViewModel);
         }
 
-		//[HttpGet("{id?}")]
+		
 		[Authorize(Roles = "admin, salesrep")]
         public IActionResult Create()
         {
-            //Customer cust = new Customer();
-            //if (id != null)
-            //{
-            //    cust = context.Customers.First(p => p.Id == id);
-            //}
-
             return View();
         }
 

@@ -41,10 +41,7 @@
 		</dd>
 	</dl>
 </div>
-@* <div>
-    <a asp-action="Edit" asp-route-id="@Model?.Customer.Id" class="btn btn-primary">Edit</a>
-    @* <a asp-action="Index">Back to List</a>
-</div> *@
+
 <h1 class="text-center">Contact Details</h1>
 <hr />
 <div class="card">
@@ -73,7 +70,7 @@
 						<tr>
 
 							<th>
-								@Html.DisplayNameFor(model => model.CustomerContact.CustName)
+								@Html.DisplayNameFor(model => model.CustomerContact.ContactName)
 							</th>
 							<th>
 								@Html.DisplayNameFor(model => model.CustomerContact.Relation)
@@ -92,7 +89,7 @@
 						{
 							<tr>
 								<td>
-									@Html.DisplayFor(modelItem => item.CustName)
+									@Html.DisplayFor(modelItem => item.ContactName)
 								</td>
 								<td>
 									@Html.DisplayFor(modelItem => item.Relation)
@@ -123,14 +120,6 @@
 											</form>
 										}
 									</div>
-
-									@*
-
-						<a asp-action="Details" asp-route-id="@item.Id" class="btn btn-outline-primary">Details</a> *@
-									@* @if (User.IsInRole("admin"))
-						{
-
-						} *@
 
 								</td>
 							</tr>
@@ -259,7 +248,7 @@
 								Id = selectedContact.Id,
 								CustomerId = selectedContact.CustomerId,
 								Contact = selectedContact.Contact,
-								CustName = selectedContact.CustName,
+								ContactName = selectedContact.ContactName,
 								ContactType = selectedContact.ContactType,
 								Relation = selectedContact.Relation
 							}
@@ -295,7 +284,7 @@
 						<a href="" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></a>
 					</div>
 					<div class="modal-body">
-						Are you sure you want to delete <strong>@deleteContact.CustName</strong>?
+						Are you sure you want to delete <strong>@deleteContact.ContactName</strong>?
 					</div>
 					<div class="modal-footer">
 						<a href="" class="btn btn-secondary">Cancel</a>

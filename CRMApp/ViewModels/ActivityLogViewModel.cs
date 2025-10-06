@@ -1,7 +1,5 @@
-﻿using CRMApp.Areas.Identity.Data;
-using CRMApp.Models;
+﻿using CRMApp.Models;
 using CRMApp.Services;
-using Microsoft.AspNetCore.Identity;
 
 namespace CRMApp.ViewModels
 {
@@ -18,18 +16,7 @@ namespace CRMApp.ViewModels
 		}
         public List<ActivityLog> activityLogs {  get; set; }
 
-		//public string CurrentUsername
-		//{
-		//	get
-		//	{
-		//		return _userName;
-		//	}
-
-		//	set
-		//	{
-		//		_userName = _contactService.GetCurrentUserAsync().Result.UserName;
-		//	}
-		//}
+		
 
 		public string UserName { get; set; }
 

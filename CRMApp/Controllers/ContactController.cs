@@ -1,12 +1,7 @@
 ﻿using CRMApp.Models;
 using CRMApp.Services;
 using CRMApp.ViewModels;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Localization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
-using Microsoft.CodeAnalysis.CSharp;
-using Microsoft.EntityFrameworkCore;
 
 namespace CRMApp.Controllers
 {
@@ -24,12 +19,12 @@ namespace CRMApp.Controllers
         {
             if (User.IsInRole("admin"))
             {
-				var contacts = _contactService.GetAllContacts();
+				List<CustomerContact> contacts = _contactService.GetAllContacts();
                 var viewModel = new ContactViewModel(_customerService)
                 {
                     Contacts = contacts
                 };
-				return View(viewModel);
+                return View(viewModel);
 			}
             return RedirectToAction("Index", "Dashboard");
         }

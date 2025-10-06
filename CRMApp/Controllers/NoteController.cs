@@ -39,10 +39,6 @@ namespace CRMApp.Controllers
 			return RedirectToAction("Details", "Customer", new { Id = deletedNote.CustomerId });
 		}
 
-		//[HttpPost]
-		//public IActionResult SearchNote(NoteFilter filter, string input)
-		//{
-		//	var result = 
-		//}
+		
 	}
 }

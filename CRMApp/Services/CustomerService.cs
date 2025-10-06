@@ -1,7 +1,6 @@
 ﻿using CRMApp.Areas.Identity.Data;
 using CRMApp.Models;
 using CRMApp.ViewModels;
-using Microsoft.AspNetCore.Mvc;
 
 namespace CRMApp.Services
 {
@@ -83,8 +82,6 @@ namespace CRMApp.Services
 		{
 			switch (filter)
 			{
-				
-
 				case Filter.Name:
 					return context.Customers.Where(c => (!string.IsNullOrEmpty(input)) && (c.Name.Contains(input))).ToList();
 

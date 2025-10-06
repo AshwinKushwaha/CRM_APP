@@ -16,8 +16,7 @@
 <div class="d-flex justify-content-center">
 	<form asp-action="Index" style="width: 100%;" method="post">
 		<div class="d-flex gap-1">
-			@* <select asp-items="Html.GetEnumSelectList<CRMApp.Controllers.Filter>()" class="form-control text-start" style="width:5%;">
-			</select> *@
+			
 			<select asp-for="filter" asp-items="Html.GetEnumSelectList<CRMApp.ViewModels.Filter>()" class="form-control" style="width: 8%;"></select>
 			<input class="form-control" asp-for="Input" placeholder="Search bar" />
 			<button type="submit" class="btn btn-outline-primary">Search</button>

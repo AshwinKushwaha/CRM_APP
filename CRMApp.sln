@@ -5,6 +5,8 @@ VisualStudioVersion = 17.10.34916.146
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CRMApp", "CRMApp\CRMApp.csproj", "{2FA568DB-52D8-4594-A820-B043FE2F681C}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CRMApp.Tests", "CRMApp.Tests\CRMApp.Tests.csproj", "{334DEA41-3C81-417A-8DB8-D841E2D0E3AF}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +17,10 @@ Global
 		{2FA568DB-52D8-4594-A820-B043FE2F681C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2FA568DB-52D8-4594-A820-B043FE2F681C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{2FA568DB-52D8-4594-A820-B043FE2F681C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{334DEA41-3C81-417A-8DB8-D841E2D0E3AF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{334DEA41-3C81-417A-8DB8-D841E2D0E3AF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{334DEA41-3C81-417A-8DB8-D841E2D0E3AF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{334DEA41-3C81-417A-8DB8-D841E2D0E3AF}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
