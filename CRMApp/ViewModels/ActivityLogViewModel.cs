@@ -14,7 +14,7 @@ namespace CRMApp.ViewModels
 			
 			_contactService = contactService;
 		}
-        public List<ActivityLog> activityLogs {  get; set; }
+        public List<ActivityLog> activityLogs {  get; set; } = new List<ActivityLog>();
 
 
 

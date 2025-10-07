@@ -29,6 +29,17 @@ namespace CRMApp.Controllers
             return RedirectToAction("Index", "Dashboard");
         }
 
+        [HttpPost]
+        public IActionResult Index(ContactViewModel contactViewModel)
+        {
+            var contacts = _contactService.GetContacts(contactViewModel.ContactFilter, contactViewModel.ContactInput,null);
+            var viewModel = new ContactViewModel(_customerService)
+            {
+                Contacts = contacts
+            };
+            return View(viewModel);
+        }
+
 
         [HttpPost]
         public  IActionResult AddContact(CustomerViewModel viewModel)

@@ -8,7 +8,7 @@ namespace CRMApp.Services
 	public interface IContactService
 	{
 		List<CustomerContact> GetContacts(int id);
-		List<CustomerContact> GetContacts(ContactFilter contactFilter,string input,int id);
+		List<CustomerContact> GetContacts(ContactFilter contactFilter,string input,int? id);
 		List<CustomerContact> GetAllContacts();
 		CustomerContact GetContact(int id);
 		bool CreateContact(CustomerContact contact);
@@ -102,25 +102,45 @@ namespace CRMApp.Services
 			return context.CustomerContacts.ToList();
 		}
 
-		public List<CustomerContact> GetContacts(ContactFilter contactFilter, string input, int customerId)
+		public List<CustomerContact> GetContacts(ContactFilter contactFilter, string input, int? customerId)
 		{
-			switch (contactFilter)
+			if (customerId != null)
 			{
-				case ContactFilter.Contact:
-					return context.CustomerContacts.Where(c => (!string.IsNullOrEmpty(input)) && (c.CustomerId == customerId) && (c.Contact.Contains(input))).ToList();
-				case ContactFilter.CustName:
-					return context.CustomerContacts.Where(c => (!string.IsNullOrEmpty(input)) && (c.CustomerId == customerId) && (c.ContactName.Contains(input))).ToList();
-				case ContactFilter.All:
-				default:
-					return context.CustomerContacts.Where(c => (!string.IsNullOrEmpty(input)) && 
-					(c.CustomerId == customerId) && 
-					
-					(c.ContactName.Contains(input)) ||
-					(c.Contact.Contains(input)) 
-					
-					).ToList();
+				switch (contactFilter)
+				{
+					case ContactFilter.Contact:
+						return context.CustomerContacts.Where(c => (!string.IsNullOrEmpty(input)) && (c.CustomerId == customerId) && (c.Contact.Contains(input))).ToList();
+					case ContactFilter.CustName:
+						return context.CustomerContacts.Where(c => (!string.IsNullOrEmpty(input)) && (c.CustomerId == customerId) && (c.ContactName.Contains(input))).ToList();
+					case ContactFilter.All:
+					default:
+						return context.CustomerContacts.Where(c => (!string.IsNullOrEmpty(input)) &&
+						(c.CustomerId == customerId) &&
 
+						(c.ContactName.Contains(input)) ||
+						(c.Contact.Contains(input))
+
+						).ToList();
+
+				}
 			}
+			else
+			{
+                switch (contactFilter)
+                {
+                    case ContactFilter.Contact:
+                        return context.CustomerContacts.Where(c => (!string.IsNullOrEmpty(input)) &&  (c.Contact.Contains(input))).ToList();
+                    case ContactFilter.CustName:
+                        return context.CustomerContacts.Where(c => (!string.IsNullOrEmpty(input)) &&  (c.ContactName.Contains(input))).ToList();
+                    case ContactFilter.All:
+                    default:
+                        return context.CustomerContacts.Where(c => (!string.IsNullOrEmpty(input)) &&
+                        (c.ContactName.Contains(input)) ||
+                        (c.Contact.Contains(input))
+                        ).ToList();
+
+                }
+            }
 		}
 	}
 }
