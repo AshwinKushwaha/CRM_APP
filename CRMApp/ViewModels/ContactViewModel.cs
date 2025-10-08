@@ -22,6 +22,7 @@ namespace CRMApp.ViewModels
 
 		[Required(ErrorMessage = "Search Input should not be Empty...")]
 		public string? ContactInput { get; set; }
+       
 
 		public string CustomerName(int customerId)
 		{

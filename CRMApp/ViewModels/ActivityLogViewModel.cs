@@ -14,8 +14,7 @@ namespace CRMApp.ViewModels
 			
 			_contactService = contactService;
 		}
-        public List<ActivityLog> activityLogs {  get; set; } = new List<ActivityLog>();
-
+        public List<ActivityLog> activityLogs {  get; set; }
 
 
 		public string FormatDate(DateTime date)

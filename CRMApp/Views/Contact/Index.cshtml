@@ -10,6 +10,7 @@
     <hr />
     @* <p>
     <a asp-action="Create" class="btn btn-success">Create New</a>
+
     </p> *@
     <div >
         <form asp-action="Index" asp-controller="Contact" method="post">
@@ -19,10 +20,8 @@
                 <input asp-for="ContactInput" placeholder="Search Bar" class="form-control" required/>
                 <button type="submit" class="btn btn-outline-primary">Search</button>
             </div>
-            
-        </form>
-</div>
-
+          </form>
+  </div>
     
         <div class="d-flex justify-content-center mt-3">
             <table class="table table-bordered table-striped table-dark  table-hover table-responsive-sm table-responsive-md" >

@@ -29,6 +29,7 @@ namespace CRMApp.Controllers
             {
                 var allActivityLogs = _activityLogger.GetAllActivityLogs();
                 var adminActivityViewModel = new ActivityLogViewModel(_contactService);
+				var allActivityLogs = _activityLogger.GetAllActivityLogs();
 
 				if (allActivityLogs == null)
                 {
@@ -50,6 +51,7 @@ namespace CRMApp.Controllers
                     userActivityViewModel.activityLogs = new List<Models.ActivityLog>();
                 }
                 else
+                var userActivityViewModel = new ActivityLogViewModel(_contactService)
                 {
                     userActivityViewModel.activityLogs = userActivityLogs;
                 }
@@ -59,6 +61,7 @@ namespace CRMApp.Controllers
             var activityLogs = _activityLogger.GetActivityLogsByCurrentUser();
 			var activityViewModel = new ActivityLogViewModel(_contactService);
 			if (activityLogs == null)
+            var activityViewModel = new ActivityLogViewModel(_contactService)
             {
                 activityViewModel.activityLogs= new List<Models.ActivityLog>();
             }
