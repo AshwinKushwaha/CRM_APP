@@ -14,45 +14,45 @@ namespace CRMApp.Tests.UnitTests
     [TestClass]
     public class CustomerServiceUnitTest
     {
-        //[TestMethod]
-        //public void GetCustomers_ReturnAllCustomers()
-        //{
+        [TestMethod]
+        public void GetCustomers_ReturnAllCustomersmockSetApproach()
+        {
 
-        //    var options = new DbContextOptionsBuilder<ApplicationUserIdentityContext>().
-        //        UseInMemoryDatabase(databaseName: Guid.NewGuid().ToString())
-        //        .Options;
+            var options = new DbContextOptionsBuilder<ApplicationUserIdentityContext>().
+                UseInMemoryDatabase(databaseName: Guid.NewGuid().ToString())
+                .Options;
 
-        //    var customerData = new List<Customer>
-        //{
-        //    new Customer { Id = 1, Name = "Ashwin" },
-        //    new Customer { Id = 2, Name = "Tarun" }
-        //}.AsQueryable();
-
-
-        //    var mockSet = new Mock<DbSet<Customer>>();
-        //    mockSet.As<IQueryable<Customer>>().Setup(m => m.Provider).Returns(customerData.Provider);
-        //    mockSet.As<IQueryable<Customer>>().Setup(m => m.Expression).Returns(customerData.Expression);
-        //    mockSet.As<IQueryable<Customer>>().Setup(m => m.ElementType).Returns(customerData.ElementType);
-        //    mockSet.As<IQueryable<Customer>>().Setup(m => m.GetEnumerator()).Returns(customerData.GetEnumerator());
+            var customerData = new List<Customer>
+        {
+            new Customer { Id = 1, Name = "Ashwin" },
+            new Customer { Id = 2, Name = "Tarun" }
+        }.AsQueryable();
 
 
+            var mockSet = new Mock<DbSet<Customer>>();
+            mockSet.As<IQueryable<Customer>>().Setup(m => m.Provider).Returns(customerData.Provider);
+            mockSet.As<IQueryable<Customer>>().Setup(m => m.Expression).Returns(customerData.Expression);
+            mockSet.As<IQueryable<Customer>>().Setup(m => m.ElementType).Returns(customerData.ElementType);
+            mockSet.As<IQueryable<Customer>>().Setup(m => m.GetEnumerator()).Returns(customerData.GetEnumerator());
 
-        //    var mockContext = new Mock<ApplicationUserIdentityContext>(options);
-        //    mockContext.Setup(c => c.Customers).Returns(mockSet.Object);
-
-        //    Mock<IActivityLogger> logger = new Mock<IActivityLogger>();
-        //    Mock<IContactService> contactService = new Mock<IContactService>();
 
 
-        //    var service = new CustomerService(mockContext.Object,logger.Object,contactService.Object);
+            var mockContext = new Mock<ApplicationUserIdentityContext>(options);
+            mockContext.Setup(c => c.Customers).Returns(mockSet.Object);
 
-        //    var result = service.GetCustomers();
+            Mock<IActivityLogger> logger = new Mock<IActivityLogger>();
+            Mock<IContactService> contactService = new Mock<IContactService>();
 
-        //    Assert.AreEqual(2, result.Count);
-        //    Assert.AreEqual("Ashwin", result[0].Name);
-        //    Assert.AreEqual("Tarun", result[1].Name);
 
-        //}
+            var service = new CustomerService(mockContext.Object, logger.Object, contactService.Object);
+
+            var result = service.GetCustomers();
+
+            Assert.AreEqual(2, result.Count);
+            Assert.AreEqual("Ashwin", result[0].Name);
+            Assert.AreEqual("Tarun", result[1].Name);
+
+        }
         
 
         [TestMethod]

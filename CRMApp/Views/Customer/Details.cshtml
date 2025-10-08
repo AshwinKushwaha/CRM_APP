@@ -64,69 +64,75 @@
 		
 	</div>
 	<div class="d-flex justify-content-center table-responsive-sm table-responsive-md">
-		
-				<table class="table table-hover table-bordered table-striped mt-4 " style="width:98%;">
-					<thead>
+		@if(Model.Contacts.Count == 0)
+		{
+			<h4 class="text-center mb-3">No Contact Found</h4>
+		}else
+			{
+			<table class="table table-hover table-bordered table-striped mt-4 " style="width:98%;">
+				<thead>
+					<tr>
+
+
+						<th>
+							@Html.DisplayNameFor(model => model.CustomerContact.ContactName)
+						</th>
+						<th>
+							@Html.DisplayNameFor(model => model.CustomerContact.Relation)
+						</th>
+						<th>
+							@Html.DisplayNameFor(model => model.CustomerContact.ContactType)
+						</th>
+						<th>
+							@Html.DisplayNameFor(model => model.CustomerContact.Contact)
+						</th>
+						<th></th>
+					</tr>
+				</thead>
+				<tbody>
+					@foreach (var item in Model.Contacts)
+					{
 						<tr>
+							<td>
+								@Html.DisplayFor(modelItem => item.ContactName)
+							</td>
+							<td>
+								@Html.DisplayFor(modelItem => item.Relation)
+							</td>
+							<td>
+								@Html.DisplayFor(modelItem => item.ContactType)
+							</td>
+							<td>
+								@Html.DisplayFor(modelItem => item.Contact)
+							</td>
 
-							<th>
-								@Html.DisplayNameFor(model => model.CustomerContact.ContactName)
-							</th>
-							<th>
-								@Html.DisplayNameFor(model => model.CustomerContact.Relation)
-							</th>
-							<th>
-								@Html.DisplayNameFor(model => model.CustomerContact.ContactType)
-							</th>
-							<th>
-								@Html.DisplayNameFor(model => model.CustomerContact.Contact)
-							</th>
-							<th></th>
+							<td>
+								<div class="d-flex justify-content-center gap-1">
+									@if (User.IsInRole("admin") || User.IsInRole("salesrep"))
+									{
+										<form method="post">
+											<input type="hidden" name="selectedContactId" value=@item.Id />
+											<button type="submit" data-bs-toggle="modal" data-bs-target="#EditModal" class="btn btn-outline-success">Edit</button>
+										</form>
+
+									}
+
+									@if (User.IsInRole("admin"))
+									{
+										<form method="post">
+											<input type="hidden" name="deleteContactId" value=@item.Id />
+											<button type="submit" data-bs-toggle="modal" data-bs-target="#confirmDeleteModal" class="btn btn-outline-danger">Delete</button>
+										</form>
+									}
+								</div>
+
+							</td>
 						</tr>
-					</thead>
-					<tbody>
-						@foreach (var item in Model.Contacts)
-						{
-							<tr>
-								<td>
-									@Html.DisplayFor(modelItem => item.ContactName)
-								</td>
-								<td>
-									@Html.DisplayFor(modelItem => item.Relation)
-								</td>
-								<td>
-									@Html.DisplayFor(modelItem => item.ContactType)
-								</td>
-								<td>
-									@Html.DisplayFor(modelItem => item.Contact)
-								</td>
+					}
+				</tbody>
+			</table>
+			}
 
-								<td>
-									<div class="d-flex justify-content-center gap-1">
-										@if (User.IsInRole("admin") || User.IsInRole("salesrep"))
-										{
-											<form method="post">
-												<input type="hidden" name="selectedContactId" value=@item.Id />
-												<button type="submit" data-bs-toggle="modal" data-bs-target="#EditModal" class="btn btn-outline-success">Edit</button>
-											</form>
-
-										}
-
-										@if (User.IsInRole("admin"))
-										{
-											<form method="post">
-												<input type="hidden" name="deleteContactId" value=@item.Id />
-												<button type="submit" data-bs-toggle="modal" data-bs-target="#confirmDeleteModal" class="btn btn-outline-danger">Delete</button>
-											</form>
-										}
-									</div>
-
-								</td>
-							</tr>
-						}
-					</tbody>
-				</table>
-			
 			</div>
 </div>
 <br />
@@ -153,46 +159,54 @@
 
 	</div>
 	<div class="d-flex justify-content-center table-responsive-sm table-responsive-md">
-		
-		<table class="table table-striped table-hover table-bordered mt-3 " style="width:98%;">
-			<thead>
-				<tr>
-					<th>
-						@Html.DisplayNameFor(model => model.Note.Description)
-					</th>
-					<th>
-						@Html.DisplayNameFor(model => model.Note.CreatedAt)
-					</th>
-					
-					<th></th>
-				</tr>
-			</thead>
-			<tbody>
-				@foreach (var item in Model.Notes)
-				{
+		@if(Model.Notes.Count == 0)
+		{
+			<h4 class="text-center mb-3">No Note Found</h4>
+		}
+		else
+		{
+			<table class="table table-striped table-hover table-bordered mt-3 " style="width:98%;">
+				<thead>
 					<tr>
-						<td>
-							@Html.DisplayFor(modelItem => item.Description)
-						</td>
-						<td>
-							@Html.DisplayFor(modelItem => item.CreatedAt)
-						</td>
-					
-						<td class="d-flex justify-content-center gap-1">
-							<form method="post">
-								<input type="hidden" name="selectedNoteId" value=@item.Id />
-								<button type="submit" data-bs-toggle="modal" data-bs-target="#EditNoteModal" class="btn btn-outline-success">Edit</button>
-							</form>
+						<th>
+							@Html.DisplayNameFor(model => model.Note.Description)
+						</th>
+						<th>
+							@Html.DisplayNameFor(model => model.Note.CreatedAt)
+						</th>
 
-							<form method="post">
-								<input type="hidden" name="deleteNoteId" value=@item.Id />
-								<button type="submit" data-bs-toggle="modal" data-bs-target="#confirmNoteDeleteModal" class="btn btn-outline-danger">Delete</button>
-							</form>
-						</td>
+						<th></th>
 					</tr>
-				}
-			</tbody>
-		</table>
+				</thead>
+				<tbody>
+					@foreach (var item in Model.Notes)
+					{
+						<tr>
+							<td>
+								@Html.DisplayFor(modelItem => item.Description)
+							</td>
+							<td>
+								@Html.DisplayFor(modelItem => item.CreatedAt)
+							</td>
+
+							<td class="d-flex justify-content-center gap-1">
+								<form method="post">
+									<input type="hidden" name="selectedNoteId" value=@item.Id />
+									<button type="submit" data-bs-toggle="modal" data-bs-target="#EditNoteModal" class="btn btn-outline-success">Edit</button>
+								</form>
+
+								<form method="post">
+									<input type="hidden" name="deleteNoteId" value=@item.Id />
+									<button type="submit" data-bs-toggle="modal" data-bs-target="#confirmNoteDeleteModal" class="btn btn-outline-danger">Delete</button>
+								</form>
+							</td>
+						</tr>
+					}
+				</tbody>
+			</table>
+		}
+
+		
 
 	</div>
 	</div>

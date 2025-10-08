@@ -27,28 +27,49 @@ namespace CRMApp.Controllers
             
             if (User.IsInRole("admin"))
             {
+                var allActivityLogs = _activityLogger.GetAllActivityLogs();
+                var adminActivityViewModel = new ActivityLogViewModel(_contactService);
 				var allActivityLogs = _activityLogger.GetAllActivityLogs();
 
-                var adminActivityViewModel = new ActivityLogViewModel(_contactService)
-				{
-					activityLogs = allActivityLogs
-				};
+				if (allActivityLogs == null)
+                {
+                    adminActivityViewModel.activityLogs = new List<Models.ActivityLog>();
+                }
+                else
+                {
+                    adminActivityViewModel.activityLogs = allActivityLogs;
+                }
 				return View("AdminDashboard", adminActivityViewModel);
             }
             if (User.IsInRole("salesrep"))
             {
                 var userActivityLogs = _activityLogger.GetActivityLogsByCurrentUser();
+                var userActivityViewModel = new ActivityLogViewModel(_contactService);
+
+				if (userActivityLogs == null)
+                {
+                    userActivityViewModel.activityLogs = new List<Models.ActivityLog>();
+                }
+                else
                 var userActivityViewModel = new ActivityLogViewModel(_contactService)
                 {
-                    activityLogs = userActivityLogs
-				};
+                    userActivityViewModel.activityLogs = userActivityLogs;
+                }
+                
                 return View("SalesDashboard", userActivityViewModel);
             }
             var activityLogs = _activityLogger.GetActivityLogsByCurrentUser();
+			var activityViewModel = new ActivityLogViewModel(_contactService);
+			if (activityLogs == null)
             var activityViewModel = new ActivityLogViewModel(_contactService)
             {
-                activityLogs = activityLogs
-            };
+                activityViewModel.activityLogs= new List<Models.ActivityLog>();
+            }
+            else
+            {
+                activityViewModel.activityLogs = activityLogs;
+            }
+            
             return View("SupportDashboard",activityViewModel);
         }
     }

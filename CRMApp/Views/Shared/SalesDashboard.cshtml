@@ -47,7 +47,7 @@
 						<h3 class="text-center mt-2">
 							Activity Feed
 						</h3>
-						@if (Model.activityLogs.Count == 0)
+						@if (Model.activityLogs == null || Model.activityLogs.Count == 0)
 						{
 							<p class="text-center fw-light mt-5">No Activity To Show</p>
 						}
