@@ -21,6 +21,7 @@ namespace CRMApp.Models
 		public Relation Relation { get; set; } 
 
 		[Required]
+		[DisplayName("Contact Type")]
 		public Type ContactType { get; set; }
 
 		[Required(ErrorMessage = "Contact is Required")]

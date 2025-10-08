@@ -159,7 +159,7 @@ namespace CRMApp.Controllers
             var cnt = new CustomerContact();
             ViewBag.CurrentUser = _contactService.GetCurrentUserAsync().Result.NormalizedUserName;
 
-            var customerViewModel = new CustomerViewModel()
+            var customerViewModel = new CustomerViewModel(_customerService)
             {
                 Customer = cust,
                 CustomerContact = cnt,

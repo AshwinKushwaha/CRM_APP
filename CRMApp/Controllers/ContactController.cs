@@ -42,7 +42,7 @@ namespace CRMApp.Controllers
 
 
         [HttpPost]
-        public  IActionResult AddContact(CustomerViewModel viewModel)
+        public  IActionResult SaveContact(CustomerViewModel viewModel)
         {
             if (viewModel.CustomerContact != null)
             {

@@ -24,6 +24,7 @@ using CRMApp.Services;
 
 namespace CRMApp.Areas.Identity.Pages.Account
 {
+    [Authorize(Roles = "admin")]
     public class RegisterModel : PageModel
     {
         private readonly SignInManager<ApplicationUser> _signInManager;

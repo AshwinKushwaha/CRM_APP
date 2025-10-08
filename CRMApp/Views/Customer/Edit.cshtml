@@ -5,12 +5,13 @@
     Layout = "~/Views/Shared/_AdminLayout.cshtml";
 }
 
-<h1>Edit</h1>
+<div style="position:relative; top:-8rem;">
+<h1 class="text-center">Edit Customer</h1>
 
-<h4>Customer</h4>
+
 <hr />
-<div class="row">
-    <div class="col-md-4">
+<div class="row d-flex justify-content-center">
+    <div class="col-md-4 card p-3">
         <form asp-action="Edit" asp-controller="Customer" method="post">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <input type="hidden" asp-for="Id" value="@Model.Id"/>
@@ -31,14 +32,19 @@
             </div>
             <input type="hidden" asp-for="CreatedAt" value="@Model.CreatedAt" />
             
-            <div class="form-group">
-                <input type="submit" value="Save" class="btn btn-primary" />
+            <div class="d-flex justify-content-around">
+                    <div class="form-group">
+                        <input type="submit" value="Save" class="btn btn-success" />
+                    </div>
+                    <div>
+                        <a asp-action="Index" class="btn btn-primary">Back to List</a>
+                    </div>
             </div>
         </form>
+            
     </div>
 </div>
 
-<div>
-    <a asp-action="Index">Back to List</a>
-</div>
 
+
+</div>

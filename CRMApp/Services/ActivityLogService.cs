@@ -40,7 +40,7 @@ namespace CRMApp.Services
 				ModuleId = moduleId,
 				UserId = userId,
 				Action = action,
-				TimeStamp = DateTime.UtcNow,
+				TimeStamp = DateTime.Now,
 				IsDeleted = isDeleted,
 				Username = _userManager.FindByIdAsync(userId).Result.UserName
 			};

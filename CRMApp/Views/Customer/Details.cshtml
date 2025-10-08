@@ -216,18 +216,23 @@
 
 @{
 	bool isAddNew = false;
+	string customerName =  Model.Customer.Name; 
 	if (Context.Request.HasFormContentType)
 	{
 		isAddNew = Context.Request.Form["addNewContact"] == "true";
+		
 	}
 }
 
 @if (isAddNew)
 {
-	<div class="modal fade show d-block" id="createModal" tabindex="-1" aria-hidden="true" aria-modal="true" role="dialog">
+	<div class="modal fade show d-block" id="createModal" tabindex="-1" aria-hidden="true" aria-modal="true" role="dialog" style="z-index:100000;">
 		<div class="modal-dialog">
 			<div class="modal-content">
-				<partial name="_ContactForm" model="new CRMApp.ViewModels.CustomerViewModel{CustomerContact = new CustomerContact{Id =0 , CustomerId = Model.Customer.Id}}" />
+				<partial name="_ContactForm" model="new CRMApp.ViewModels.CustomerViewModel{
+CustomerContact = new CustomerContact{Id =0 , CustomerId = Model.Customer.Id},
+Customer = new Customer{Name = customerName}
+}" />
 			</div>
 		</div>
 	</div>
@@ -242,20 +247,22 @@
 @{
 	string selectedId = null;
 	CRMApp.Models.CustomerContact selectedContact = null;
+	
 
 	if (Context.Request.HasFormContentType)
 	{
 		selectedId = Context.Request.Form["selectedContactId"];
 		selectedContact = Model.Contacts.FirstOrDefault(c => c.Id.ToString() == selectedId);
+		
 	}
 }
 	
 @if(selectedContact != null)
 {
-	<div class="modal fade show d-block" id="EditModal" tabindex="-1" aria-hidden="true"  aria-modal="true" role="dialog">
+	<div class="modal fade show d-block" id="EditModal" tabindex="-1" aria-hidden="true" aria-modal="true" role="dialog" style="z-index:100000;">
 		<div class="modal-dialog">
 			<div class="modal-content">
-				<partial name="_ContactForm" model="new CRMApp.ViewModels.CustomerViewModel{
+				<partial name="_ContactForm" model="new CRMApp.ViewModels.CustomerViewModel(){
 							CustomerContact = new CustomerContact {
 								Id = selectedContact.Id,
 								CustomerId = selectedContact.CustomerId,
@@ -263,7 +270,8 @@
 								ContactName = selectedContact.ContactName,
 								ContactType = selectedContact.ContactType,
 								Relation = selectedContact.Relation
-							}
+							},
+
 				}" />
 			</div>
 		</div>
@@ -286,7 +294,7 @@
 }
 @if (deleteContact != null)
 {
-	<div class="modal fade show d-block" id="confirmDeleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true" aria-modal="true" role="dialog">
+	<div class="modal fade show d-block" id="confirmDeleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true" aria-modal="true" role="dialog" style="z-index:100000;">
 		<div class="modal-dialog">
 			<div class="modal-content">
 				<form asp-action="DeleteContact" asp-controller="Contact" method="post">
@@ -322,7 +330,7 @@
 
 @if (isAddNewNote)
 {
-	<div class="modal fade show d-block" id="createNoteModal" tabindex="-1" aria-hidden="true" aria-modal="true" role="dialog">
+	<div class="modal fade show d-block" id="createNoteModal" tabindex="-1" aria-hidden="true" aria-modal="true" role="dialog" style="z-index:100000;">
 		<div class="modal-dialog">
 			<div class="modal-content">
 				<partial name="_NoteForm" model="new CRMApp.ViewModels.CustomerViewModel{Note = new Note{Id = 0, CustomerId = Model.Customer.Id }, CurrentUsername = currentUser}" />
@@ -346,7 +354,7 @@
 
 @if (selectedNote != null)
 {
-	<div class="modal fade show d-block" id="EditNoteModal" tabindex="-1" aria-hidden="true" aria-modal="true" role="dialog">
+	<div class="modal fade show d-block" id="EditNoteModal" tabindex="-1" aria-hidden="true" aria-modal="true" role="dialog" style="z-index:100000;">
 		<div class="modal-dialog">
 			<div class="modal-content">
 				<partial name="_NoteForm" model="new CRMApp.ViewModels.CustomerViewModel{
@@ -377,7 +385,7 @@ CurrentUsername = currentUser
 }
 @if (deleteNote != null)
 {
-	<div class="modal fade show d-block" id="confirmNoteDeleteModal" tabindex="-1" aria-labelledby="deleteNoteModalLabel" aria-hidden="true" aria-modal="true" role="dialog">
+	<div class="modal fade show d-block" id="confirmNoteDeleteModal" tabindex="-1" aria-labelledby="deleteNoteModalLabel" aria-hidden="true" aria-modal="true" role="dialog" style="z-index:100000;">
 		<div class="modal-dialog">
 			<div class="modal-content">
 				<form asp-action="DeleteNote" asp-controller="Note" method="post">
@@ -403,7 +411,13 @@ CurrentUsername = currentUser
 @section Scripts {
 
 	<script>
+		
 		$(document).ready(function () {
+			$("#contactTypeList").on('change',function(){
+				var contactTypeList = $("#contactTypeList option:selected").text();
+				$("#contactType").text(contactTypeList)
+			})
+
 			$("#btnSave").click(function (e) {
 
 				debugger;

@@ -4,6 +4,8 @@
 	ViewData["Title"] = "Index";
 	Layout = "~/Views/Shared/_AdminLayout.cshtml";
 }
+<div style="position: relative; top: -5rem;">
+
 
 <h2 class="text-center">Customer List</h2>
 @if (User.IsInRole("admin") || User.IsInRole("salesrep"))
@@ -35,7 +37,7 @@
 	}
 	else
 	{
-		<table class="table table-hover table-bordered table-striped table-dark">
+		<table class="table table-hover table-bordered table-striped" style="border-color:darkgray;">
 			<thead>
 				<tr>
 					<th>
@@ -94,6 +96,7 @@
 		</table>
 	}
 }
+</div>
 @foreach (var item in Model.Customers)
 {
 	<div class="modal fade" id="confirmDeleteModal-@item.Id" tabindex="-1" aria-labelledby="deleteModalLabel-@item.Id" aria-hidden="true">

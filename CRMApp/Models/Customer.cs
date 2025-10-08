@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc.ModelBinding;
+using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 
 namespace CRMApp.Models
@@ -20,11 +21,14 @@ namespace CRMApp.Models
         [Phone]
         public string Phone { get; set; }
 
-        
+        [DisplayName("Created on")]
+        [DisplayFormat(DataFormatString = "{0:dd MMMM, yyyy hh:mm tt}")]
         public DateTime CreatedAt { get; set; }
 
         [BindNever]
-        public DateTime? UpdatedAt { get; set; }
+		[DisplayName("Updated on")]
+		[DisplayFormat(DataFormatString = "{0:dd MMMM, yyyy hh:mm tt}")]
+		public DateTime? UpdatedAt { get; set; }
 
         [BindNever]
         public ICollection<CustomerContact>? Contacts { get; set; }

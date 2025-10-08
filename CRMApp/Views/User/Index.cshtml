@@ -17,7 +17,7 @@
 		</div>
 	</form>
 </div>
-<table class="table table-bordered table-striped table-dark table-hover">
+<table class="table table-bordered table-striped  table-hover" style="border-color:darkgray;">
 	<thead>
 		<tr>
 			<th>
@@ -54,7 +54,7 @@
 
 
 
-<div class="modal fade " id="confirmDeleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true" aria-modal="true" role="dialog">
+<div class="modal fade " id="confirmDeleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true" aria-modal="true" role="dialog" style="z-index:10000;">
 	<div class="modal-dialog">
 		<div class="modal-content">
 			<form asp-action="DeleteUser" asp-controller="User" method="post">

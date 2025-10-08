@@ -1,9 +1,18 @@
 ﻿using CRMApp.Models;
+using CRMApp.Services;
 
 namespace CRMApp.ViewModels
 {
     public class CustomerViewModel
     {
+		private readonly ICustomerService customerService;
+
+		public CustomerViewModel(){}
+
+        public CustomerViewModel(ICustomerService customerService)
+        {
+			this.customerService = customerService;
+		}
         public Customer Customer { get; set; }
         public Note Note { get; set; }
         public CustomerContact CustomerContact { get; set; }
@@ -35,8 +44,10 @@ namespace CRMApp.ViewModels
 	public enum ContactFilter
 	{
 		All,
-		CustName,
-		Contact
+		ContactName,
+		Contact,
+		Relation,
+		ContactType
 	}
 
 	public enum NoteFilter
