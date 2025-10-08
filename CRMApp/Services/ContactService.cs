@@ -110,9 +110,15 @@ namespace CRMApp.Services
 				{
 				case ContactFilter.Contact:
 					return context.CustomerContacts.Where(c => (!string.IsNullOrEmpty(input)) && (c.CustomerId == customerId) && (c.Contact.Contains(input))).ToList();
-				case ContactFilter.CustName:
+				case ContactFilter.ContactName:
 					return context.CustomerContacts.Where(c => (!string.IsNullOrEmpty(input)) && (c.CustomerId == customerId) && (c.ContactName.Contains(input))).ToList();
-				case ContactFilter.All:
+					case ContactFilter.Relation:
+						_ = Enum.TryParse(input, true, out Relation parsedInput);
+						return context.CustomerContacts.Where(c => (!string.IsNullOrEmpty(input)) && (c.CustomerId == customerId) && (c.Relation == parsedInput)).ToList();
+                    case ContactFilter.ContactType:
+                        _ = Enum.TryParse(input, true, out Models.Type parsedContactInput);
+                        return context.CustomerContacts.Where(c => (!string.IsNullOrEmpty(input)) && (c.CustomerId == customerId) && (c.ContactType == parsedContactInput)).ToList();
+                    case ContactFilter.All:
 				default:
 					return context.CustomerContacts.Where(c => (!string.IsNullOrEmpty(input)) && 
 					(c.CustomerId == customerId) && 
@@ -129,8 +135,14 @@ namespace CRMApp.Services
                 {
                     case ContactFilter.Contact:
                         return context.CustomerContacts.Where(c => (!string.IsNullOrEmpty(input)) &&  (c.Contact.Contains(input))).ToList();
-                    case ContactFilter.CustName:
+                    case ContactFilter.ContactName:
                         return context.CustomerContacts.Where(c => (!string.IsNullOrEmpty(input)) &&  (c.ContactName.Contains(input))).ToList();
+                    case ContactFilter.Relation:
+                        _ = Enum.TryParse(input, true, out Relation parsedInput);
+                        return context.CustomerContacts.Where(c => (!string.IsNullOrEmpty(input))  && (c.Relation == parsedInput)).ToList();
+                    case ContactFilter.ContactType:
+                        _ = Enum.TryParse(input, true, out Models.Type parsedContactInput);
+                        return context.CustomerContacts.Where(c => (!string.IsNullOrEmpty(input)) && (c.ContactType == parsedContactInput)).ToList();
                     case ContactFilter.All:
                     default:
                         return context.CustomerContacts.Where(c => (!string.IsNullOrEmpty(input)) &&
