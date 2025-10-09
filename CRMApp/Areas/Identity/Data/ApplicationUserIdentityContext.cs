@@ -19,6 +19,7 @@ public class ApplicationUserIdentityContext : IdentityDbContext<ApplicationUser>
     public DbSet<CustomerContact> CustomerContacts { get; set; }
     public DbSet<ActivityLog> ActivityLogs { get; set; }
     public DbSet<Note> Notes { get; set; }
+    public DbSet<ContactInquiry> ContactInquiries { get; set; }
 
 
     protected override void OnModelCreating(ModelBuilder builder)
@@ -35,6 +36,11 @@ public class ApplicationUserIdentityContext : IdentityDbContext<ApplicationUser>
 
         builder.Entity<ActivityLog>().ToTable("ActivityLogs");
         builder.Entity<Note>().ToTable("Notes");
+        builder.Entity<ContactInquiry>().ToTable("ContactInquiries");
+
+        builder.Entity<ContactInquiry>().
+            Property(e => e.isArchived)
+            .HasDefaultValue(false);
 
         // Customize the ASP.NET Identity model and override the defaults if needed.
         // For example, you can rename the ASP.NET Identity table names and more.

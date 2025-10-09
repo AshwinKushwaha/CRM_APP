@@ -1,0 +1,10 @@
+﻿@model CRMApp.Areas.Identity.Data.ApplicationUser;
+@{
+    ViewData["Title"] = "Greetings";
+}
+
+
+
+@if (Model != null){
+    <span>@Model.UserName</span>
+}

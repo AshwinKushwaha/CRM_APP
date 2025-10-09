@@ -17,7 +17,7 @@ namespace CRMApp.Controllers
         {
             if (User.IsInRole("admin"))
             {
-                return View("AdminDashboard");
+                return RedirectToAction("Index","Dashboard");
             }
             if (User.IsInRole("salesrep"))
             {

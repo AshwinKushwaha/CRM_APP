@@ -1,4 +1,4 @@
-﻿
+﻿@model CRMApp.Models.ContactInquiry;
 @{
     ViewData["Title"] = "Index";
     Layout = "_Layout";
@@ -43,18 +43,60 @@
 </section>
 <section id="contact" class="container py-5 card mt-3 shadow-sm ">
     <h2 class="text-center mb-4">Get in Touch</h2>
-    <form>
-        <div class="mb-3">
-            <input type="text" class="form-control" placeholder="Your Name" />
+    <form asp-action="SaveInquiry" asp-controller="ContactInquiry" id="contactForm" method="post">
+        <div asp-validation-summary="ModelOnly"></div>
+        <div class="mb-3 form-group">
+            <input asp-for="Name" class="form-control" placeholder="Your Name" />
+            <span asp-validation-for="Name" class="text-danger"></span>
         </div>
-        <div class="mb-3">
-            <input type="email" class="form-control" placeholder="Your Email" />
+        <div class="mb-3 form-group">
+            <input asp-for="Email" class="form-control" placeholder="Your Email" />
+            <span asp-validation-for="Email" class="text-danger"></span>
         </div>
-        <div class="mb-3">
-            <textarea class="form-control" rows="4" placeholder="Your Message"></textarea>
+        <div class="mb-3 form-group">
+            <textarea asp-for="Message" class="form-control" rows="4" placeholder="Your Message"></textarea>
+            <span asp-validation-for="Message" class="text-danger"></span>
         </div>
-        <button type="submit" class="btn btn-primary">Send Message</button>
+        <button type="submit" class="btn btn-primary" id="liveToastBtn">Send Message</button>
     </form>
 </section>
 
 
+<div class="position-fixed top-0 end-0 p-3" style="z-index: 1050">
+    <div id="messageToast" class="toast align-items-center text-bg-success border-0" role="alert" aria-live="assertive" aria-atomic="true">
+        <div class="d-flex">
+            <div class="toast-body">
+                Your message has been sent successfully!
+            </div>
+            <button type="button" class="btn-close btn-close me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+        </div>
+    </div>
+</div>
+
+
+@section Scripts{
+<script>
+
+        $(document).ready(function () {
+            $('#contactForm').on('submit', function (e) {
+                e.preventDefault(); 
+
+                $.ajax({
+                    type: 'POST',
+                    url: $(this).attr('action'),
+                    data: $(this).serialize(),
+                    success: function (response) {
+                        var toastEl = document.getElementById('messageToast');
+                        var toast = new bootstrap.Toast(toastEl);
+                        toast.show();
+                        $('#contactForm')[0].reset();
+                    },
+                    error: function () {
+                        alert('Something went wrong. Please try again.');
+                    }
+                });
+            });
+        });
+
+</script>
+}

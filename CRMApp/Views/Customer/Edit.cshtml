@@ -5,7 +5,7 @@
     Layout = "~/Views/Shared/_AdminLayout.cshtml";
 }
 
-<div style="position:relative; top:-8rem;">
+<div style="position:relative; top:-6rem;">
 <h1 class="text-center">Edit Customer</h1>
 
 
@@ -32,7 +32,7 @@
             </div>
             <input type="hidden" asp-for="CreatedAt" value="@Model.CreatedAt" />
             
-            <div class="d-flex justify-content-around">
+            <div class="d-flex justify-content-between">
                     <div class="form-group">
                         <input type="submit" value="Save" class="btn btn-success" />
                     </div>

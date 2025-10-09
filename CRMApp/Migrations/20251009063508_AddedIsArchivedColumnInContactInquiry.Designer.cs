@@ -4,6 +4,7 @@ using CRMApp.Areas.Identity.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CRMApp.Migrations
 {
     [DbContext(typeof(ApplicationUserIdentityContext))]
-    partial class ApplicationUserIdentityContextModelSnapshot : ModelSnapshot
+    [Migration("20251009063508_AddedIsArchivedColumnInContactInquiry")]
+    partial class AddedIsArchivedColumnInContactInquiry
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -147,9 +150,7 @@ namespace CRMApp.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<bool?>("isArchived")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("bit")
-                        .HasDefaultValue(false);
+                        .HasColumnType("bit");
 
                     b.HasKey("Id");
 

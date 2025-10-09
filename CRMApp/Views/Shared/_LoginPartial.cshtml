@@ -8,15 +8,12 @@
 @if (SignInManager.IsSignedIn(User))
 {
     
-    <div class="nav-item d-inline-flex">
+    <div class="nav-item d-inline-flex nav-pills gap-1">
         <div>
-            <a id="manage" class="nav-link text-dark active" asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage">Hello @UserManager.GetUserName(User)!</a>
-        </div>
-        <div>
-            <a asp-action="Index" asp-controller="Dashboard" class="nav-link text-dark active-tab">Dashboard</a>
+            <a id="dashboard-tab" asp-action="Index" asp-controller="Dashboard" class="nav-link text-dark active-tab" >Dashboard</a>
         </div>
         <div >
-            <a asp-action="Index" asp-controller="Customer" class="nav-link text-dark active-search">Search</a>
+            <a id="search-tab" asp-action="Index" asp-controller="Customer" class="nav-link text-dark active-search">Customer Search</a>
         </div>
         
         <div class="dropdown">

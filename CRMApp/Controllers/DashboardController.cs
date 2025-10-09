@@ -9,14 +9,19 @@ namespace CRMApp.Controllers
 		private readonly ICustomerService _customerService;
 		private readonly IContactService _contactService;
 		private readonly IActivityLogger _activityLogger;
+        private readonly IContactInquiryService _contactInquiryService;
 
-		public DashboardController(ICustomerService customerService, IContactService contactService, IActivityLogger activityLogger)
+		public DashboardController(ICustomerService customerService, IContactService contactService, IActivityLogger activityLogger, IContactInquiryService contactInquiryService)
         {
 			_customerService = customerService;
 			_contactService = contactService;
             _activityLogger = activityLogger;
+            _contactInquiryService = contactInquiryService;
 		}
-        public IActionResult Index()
+
+		
+
+		public IActionResult Index()
         {
             
 
@@ -28,16 +33,20 @@ namespace CRMApp.Controllers
             if (User.IsInRole("admin"))
             {
                 var allActivityLogs = _activityLogger.GetAllActivityLogs();
+                var inquiries = _contactInquiryService.GetInquiries();
                 var adminActivityViewModel = new ActivityLogViewModel(_contactService);
 				
 
 				if (allActivityLogs == null)
                 {
                     adminActivityViewModel.activityLogs = new List<Models.ActivityLog>();
-                }
+                    adminActivityViewModel.contactInquiries = new List<Models.ContactInquiry>();
+
+				}
                 else
                 {
                     adminActivityViewModel.activityLogs = allActivityLogs;
+                    adminActivityViewModel.contactInquiries = inquiries;
                 }
 				return View("AdminDashboard", adminActivityViewModel);
             }
