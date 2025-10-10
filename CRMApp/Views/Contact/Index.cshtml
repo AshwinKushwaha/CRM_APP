@@ -8,10 +8,6 @@
 <div style="position: relative; top: -8rem;">
     <h1 class="text-center">Contact List</h1>
     <hr />
-    @* <p>
-    <a asp-action="Create" class="btn btn-success">Create New</a>
-
-    </p> *@
     <div >
         <form asp-action="Index" asp-controller="Contact" method="post">
             <div asp-validation-summary="ModelOnly"></div>
@@ -66,11 +62,7 @@
                                 @Html.DisplayFor(modelItem => item.Contact)
                             </td>
 
-                            @*  <td class="d-flex justify-content-center gap-2 ps-0 pe-0">
-                        <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-success">Edit</a>
-
-                        <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-danger">Delete</a>
-                        </td> *@
+                          
                         </tr>
                     }
                 </tbody>

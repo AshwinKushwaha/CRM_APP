@@ -1,5 +1,6 @@
 ﻿using CRMApp.Areas.Identity.Data;
 using CRMApp.Models;
+using System.Linq;
 
 namespace CRMApp.Services
 {
@@ -8,6 +9,7 @@ namespace CRMApp.Services
         List<ContactInquiry> GetInquiries();
         bool SaveInquiry(ContactInquiry contactInquiry);
         List<ContactInquiry> GetAllInquiries();
+        ContactInquiry GetInquiry(int id);
     }
     public class ContactInquiryService : IContactInquiryService
     {
@@ -25,16 +27,28 @@ namespace CRMApp.Services
 
 		public List<ContactInquiry> GetInquiries()
         {
-           return _context.ContactInquiries.OrderByDescending(c => c.CreatedAt).Take(3).ToList();
+           return _context.ContactInquiries.Where(c => c.isArchived == false).OrderByDescending(c => c.CreatedAt).Take(3).ToList();
         }
+
+		public ContactInquiry GetInquiry(int id)
+		{
+            return _context.ContactInquiries.FirstOrDefault(c => c.Id == id);
+		}
 
 		public bool SaveInquiry(ContactInquiry contactInquiry)
 		{
             if (contactInquiry == null) {
                 return false;
                     }
-            contactInquiry.CreatedAt = DateTime.Now;
-            _context.ContactInquiries.Add(contactInquiry);
+            if(contactInquiry.Id == 0)
+            {
+				contactInquiry.CreatedAt = DateTime.Now;
+				_context.ContactInquiries.Add(contactInquiry);
+            }
+            else
+            {
+                _context.Update(contactInquiry);
+            }
             _context.SaveChanges();
             return true;
 		}

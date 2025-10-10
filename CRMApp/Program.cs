@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using CRMApp.Areas.Identity.Data;
 using CRMApp.Services;
+using CRMApp.Middleware;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -25,8 +26,9 @@ builder.Services.AddScoped<IActivityLogger, ActivityLogService>();
 builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<INoteService, NoteService>();
 builder.Services.AddScoped<IContactInquiryService, ContactInquiryService>();
+builder.Services.AddScoped<IAppLogger, AppExceptionHandlerAndLogger>();
 builder.Services.AddHttpContextAccessor();
-
+builder.Services.AddExceptionHandler<AppExceptionHandlerAndLogger>();
 
 var app = builder.Build();
 
@@ -64,7 +66,7 @@ else
 app.UseSession();
 app.UseHttpsRedirection();
 app.UseStaticFiles();
-
+app.UseExceptionHandler(_ => { });
 app.UseRouting();
 
 app.UseAuthorization();

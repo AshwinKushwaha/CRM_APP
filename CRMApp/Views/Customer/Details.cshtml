@@ -265,17 +265,19 @@ Customer = new Customer{Name = customerName}
 	<div class="modal fade show d-block" id="EditModal" tabindex="-1" aria-hidden="true" aria-modal="true" role="dialog" style="z-index:100000;">
 		<div class="modal-dialog">
 			<div class="modal-content">
-				<partial name="_ContactForm" model="new CRMApp.ViewModels.CustomerViewModel(){
-							CustomerContact = new CustomerContact {
-								Id = selectedContact.Id,
-								CustomerId = selectedContact.CustomerId,
-								Contact = selectedContact.Contact,
-								ContactName = selectedContact.ContactName,
-								ContactType = selectedContact.ContactType,
-								Relation = selectedContact.Relation
-							},
-
-				}" />
+				@await Html.PartialAsync("_ContactForm", new CRMApp.ViewModels.CustomerViewModel()
+{
+	CustomerContact = new CustomerContact
+	{
+		Id = selectedContact.Id,
+		CustomerId = selectedContact.CustomerId,
+		Contact = selectedContact.Contact,
+		ContactName = selectedContact.ContactName,
+		ContactType = selectedContact.ContactType,
+		Relation = selectedContact.Relation
+	},
+	Customer = new Customer { Name = customerName }
+})
 			</div>
 		</div>
 	</div>

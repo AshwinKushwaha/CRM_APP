@@ -99,7 +99,7 @@
 </div>
 @foreach (var item in Model.Customers)
 {
-	<div class="modal fade" id="confirmDeleteModal-@item.Id" tabindex="-1" aria-labelledby="deleteModalLabel-@item.Id" aria-hidden="true">
+	<div class="modal fade" id="confirmDeleteModal-@item.Id" tabindex="-1" aria-labelledby="deleteModalLabel-@item.Id" aria-hidden="true" style="z-index: 100000;">
 		<div class="modal-dialog">
 			<div class="modal-content">
 				<form asp-action="Delete" asp-controller="Customer" method="post">

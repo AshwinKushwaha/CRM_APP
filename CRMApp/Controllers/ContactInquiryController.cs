@@ -25,5 +25,14 @@ namespace CRMApp.Controllers
             _contactInquiryService.SaveInquiry(contactInquiry);
             return RedirectToAction("Index", "Home");
         }
+
+        
+        public IActionResult ArchiveEnquiry(int id)
+        {
+            var inquiry = _contactInquiryService.GetInquiry(id);
+            inquiry.isArchived = true;
+            _contactInquiryService.SaveInquiry(inquiry);
+            return RedirectToAction("Index");
+        }
     }
 }

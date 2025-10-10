@@ -34,12 +34,21 @@
        $(document).ready(function() {
 
            var currentUrl = window.location.pathname.toLowerCase();
-
+            $('div.nav-item div .nav-link').css('color', '#334155')
             $('div.nav-item div .nav-link').each(function() {
                 var linkUrl = $(this).attr('href').toLowerCase();
                 if(currentUrl == linkUrl){
-                    $('div.nav-item div .nav-link').removeClass('active')
-                    $(this).addClass('active');
+                    $('div.nav-item div .nav-link').css({
+                        'background-color' : '',
+                        'color': '#334155'
+                    })
+                    
+                    $(this).css({
+                        'background-color': '#2c3e50',
+                        'color': '#ecf0f1'
+                    })
+                    
+                    
                 }
             })
        })
