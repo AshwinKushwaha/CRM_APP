@@ -6,7 +6,7 @@ namespace CRMApp.Middleware
 {
 	public interface IAppLogger
 	{
-		void LogToFile(Exception ex, HttpContext httpContext);
+		void LogToFile(Exception ex);
 		void LogToFile(Type type, string message);
 
 	}
@@ -16,7 +16,7 @@ namespace CRMApp.Middleware
 		public async ValueTask<bool> TryHandleAsync(HttpContext httpContext, Exception exception, CancellationToken cancellationToken)
 		{
 			
-			LogToFile(exception, httpContext);
+			LogToFile(exception);
 			var response = new ErrorResponse()
 			{
 				StatusCode = StatusCodes.Status400BadRequest,
@@ -30,7 +30,7 @@ namespace CRMApp.Middleware
 			return true;
 		}
 
-		public void LogToFile(Exception ex, HttpContext httpContext)
+		public void LogToFile(Exception ex)
 		{
 			Directory.CreateDirectory(Path.GetDirectoryName(filePath));
 
@@ -39,8 +39,6 @@ namespace CRMApp.Middleware
 				writer.WriteLine("------------------Exception-----------------------");
 				writer.WriteLine($"Time Stamp: {DateTime.Now.ToString("hh:mm:ss")}");
 				writer.WriteLine($"Message: {ex.Message}");
-				writer.WriteLine($"Endpoint: {httpContext.GetEndpoint()}");
-				writer.WriteLine($"Stack Trace: {ex.StackTrace}");
 				writer.WriteLine("---------------------------------------------------");
 				writer.WriteLine();
 			} 
