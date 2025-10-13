@@ -5,7 +5,7 @@
 	Layout = "~/Views/Shared/_AdminLayout.cshtml";
 }
 
-<div style="position: relative; top:4rem;">
+<div style="position: relative; top:1rem;">
 
 	<h1 class="text-center">User List</h1>
 	<hr />
@@ -50,7 +50,28 @@
 			}
 		</tbody>
 	</table>
-
+	<nav>
+		<ul class="pagination">
+			@if (Model.Users.HasPreviousPage)
+			{
+				<li class="page-item">
+					<a href="?pageIndex=@(Model.Users.PageIndex - 1)" class="page-link"><strong>&lt;</strong></a>
+				</li>
+			}
+			@for(int i = 1; i <= Model.Users.TotalPages; i++)
+			{
+				<li class="page-item @(i == Model.Users.PageIndex ? "active" : "")">
+					<a href="?pageIndex=@i" class="page-link">@i</a>
+				</li>
+			}
+			@if (Model.Users.HasNextPage)
+			{
+				<li class="page-item">
+					<a class="page-link" href="?pageIndex=@(Model.Users.PageIndex + 1)"><strong>&gt;</strong></a>
+				</li>
+			}
+		</ul>
+	</nav>
 </div>
 
 

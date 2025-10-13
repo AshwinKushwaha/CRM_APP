@@ -5,11 +5,11 @@
 }
 
 
-<div class="d-flex justify-content-center ">
+<div class="d-flex justify-content-center mt-5">
 	<div class="flex-column" style="width: 100%;">
 		<div class="d-grid">
 			<div class="row d-flex justify-content-between ms-0">
-				<div class="col-2" style="width: 61em; margin-left:-2rem;">
+				<div class="col-2" style="width: 59em; margin-left:-2rem;">
 					<div class="card shadow-sm">
 						<h3 class="text-center mt-2">Overview</h3>
 						<div class="card-body">
@@ -67,8 +67,8 @@
 						</a>
 					</div>
 				</div>
-				<div class="col-2" style="width:23em;margin-right: -1rem;">
-					<div class="card shadow-sm" style="overflow-y: auto; height: 600px;">
+				<div class="col-2" style="width:25em;margin-right: -1rem;">
+					<div class="card shadow-sm" style="overflow-y: auto; height: 650px;">
 						<h3 class="text-center mt-2">
 							Activity Feed
 						</h3>
@@ -99,7 +99,28 @@
 
 									</div>
 								</div>
+
 							}
+							<nav class="d-flex justify-content-center mt-1">
+								<ul class="pagination">
+									@if (Model.activityLogs.HasPreviousPage)
+									{
+										<li class="page-item"><a class="page-link" href="?pageIndex=@(Model.activityLogs.PageIndex - 1)">Previous</a></li>
+									}
+									@for(int i = 1; i <= Model.activityLogs.TotalPages; i++)
+									{
+										<li class="@(i == Model.activityLogs.PageIndex ? "active" : "") page-item">
+											<a href="?pageIndex=@i" class="page-link">@i</a>
+										</li>
+									}
+									@if (Model.activityLogs.HasNextPage)
+									{
+										<li class="page-item">
+											<a href="?pageIndex=@(Model.activityLogs.PageIndex + 1)" class="page-link">Next</a>
+										</li>
+									}
+								</ul>
+							</nav>
 						}
 
 					</div>

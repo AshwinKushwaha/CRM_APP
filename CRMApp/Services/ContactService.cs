@@ -8,6 +8,7 @@ namespace CRMApp.Services
 	public interface IContactService
 	{
 		List<CustomerContact> GetContacts(int id);
+		List<CustomerContact> GetContacts(int id, int pageIndex);
 		List<CustomerContact> GetContacts(ContactFilter contactFilter,string input,int? id);
 		List<CustomerContact> GetAllContacts();
 		CustomerContact GetContact(int id);
@@ -22,6 +23,7 @@ namespace CRMApp.Services
 		private readonly IActivityLogger _activityLogger;
 		private readonly UserManager<ApplicationUser> _userManager;
 		private readonly IHttpContextAccessor httpContextAccessor;
+		private readonly int PageSize = 5;
 
 		public ContactService(ApplicationUserIdentityContext context, IActivityLogger activityLogger, UserManager<ApplicationUser> userManager, IHttpContextAccessor httpContextAccessor)
         {
@@ -34,6 +36,11 @@ namespace CRMApp.Services
 		public List<CustomerContact> GetContacts(int id)
 		{
 			return context.CustomerContacts.Where(c => c.CustomerId == id).ToList();
+		}
+		public List<CustomerContact> GetContacts(int id, int pageIndex)
+		{
+			return context.CustomerContacts.Where(c => c.CustomerId == id)
+				.Skip((pageIndex - 1) * PageSize).Take(PageSize).ToList();
 		}
 
 		public bool CreateContact(CustomerContact contact)

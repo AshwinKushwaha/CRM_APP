@@ -4,7 +4,7 @@ namespace CRMApp.ViewModels
 {
 	public class SearchViewModel
 	{
-		public List<Customer> Customers {  get; set; }
+		public PaginatedList<Customer> Customers {  get; set; }
 
 		public CustomerFilter CustomerFilter { get; set; }
 

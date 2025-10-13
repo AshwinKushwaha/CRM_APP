@@ -4,7 +4,7 @@
 	ViewData["Title"] = "Index";
 	Layout = "~/Views/Shared/_AdminLayout.cshtml";
 }
-<div style="position: relative; top: -4rem;">
+<div class=" mt-4">
 
 
 <h2 class="text-center">Customer List</h2>
@@ -94,6 +94,29 @@
 				}
 			</tbody>
 		</table>
+			<nav>
+				<ul class="pagination">
+					@if (Model.Customers.HasPreviousPage)
+					{
+						<li class="page-item">
+						<a href="?pageIndex=@(Model.Customers.PageIndex - 1)" class="page-link">Previous</a>
+						</li>
+					}
+					@if(Model.Customers.TotalPages > 1){
+					for(int i = 1; i <= Model.Customers.TotalPages; i++){
+						<li class="page-item @(i == Model.Customers.PageIndex ? "active" : "")">
+						<a href="?pageIndex=@i" class="page-link">@i</a>
+						</li>
+					}
+					}
+					@if (Model.Customers.HasNextPage)
+					{
+						<li class="page-item">
+						<a href="?pageIndex=@(Model.Customers.PageIndex + 1)" class="page-link">Next</a>
+						</li>
+					}
+				</ul>
+		</nav>
 	}
 }
 </div>

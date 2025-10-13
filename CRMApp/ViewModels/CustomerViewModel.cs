@@ -17,7 +17,7 @@ namespace CRMApp.ViewModels
         public Note Note { get; set; }
         public CustomerContact CustomerContact { get; set; }
 
-        public List<CustomerContact> Contacts { get; set; }
+        public PaginatedList<CustomerContact> Contacts { get; set; }
 
         public List<Note> Notes { get; set; }
 

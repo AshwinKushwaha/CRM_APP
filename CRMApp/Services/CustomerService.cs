@@ -6,15 +6,17 @@ namespace CRMApp.Services
 {
 	public interface ICustomerService
 	{
+		List<Customer> GetCustomers(CustomerFilter filter,string? input, int pageIndex);
 		List<Customer> GetCustomers(CustomerFilter filter,string? input);
 		List<Customer> GetCustomers();
+		List<Customer> GetCustomers(int pageIndex);
 		Customer GetCustomer(int id);
 		bool UpsertCustomer(int? id, Customer customer);
 		bool UpsertCustomer(Customer customer);
 
 		bool DeleteCustomer(int id);
 
-		int GetCount();
+		int GetCustomerCount();
 		int GetUserCount();
 		
 
@@ -25,6 +27,7 @@ namespace CRMApp.Services
 		private readonly ApplicationUserIdentityContext context;
 		private readonly IActivityLogger _activityLogger;
 		private readonly IContactService _contactService;
+		private readonly int PageSize = 8;
 
 		public CustomerService(ApplicationUserIdentityContext context,IActivityLogger activityLogger,IContactService contactService)
         {
@@ -49,7 +52,7 @@ namespace CRMApp.Services
 		{
 			return context.Users.Count();
 		}
-		public int GetCount()
+		public int GetCustomerCount()
 		{
 			return context.Customers.Count();
 		}
@@ -78,18 +81,21 @@ namespace CRMApp.Services
 		
 
 		
-		public List<Customer> GetCustomers(CustomerFilter filter,string? input)
+		public List<Customer> GetCustomers(CustomerFilter filter,string? input, int pageIndex)
 		{
 			switch (filter)
 			{
 				case CustomerFilter.Name:
-					return context.Customers.Where(c => (!string.IsNullOrEmpty(input)) && (c.Name.Contains(input))).ToList();
+					return context.Customers.Where(c => (!string.IsNullOrEmpty(input)) && (c.Name.Contains(input)))
+						.Skip((pageIndex - 1) * PageSize).Take(PageSize).ToList();
 
 				case CustomerFilter.Email:
-					return context.Customers.Where(c => (!string.IsNullOrEmpty(input)) && (c.Email.Contains(input))).ToList();
+					return context.Customers.Where(c => (!string.IsNullOrEmpty(input)) && (c.Email.Contains(input)))
+						.Skip((pageIndex - 1) * PageSize).Take(PageSize).ToList();
 
 				case CustomerFilter.Phone:
-					return context.Customers.Where(c => (!string.IsNullOrEmpty(input)) && (c.Phone.Contains(input))).ToList();
+					return context.Customers.Where(c => (!string.IsNullOrEmpty(input)) && (c.Phone.Contains(input)))
+						.Skip((pageIndex - 1) * PageSize).Take(PageSize).ToList();
 
 				case CustomerFilter.All:
 
@@ -98,7 +104,8 @@ namespace CRMApp.Services
 				&& (c.Name.Contains(input)) ||
 				(c.Email.Contains(input)) ||
 				(c.Phone.Contains(input))
-				).ToList();
+				)
+						.Skip((pageIndex - 1) * PageSize).Take(PageSize).ToList();
 			}
 			
 			
@@ -131,6 +138,39 @@ namespace CRMApp.Services
 				 context.SaveChanges();
 			}
 			return true;
+		}
+
+		public List<Customer> GetCustomers(int pageIndex)
+		{
+			return context.Customers.Skip((pageIndex - 1) * PageSize).Take(PageSize).ToList();
+		}
+
+		public List<Customer> GetCustomers(CustomerFilter filter, string? input)
+		{
+			switch (filter)
+			{
+				case CustomerFilter.Name:
+					return context.Customers.Where(c => (!string.IsNullOrEmpty(input)) && (c.Name.Contains(input)))
+						.ToList();
+
+				case CustomerFilter.Email:
+					return context.Customers.Where(c => (!string.IsNullOrEmpty(input)) && (c.Email.Contains(input)))
+						.ToList();
+
+				case CustomerFilter.Phone:
+					return context.Customers.Where(c => (!string.IsNullOrEmpty(input)) && (c.Phone.Contains(input)))
+						.ToList();
+
+				case CustomerFilter.All:
+
+				default:
+					return context.Customers.Where(c => (!string.IsNullOrEmpty(input))
+				&& (c.Name.Contains(input)) ||
+				(c.Email.Contains(input)) ||
+				(c.Phone.Contains(input))
+				)
+						.ToList();
+			}
 		}
 	}
 }

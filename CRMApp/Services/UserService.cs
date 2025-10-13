@@ -6,18 +6,22 @@ namespace CRMApp.Services
 {
     public interface IUserService
     {
-        List<ApplicationUser> GetAllUsers();
+        List<ApplicationUser> GetUsers(int pageIndex);
+        int GetUserCount();
         List<ApplicationUser> GetUsers(UserFilter filter, string input);
         bool DeleteUser(string id);
         ApplicationUser GetUser(string id);
-        
-    }
+        List<ApplicationUser> GetUsers(UserFilter filter, string input, int pageIndex);
+
+
+	}
     public class UserService : IUserService
     {
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly ApplicationUserIdentityContext _context;
         private readonly IActivityLogger _activityLogger;
         private readonly IContactService _contactService;
+        private readonly int PageSize = 8;
         
 
         public UserService(UserManager<ApplicationUser> userManager, ApplicationUserIdentityContext context,IActivityLogger activityLogger, IContactService contactService)
@@ -43,9 +47,10 @@ namespace CRMApp.Services
 
         }
 
-        public List<ApplicationUser> GetAllUsers()
+        public List<ApplicationUser> GetUsers(int pageIndex )
         {
-            return _userManager.Users.ToList();
+            return _userManager.Users
+                .Skip((pageIndex - 1) * PageSize).Take(PageSize).ToList();
         }
 
         public ApplicationUser GetUser(string id)
@@ -74,5 +79,32 @@ namespace CRMApp.Services
 
             }
         }
-    }
+        public List<ApplicationUser> GetUsers(UserFilter filter, string input, int pageIndex)
+        {
+            switch (filter)
+            {
+                case UserFilter.Username:
+                    return _userManager.Users.Where(c => (!string.IsNullOrEmpty(input)) && (c.UserName.Contains(input)))
+                        .Skip((pageIndex - 1) * PageSize).Take(PageSize).ToList();
+
+                case UserFilter.Email:
+                    return _userManager.Users.Where(c => (!string.IsNullOrEmpty(input)) && (c.Email.Contains(input)))
+						.Skip((pageIndex - 1) * PageSize).Take(PageSize).ToList();
+
+                case UserFilter.All:
+                default:
+                    return _userManager.Users.Where(c => (!string.IsNullOrEmpty(input)) && 
+                    (c.Email.Contains(input)) || 
+                    (c.UserName.Contains(input))
+                    )
+						.Skip((pageIndex - 1) * PageSize).Take(PageSize).ToList();
+
+            }
+        }
+
+		public int GetUserCount()
+		{
+            return _userManager.Users.Count();
+		}
+	}
 }

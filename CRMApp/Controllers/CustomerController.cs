@@ -11,6 +11,7 @@ namespace CRMApp.Controllers
 		private readonly ICustomerService _customerService;
 		private readonly IContactService _contactService;
 		private readonly INoteService _noteService;
+		private readonly int PageSize = 8;
 
 
 
@@ -22,24 +23,28 @@ namespace CRMApp.Controllers
 		}
 
         [Authorize]
-        public IActionResult Index()
+        public IActionResult Index(int pageIndex = 1)
         {
-            var viewModel = new SearchViewModel
+            var customers = _customerService.GetCustomers(pageIndex);
+            var totalCustomer = _customerService.GetCustomerCount();
+
+			var viewModel = new SearchViewModel
             {
-                Customers = _customerService.GetCustomers()
+                Customers = new PaginatedList<Customer>(customers, totalCustomer, pageIndex, PageSize)
             };
             ViewBag.Count = viewModel.Customers.Count;
             return View(viewModel);
         }
 
         [HttpPost]
-		public IActionResult Index(SearchViewModel viewModel)
+		public IActionResult Index(SearchViewModel viewModel, int pageIndex = 1)
         {
-            var result =  _customerService.GetCustomers(viewModel.CustomerFilter, viewModel.Input);
+            var result =  _customerService.GetCustomers(viewModel.CustomerFilter, viewModel.Input, pageIndex);
+            var totalCustomer = _customerService.GetCustomers(viewModel.CustomerFilter, viewModel.Input).Count();
 			ViewBag.Count = result.Count;
             var searchViewModel = new SearchViewModel
             {
-                Customers = result
+                Customers = new PaginatedList<Customer>(result, totalCustomer, pageIndex, PageSize)
             };
 
 			return View(searchViewModel);
@@ -106,11 +111,12 @@ namespace CRMApp.Controllers
 
 
         [Authorize]
-        public IActionResult Details(int id)
+        public IActionResult Details(int id, int pageIndex = 1)
         {
            
             var cust = _customerService.GetCustomer(id);
-            var contacts = _contactService.GetContacts(id);
+            var totalContacts = _contactService.GetContacts(id).Count();
+            var contacts = _contactService.GetContacts(id, pageIndex);
             var notes = _noteService.GetNoteByCustomerId(cust.Id);
             var cnt = new CustomerContact();
             if (cust == null)
@@ -123,7 +129,7 @@ namespace CRMApp.Controllers
             {
                 Customer = cust,
                 CustomerContact = cnt,
-                Contacts = contacts,
+                Contacts = new PaginatedList<CustomerContact>(contacts, totalContacts, pageIndex, PageSize),
                 Notes = notes
             };
             return View(viewModel);
