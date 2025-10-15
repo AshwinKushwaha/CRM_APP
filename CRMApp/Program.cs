@@ -1,10 +1,8 @@
-using Microsoft.AspNetCore.Authentication.Cookies;
-
+using CRMApp.Areas.Identity.Data;
+using CRMApp.Middleware;
+using CRMApp.Services;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using CRMApp.Areas.Identity.Data;
-using CRMApp.Services;
-using CRMApp.Middleware;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -13,7 +11,7 @@ var connectionString = builder.Configuration.GetConnectionString("ApplicationUse
 builder.Services.AddDbContext<ApplicationUserIdentityContext>(options => options.UseSqlServer(connectionString));
 
 
-builder.Services.AddIdentity<ApplicationUser,IdentityRole>(options => options.SignIn.RequireConfirmedAccount = false).AddEntityFrameworkStores<ApplicationUserIdentityContext>();
+builder.Services.AddIdentity<ApplicationUser, IdentityRole>(options => options.SignIn.RequireConfirmedAccount = false).AddEntityFrameworkStores<ApplicationUserIdentityContext>();
 builder.Services.AddRazorPages();
 
 // Add services to the container.

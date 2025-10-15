@@ -6,7 +6,7 @@
 }
 else
 {
-    <form id="frmContact" asp-action="AddContact" asp-controller="Contact" method="post">
+    <form id="frmContact" asp-action="SaveContact" asp-controller="Contact" method="post">
         <div asp-validation-summary="ModelOnly"></div>
         <input type="hidden" asp-for="CustomerContact.Id" />
         <input type="hidden" asp-for="CustomerContact.CustomerId" />

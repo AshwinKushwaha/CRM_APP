@@ -6,12 +6,12 @@ namespace CRMApp.Controllers
 {
     public class ContactInquiryController : Controller
     {
-		private readonly IContactInquiryService _contactInquiryService;
+        private readonly IContactInquiryService _contactInquiryService;
 
-		public ContactInquiryController(IContactInquiryService contactInquiryService)
+        public ContactInquiryController(IContactInquiryService contactInquiryService)
         {
-			_contactInquiryService = contactInquiryService;
-		}
+            _contactInquiryService = contactInquiryService;
+        }
 
         public IActionResult Index()
         {
@@ -26,7 +26,7 @@ namespace CRMApp.Controllers
             return RedirectToAction("Index", "Home");
         }
 
-        
+
         public IActionResult ArchiveEnquiry(int id)
         {
             var inquiry = _contactInquiryService.GetInquiry(id);

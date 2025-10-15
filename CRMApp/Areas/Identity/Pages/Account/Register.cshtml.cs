@@ -2,25 +2,15 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 #nullable disable
 
-using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Text;
-using System.Text.Encodings.Web;
-using System.Threading;
-using System.Threading.Tasks;
+using CRMApp.Areas.Identity.Data;
+using CRMApp.Services;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
-using CRMApp.Areas.Identity.Data;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using Microsoft.AspNetCore.WebUtilities;
-using Microsoft.Extensions.Logging;
 using Microsoft.AspNetCore.Mvc.Rendering;
-using CRMApp.Services;
+using System.ComponentModel.DataAnnotations;
 
 namespace CRMApp.Areas.Identity.Pages.Account
 {
@@ -33,19 +23,19 @@ namespace CRMApp.Areas.Identity.Pages.Account
         private readonly IUserEmailStore<ApplicationUser> _emailStore;
         private readonly ILogger<RegisterModel> _logger;
         private readonly RoleManager<IdentityRole> _roleManager;
-		private readonly IActivityLogger _activityLogger;
+        private readonly IActivityLogger _activityLogger;
 
-		//private readonly IEmailSender _emailSender;
+        //private readonly IEmailSender _emailSender;
 
 
-		public RegisterModel(
+        public RegisterModel(
             UserManager<ApplicationUser> userManager,
             IUserStore<ApplicationUser> userStore,
             SignInManager<ApplicationUser> signInManager,
             ILogger<RegisterModel> logger,
             RoleManager<IdentityRole> roleManager,
             IActivityLogger activityLogger
-            //IEmailSender emailSender
+         //IEmailSender emailSender
 
          )
         {
@@ -55,10 +45,10 @@ namespace CRMApp.Areas.Identity.Pages.Account
             _signInManager = signInManager;
             _logger = logger;
             _roleManager = roleManager;
-			_activityLogger = activityLogger;
-			//_emailSender = emailSender;
+            _activityLogger = activityLogger;
+            //_emailSender = emailSender;
 
-		}
+        }
 
 
         public List<SelectListItem> RoleList { get; set; }
@@ -122,7 +112,7 @@ namespace CRMApp.Areas.Identity.Pages.Account
             public string ConfirmPassword { get; set; }
 
             [Required(ErrorMessage = "Role selection is Mandatory.")]
-            public string Role {  get; set; }
+            public string Role { get; set; }
         }
 
 
@@ -142,12 +132,12 @@ namespace CRMApp.Areas.Identity.Pages.Account
             if (ModelState.IsValid)
             {
                 var user = CreateUser();
-                if(Input.Username == "admin1" && Input.Password== "Password!$S3cret")
+                if (Input.Username == "admin1" && Input.Password == "Password!$S3cret")
                 {
                     await _userManager.AddToRoleAsync(user, Roles.Admin);
                 }
-                
-                
+
+
 
                 await _userStore.SetUserNameAsync(user, Input.Username, CancellationToken.None);
                 await _emailStore.SetEmailAsync(user, Input.Email, CancellationToken.None);
@@ -161,7 +151,7 @@ namespace CRMApp.Areas.Identity.Pages.Account
 
                     var userId = await _userManager.GetUserIdAsync(user);
                     await _userManager.AddToRoleAsync(user, Input.Role);
-                    
+
                     if (_userManager.Options.SignIn.RequireConfirmedAccount)
                     {
                         return RedirectToPage("RegisterConfirmation", new { email = Input.Email, returnUrl = returnUrl });

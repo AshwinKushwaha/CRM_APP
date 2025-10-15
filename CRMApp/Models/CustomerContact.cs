@@ -5,48 +5,48 @@ using System.Text.Json.Serialization;
 
 namespace CRMApp.Models
 {
-	public class CustomerContact
-	{
-		[Key]
-		public int Id { get; set; }
+    public class CustomerContact
+    {
+        [Key]
+        public int Id { get; set; }
 
-		
-		public int CustomerId { get; set; }
-		
-		[Required(ErrorMessage = "Contact Name is required")]
-		[DisplayName("Contact Name")]
-		public string ContactName { get; set; }
 
-		[Required]
-		public Relation Relation { get; set; } 
+        public int CustomerId { get; set; }
 
-		[Required]
-		[DisplayName("Contact Type")]
-		public Type ContactType { get; set; }
+        [Required(ErrorMessage = "Contact Name is required")]
+        [DisplayName("Contact Name")]
+        public string ContactName { get; set; }
 
-		[Required(ErrorMessage = "Contact is Required")]
-		public string Contact { get; set; }
+        [Required]
+        public Relation Relation { get; set; }
 
-		[ForeignKey("CustomerId")]
-		[JsonIgnore]
-		public Customer Customer { get; set; }
+        [Required]
+        [DisplayName("Contact Type")]
+        public Type ContactType { get; set; }
 
-	}
+        [Required(ErrorMessage = "Contact is Required")]
+        public string Contact { get; set; }
 
-	public enum Relation
-	{
-		Self = 0,
-		Father,
-		Mother,
-		Friend,
-		Others
-	}
+        [ForeignKey("CustomerId")]
+        [JsonIgnore]
+        public Customer Customer { get; set; }
 
-	public enum Type
-	{
-		Mobile,
-		Telephone,
-		Email,
-		Address
-	}
+    }
+
+    public enum Relation
+    {
+        Self = 0,
+        Father,
+        Mother,
+        Friend,
+        Others
+    }
+
+    public enum Type
+    {
+        Mobile,
+        Telephone,
+        Email,
+        Address
+    }
 }

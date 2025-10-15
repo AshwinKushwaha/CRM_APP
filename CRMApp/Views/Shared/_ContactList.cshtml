@@ -1,0 +1,74 @@
+﻿@model IEnumerable<CRMApp.Models.CustomerContact>;
+
+
+<div class="d-flex justify-content-center table-responsive-sm table-responsive-md">
+	@if (Model.Count() == 0)
+	{
+		<h4 class="text-center mb-3">No Contact Found</h4>
+	}
+	else
+	{
+		<table class="table table-hover table-bordered table-striped mt-4 " style="width:98%;">
+			<thead>
+				<tr>
+					<th>
+						@Html.DisplayNameFor(model => model.ContactName)
+					</th>
+					<th>
+						@Html.DisplayNameFor(model => model.Relation)
+					</th>
+					<th>
+						@Html.DisplayNameFor(model => model.ContactType)
+					</th>
+					<th>
+						@Html.DisplayNameFor(model => model.Contact)
+					</th>
+					<th></th>
+				</tr>
+			</thead>
+			<tbody>
+				@foreach (var item in Model)
+				{
+					<tr>
+						<td>
+							@Html.DisplayFor(modelItem => item.ContactName)
+						</td>
+						<td>
+							@Html.DisplayFor(modelItem => item.Relation)
+						</td>
+						<td>
+							@Html.DisplayFor(modelItem => item.ContactType)
+						</td>
+						<td>
+							@Html.DisplayFor(modelItem => item.Contact)
+						</td>
+
+						<td>
+							<div class="d-flex justify-content-center gap-1">
+								@if (User.IsInRole("admin") || User.IsInRole("salesrep"))
+								{
+									<form method="post">
+										<input type="hidden" name="selectedContactId" value=@item.Id />
+										<button type="submit" data-bs-toggle="modal" data-bs-target="#EditModal" class="btn btn-outline-success">Edit</button>
+									</form>
+
+								}
+
+								@if (User.IsInRole("admin"))
+								{
+									<form method="post">
+										<input type="hidden" name="deleteContactId" value=@item.Id />
+										<button type="submit" data-bs-toggle="modal" data-bs-target="#confirmDeleteModal" class="btn btn-outline-danger">Delete</button>
+									</form>
+								}
+							</div>
+
+						</td>
+					</tr>
+				}
+			</tbody>
+		</table>
+
+	}
+
+</div>

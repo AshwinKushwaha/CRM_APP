@@ -14,7 +14,7 @@ namespace CRMApp.Services
         List<ApplicationUser> GetUsers(UserFilter filter, string input, int pageIndex);
 
 
-	}
+    }
     public class UserService : IUserService
     {
         private readonly UserManager<ApplicationUser> _userManager;
@@ -22,9 +22,9 @@ namespace CRMApp.Services
         private readonly IActivityLogger _activityLogger;
         private readonly IContactService _contactService;
         private readonly int PageSize = 8;
-        
 
-        public UserService(UserManager<ApplicationUser> userManager, ApplicationUserIdentityContext context,IActivityLogger activityLogger, IContactService contactService)
+
+        public UserService(UserManager<ApplicationUser> userManager, ApplicationUserIdentityContext context, IActivityLogger activityLogger, IContactService contactService)
         {
             _userManager = userManager;
             _context = context;
@@ -36,7 +36,7 @@ namespace CRMApp.Services
         {
             var user = GetUser(id);
             var deleteUser = user.UserName;
-            if(user == null)
+            if (user == null)
             {
                 return false;
             }
@@ -47,7 +47,7 @@ namespace CRMApp.Services
 
         }
 
-        public List<ApplicationUser> GetUsers(int pageIndex )
+        public List<ApplicationUser> GetUsers(int pageIndex)
         {
             return _userManager.Users
                 .Skip((pageIndex - 1) * PageSize).Take(PageSize).ToList();
@@ -58,7 +58,7 @@ namespace CRMApp.Services
             return _userManager.Users.FirstOrDefault(c => c.Id == id);
         }
 
-       
+
 
         public List<ApplicationUser> GetUsers(UserFilter filter, string input)
         {
@@ -72,8 +72,8 @@ namespace CRMApp.Services
 
                 case UserFilter.All:
                 default:
-                    return _userManager.Users.Where(c => (!string.IsNullOrEmpty(input)) && 
-                    (c.Email.Contains(input)) || 
+                    return _userManager.Users.Where(c => (!string.IsNullOrEmpty(input)) &&
+                    (c.Email.Contains(input)) ||
                     (c.UserName.Contains(input))
                     ).ToList();
 
@@ -89,22 +89,22 @@ namespace CRMApp.Services
 
                 case UserFilter.Email:
                     return _userManager.Users.Where(c => (!string.IsNullOrEmpty(input)) && (c.Email.Contains(input)))
-						.Skip((pageIndex - 1) * PageSize).Take(PageSize).ToList();
+                        .Skip((pageIndex - 1) * PageSize).Take(PageSize).ToList();
 
                 case UserFilter.All:
                 default:
-                    return _userManager.Users.Where(c => (!string.IsNullOrEmpty(input)) && 
-                    (c.Email.Contains(input)) || 
+                    return _userManager.Users.Where(c => (!string.IsNullOrEmpty(input)) &&
+                    (c.Email.Contains(input)) ||
                     (c.UserName.Contains(input))
                     )
-						.Skip((pageIndex - 1) * PageSize).Take(PageSize).ToList();
+                        .Skip((pageIndex - 1) * PageSize).Take(PageSize).ToList();
 
             }
         }
 
-		public int GetUserCount()
-		{
+        public int GetUserCount()
+        {
             return _userManager.Users.Count();
-		}
-	}
+        }
+    }
 }

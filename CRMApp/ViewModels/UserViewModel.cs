@@ -5,7 +5,7 @@ namespace CRMApp.ViewModels
 {
     public class UserViewModel
     {
-       public PaginatedList<ApplicationUser> Users {  get; set; }
+        public PaginatedList<ApplicationUser> Users { get; set; }
 
         public UserFilter UserFilter { get; set; }
         public string UserInput { get; set; }

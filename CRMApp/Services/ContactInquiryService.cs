@@ -1,6 +1,5 @@
 ﻿using CRMApp.Areas.Identity.Data;
 using CRMApp.Models;
-using System.Linq;
 
 namespace CRMApp.Services
 {
@@ -20,30 +19,31 @@ namespace CRMApp.Services
             _context = context;
         }
 
-		public List<ContactInquiry> GetAllInquiries()
-		{
-			return _context.ContactInquiries.OrderByDescending(c => c.CreatedAt).ToList();
-		}
-
-		public List<ContactInquiry> GetInquiries()
+        public List<ContactInquiry> GetAllInquiries()
         {
-           return _context.ContactInquiries.Where(c => c.isArchived == false).OrderByDescending(c => c.CreatedAt).Take(3).ToList();
+            return _context.ContactInquiries.OrderByDescending(c => c.CreatedAt).ToList();
         }
 
-		public ContactInquiry GetInquiry(int id)
-		{
-            return _context.ContactInquiries.FirstOrDefault(c => c.Id == id);
-		}
+        public List<ContactInquiry> GetInquiries()
+        {
+            return _context.ContactInquiries.Where(c => c.isArchived == false).OrderByDescending(c => c.CreatedAt).Take(3).ToList();
+        }
 
-		public bool SaveInquiry(ContactInquiry contactInquiry)
-		{
-            if (contactInquiry == null) {
-                return false;
-                    }
-            if(contactInquiry.Id == 0)
+        public ContactInquiry GetInquiry(int id)
+        {
+            return _context.ContactInquiries.FirstOrDefault(c => c.Id == id);
+        }
+
+        public bool SaveInquiry(ContactInquiry contactInquiry)
+        {
+            if (contactInquiry == null)
             {
-				contactInquiry.CreatedAt = DateTime.Now;
-				_context.ContactInquiries.Add(contactInquiry);
+                return false;
+            }
+            if (contactInquiry.Id == 0)
+            {
+                contactInquiry.CreatedAt = DateTime.Now;
+                _context.ContactInquiries.Add(contactInquiry);
             }
             else
             {
@@ -51,6 +51,6 @@ namespace CRMApp.Services
             }
             _context.SaveChanges();
             return true;
-		}
-	}
+        }
+    }
 }

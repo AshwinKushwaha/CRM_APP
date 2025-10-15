@@ -107,7 +107,7 @@
 									{
 										<li class="page-item"><a class="page-link" href="?pageIndex=@(Model.activityLogs.PageIndex - 1)">Previous</a></li>
 									}
-									@for(int i = 1; i <= Model.activityLogs.TotalPages; i++)
+									@for(int i = Model.activityLogs.StartPage; i <= Model.activityLogs.EndPage; i++)
 									{
 										<li class="@(i == Model.activityLogs.PageIndex ? "active" : "") page-item">
 											<a href="?pageIndex=@i" class="page-link">@i</a>

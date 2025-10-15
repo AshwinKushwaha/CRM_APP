@@ -17,7 +17,7 @@ namespace CRMApp.Models
         public string Email { get; set; }
 
         [Required]
-        [StringLength(maximumLength: 10,MinimumLength = 10,ErrorMessage = "* Phone must be of 10 characters")]
+        [StringLength(maximumLength: 10, MinimumLength = 10, ErrorMessage = "* Phone must be of 10 characters")]
         [Phone]
         public string Phone { get; set; }
 
@@ -26,9 +26,9 @@ namespace CRMApp.Models
         public DateTime CreatedAt { get; set; }
 
         [BindNever]
-		[DisplayName("Updated on")]
-		[DisplayFormat(DataFormatString = "{0:dd MMMM, yyyy hh:mm tt}")]
-		public DateTime? UpdatedAt { get; set; }
+        [DisplayName("Updated on")]
+        [DisplayFormat(DataFormatString = "{0:dd MMMM, yyyy hh:mm tt}")]
+        public DateTime? UpdatedAt { get; set; }
 
         [BindNever]
         public ICollection<CustomerContact>? Contacts { get; set; }

@@ -3,11 +3,6 @@ using CRMApp.Models;
 using CRMApp.Services;
 using Microsoft.EntityFrameworkCore;
 using Moq;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace CRMApp.Tests.UnitTests
 {
@@ -53,7 +48,7 @@ namespace CRMApp.Tests.UnitTests
             Assert.AreEqual("Tarun", result[1].Name);
 
         }
-        
+
 
         [TestMethod]
         public void GetCustomers_ReturnAllCustomers()
@@ -77,10 +72,10 @@ namespace CRMApp.Tests.UnitTests
 
             var result = service.GetCustomers();
 
-            Assert.IsNotNull( result );
-            Assert.AreEqual( 2, result.Count );
-            Assert.AreEqual("Ashwin", result[0].Name );
-            Assert.AreEqual("Tarun", result[1].Name );
+            Assert.IsNotNull(result);
+            Assert.AreEqual(2, result.Count);
+            Assert.AreEqual("Ashwin", result[0].Name);
+            Assert.AreEqual("Tarun", result[1].Name);
             Assert.AreEqual("Ashwin@example.com", result[0].Email);
             Assert.AreEqual("tarun@example.com", result[1].Email);
         }

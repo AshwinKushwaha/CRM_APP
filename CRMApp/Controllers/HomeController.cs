@@ -17,7 +17,7 @@ namespace CRMApp.Controllers
         {
             if (User.IsInRole("admin"))
             {
-                return RedirectToAction("Index","Dashboard");
+                return RedirectToAction("Index", "Dashboard");
             }
             if (User.IsInRole("salesrep"))
             {
@@ -30,8 +30,8 @@ namespace CRMApp.Controllers
             return View();
         }
 
-        
-        
+
+
 
         public IActionResult Privacy()
         {

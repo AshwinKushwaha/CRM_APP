@@ -1,10 +1,7 @@
-﻿using CRMApp.Areas.Identity.Data;
-using CRMApp.Models;
-using Microsoft.AspNetCore.Identity;
+﻿using CRMApp.Models;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using System.Reflection.Emit;
 
 namespace CRMApp.Areas.Identity.Data;
 
