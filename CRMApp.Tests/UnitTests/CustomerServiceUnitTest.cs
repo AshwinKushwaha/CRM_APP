@@ -18,10 +18,10 @@ namespace CRMApp.Tests.UnitTests
                 .Options;
 
             var customerData = new List<Customer>
-        {
-            new Customer { Id = 1, Name = "Ashwin" },
-            new Customer { Id = 2, Name = "Tarun" }
-        }.AsQueryable();
+            {
+              new Customer { Id = 1, Name = "Ashwin" },
+              new Customer { Id = 2, Name = "Tarun" }
+            }.AsQueryable();
 
 
             var mockSet = new Mock<DbSet<Customer>>();
@@ -48,7 +48,6 @@ namespace CRMApp.Tests.UnitTests
             Assert.AreEqual("Tarun", result[1].Name);
 
         }
-
 
         [TestMethod]
         public void GetCustomers_ReturnAllCustomers()
