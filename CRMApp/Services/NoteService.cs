@@ -1,6 +1,9 @@
 ﻿using CRMApp.Areas.Identity.Data;
 using CRMApp.Models;
 using CRMApp.ViewModels;
+using Microsoft.Data.SqlClient;
+using Microsoft.EntityFrameworkCore;
+using System.Data;
 
 namespace CRMApp.Services
 {
@@ -94,23 +97,41 @@ namespace CRMApp.Services
             }
         }
 
-        public bool SaveNote(Note note)
-        {
-            var currentUser = _contactService.GetCurrentUserAsync().Result;
-            if (note.Id == 0)
-            {
-                note.CreatedAt = DateTime.Now;
-                note.CreatedBy = currentUser.Id;
-                _context.Notes.Add(note);
-                _activityLogger.LogAsync(Module.Note, currentUser.Id, $"Added by {currentUser.NormalizedUserName}", false);
-            }
-            else
-            {
-                _context.Notes.Update(note);
-                _activityLogger.LogAsync(Module.Note, currentUser.Id, $"Updated by {currentUser.NormalizedUserName}", false);
-            }
-            _context.SaveChanges();
-            return true;
-        }
-    }
+		public bool SaveNote(Note note)
+		{
+			var currentUser = _contactService.GetCurrentUserAsync().Result;
+
+			if (note.Id == 0)
+			{
+				note.CreatedAt = DateTime.Now;
+				note.CreatedBy = currentUser.Id;
+
+				var customerIdParam = new SqlParameter("@CustomerId", note.CustomerId);
+				var descriptionParam = new SqlParameter("@Description", note.Description ?? (object)DBNull.Value);
+				var createdByParam = new SqlParameter("@CreatedBy", note.CreatedBy ?? (object)DBNull.Value);
+				var createdAtParam = new SqlParameter("@CreatedAt", note.CreatedAt);
+				var newIdParam = new SqlParameter("@NewId", SqlDbType.Int)
+				{
+					Direction = ParameterDirection.Output
+				};
+
+				_context.Database.ExecuteSqlRaw(
+					"EXEC sp_InsertNote @CustomerId, @Description, @CreatedBy, @CreatedAt, @NewId OUTPUT",
+					customerIdParam, descriptionParam, createdByParam, createdAtParam, newIdParam
+				);
+
+				note.Id = (int)newIdParam.Value;
+
+				_activityLogger.LogAsync(Module.Note, currentUser.Id, $"Added by {currentUser.NormalizedUserName}", false);
+			}
+			else
+			{
+				_context.Notes.Update(note); // Optional: can be replaced with an UpdateNote stored procedure
+				_activityLogger.LogAsync(Module.Note, currentUser.Id, $"Updated by {currentUser.NormalizedUserName}", false);
+				_context.SaveChanges();
+			}
+
+			return true;
+		}
+	}
 }

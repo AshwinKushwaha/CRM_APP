@@ -1,4 +1,5 @@
 using CRMApp.Areas.Identity.Data;
+using CRMApp.Configurations;
 using CRMApp.Middleware;
 using CRMApp.Services;
 using Microsoft.AspNetCore.Identity;
@@ -18,13 +19,7 @@ builder.Services.AddRazorPages();
 builder.Services.AddControllersWithViews();
 builder.Services.AddSession();
 
-builder.Services.AddScoped<ICustomerService, CustomerService>();
-builder.Services.AddScoped<IContactService, ContactService>();
-builder.Services.AddScoped<IActivityLogger, ActivityLogService>();
-builder.Services.AddScoped<IUserService, UserService>();
-builder.Services.AddScoped<INoteService, NoteService>();
-builder.Services.AddScoped<IContactInquiryService, ContactInquiryService>();
-builder.Services.AddScoped<IAppLogger, AppExceptionHandlerAndLogger>();
+builder.Services.AddApplicationServices();
 builder.Services.AddHttpContextAccessor();
 builder.Services.AddExceptionHandler<AppExceptionHandlerAndLogger>();
 
