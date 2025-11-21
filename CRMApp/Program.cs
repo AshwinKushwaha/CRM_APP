@@ -1,9 +1,9 @@
-using Microsoft.AspNetCore.Authentication.Cookies;
-
+using CRMApp.Areas.Identity.Data;
+using CRMApp.Configurations;
+using CRMApp.Middleware;
+using CRMApp.Services;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using CRMApp.Areas.Identity.Data;
-using CRMApp.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -12,19 +12,16 @@ var connectionString = builder.Configuration.GetConnectionString("ApplicationUse
 builder.Services.AddDbContext<ApplicationUserIdentityContext>(options => options.UseSqlServer(connectionString));
 
 
-builder.Services.AddIdentity<ApplicationUser,IdentityRole>(options => options.SignIn.RequireConfirmedAccount = false).AddEntityFrameworkStores<ApplicationUserIdentityContext>();
+builder.Services.AddIdentity<ApplicationUser, IdentityRole>(options => options.SignIn.RequireConfirmedAccount = false).AddEntityFrameworkStores<ApplicationUserIdentityContext>();
 builder.Services.AddRazorPages();
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 builder.Services.AddSession();
 
-builder.Services.AddScoped<ICustomerService, CustomerService>();
-builder.Services.AddScoped<IContactService, ContactService>();
-builder.Services.AddScoped<IActivityLogger, ActivityLogService>();
-builder.Services.AddScoped<IUserService, UserService>();
-builder.Services.AddScoped<INoteService, NoteService>();
+builder.Services.AddApplicationServices();
 builder.Services.AddHttpContextAccessor();
+builder.Services.AddExceptionHandler<AppExceptionHandlerAndLogger>();
 
 var app = builder.Build();
 
@@ -62,7 +59,7 @@ else
 app.UseSession();
 app.UseHttpsRedirection();
 app.UseStaticFiles();
-
+app.UseExceptionHandler(_ => { });
 app.UseRouting();
 
 app.UseAuthorization();

@@ -5,13 +5,9 @@
     Layout = "~/Views/Shared/_AdminLayout.cshtml";
 }
 
-<div style="position: relative; top: -10rem;">
+<div style="position: relative; top: -6rem;">
     <h1 class="text-center">Contact List</h1>
     <hr />
-    @* <p>
-    <a asp-action="Create" class="btn btn-success">Create New</a>
-
-    </p> *@
     <div >
         <form asp-action="Index" asp-controller="Contact" method="post">
             <div asp-validation-summary="ModelOnly"></div>
@@ -24,7 +20,7 @@
   </div>
     
         <div class="d-flex justify-content-center mt-3">
-            <table class="table table-bordered table-striped table-dark  table-hover table-responsive-sm table-responsive-md" >
+            <table class="table table-bordered table-striped  table-hover table-responsive-sm table-responsive-md" style="border-color:darkgray;">
                 <thead>
                     <tr>
                         <th>
@@ -66,14 +62,33 @@
                                 @Html.DisplayFor(modelItem => item.Contact)
                             </td>
 
-                            @*  <td class="d-flex justify-content-center gap-2 ps-0 pe-0">
-                        <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-success">Edit</a>
-
-                        <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-danger">Delete</a>
-                        </td> *@
+                          
                         </tr>
                     }
                 </tbody>
             </table>
         </div>
+
+        <nav>
+            <ul class="pagination">
+            @if (Model.Contacts.HasPreviousPage)
+            {
+                <li class="page-item">
+                    <a asp-route-pageIndex="@(Model.Contacts.PageIndex - 1)" class="page-link">Previous</a>
+                </li>
+            }
+            @for(int i = Model.Contacts.StartPage; i <= Model.Contacts.EndPage; i++)
+            {
+                <li class="page-item @( i == Model.Contacts.PageIndex ? "active" : "")">
+                    <a asp-route-pageIndex="@i" class="page-link">@i</a>
+                </li>
+            }
+            @if (Model.Contacts.HasNextPage)
+            {
+                <li class="page-item">
+                    <a asp-route-pageIndex="@(Model.Contacts.PageIndex + 1)" class="page-link">Next</a>
+                </li>
+            }
+        </ul>
+        </nav>
 </div>

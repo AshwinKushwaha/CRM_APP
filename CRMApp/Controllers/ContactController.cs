@@ -8,41 +8,45 @@ namespace CRMApp.Controllers
     public class ContactController : Controller
     {
         private readonly IContactService _contactService;
-		private readonly ICustomerService _customerService;
+        private readonly ICustomerService _customerService;
+        private readonly int PageSize = 5;
 
-		public ContactController(IContactService contactService,ICustomerService customerService)
+        public ContactController(IContactService contactService, ICustomerService customerService)
         {
             _contactService = contactService;
-			_customerService = customerService;
-		}
-        public IActionResult Index()
+            _customerService = customerService;
+        }
+        public IActionResult Index(int pageIndex = 1)
         {
             if (User.IsInRole("admin"))
             {
-				List<CustomerContact> contacts = _contactService.GetAllContacts();
+                var result = _contactService.GetAllContacts(pageIndex);
+                var contacts = result.contacts;
+                var totalContacts = result.contactCount;
                 var viewModel = new ContactViewModel(_customerService)
                 {
-                    Contacts = contacts
+                    Contacts = new PaginatedList<CustomerContact>(contacts, totalContacts, pageIndex, PageSize)
                 };
                 return View(viewModel);
-			}
+            }
             return RedirectToAction("Index", "Dashboard");
         }
 
         [HttpPost]
-        public IActionResult Index(ContactViewModel contactViewModel)
+        public IActionResult Index(ContactViewModel contactViewModel, int pageIndex)
         {
-            var contacts = _contactService.GetContacts(contactViewModel.ContactFilter, contactViewModel.ContactInput,null);
+            var totalContacts = _contactService.GetContacts(contactViewModel.ContactFilter, contactViewModel.ContactInput, null).Count();
+            var contacts = _contactService.GetContacts(contactViewModel.ContactFilter, contactViewModel.ContactInput, null, pageIndex);
             var viewModel = new ContactViewModel(_customerService)
             {
-                Contacts = contacts
+                Contacts = new PaginatedList<CustomerContact>(contacts, totalContacts, pageIndex, PageSize)
             };
             return View(viewModel);
         }
 
 
         [HttpPost]
-        public  IActionResult AddContact(CustomerViewModel viewModel)
+        public IActionResult SaveContact(CustomerViewModel viewModel)
         {
             if (viewModel.CustomerContact != null)
             {
@@ -67,5 +71,17 @@ namespace CRMApp.Controllers
 
         }
 
-    }
+        [HttpGet]
+		public IActionResult PagedData( int customerId ,int pageIndex = 1)
+		{
+			if (pageIndex < 1)
+			{
+				pageIndex = 1;
+			}
+
+            var data = _contactService.GetContacts(customerId,pageIndex);
+			return PartialView("_ContactList",data);
+		}
+
+	}
 }

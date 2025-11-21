@@ -6,6 +6,7 @@
     <title>@ViewData["Title"] - CRMApp</title>
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/crm_main.css" asp-append-version="true" />
+    <link href="~/lib/toastr/toastr.min.css" rel="stylesheet" />
 </head>
 <body class="d-flex flex-column">
     <header style="width: 88%; ">
@@ -46,6 +47,7 @@
 
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/lib/toastr/toastr.min.js"></script>
     @await RenderSectionAsync("Scripts", required: false)
 </body>
 </html>

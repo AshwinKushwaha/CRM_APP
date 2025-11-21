@@ -4,6 +4,7 @@
 	ViewData["Title"] = "Details";
 	Layout = "~/Views/Shared/_AdminLayout.cshtml";
 }
+<div style="position:relative; top: 1rem;">
 
 <div>
 	<h1 class="text-center">Customer Details</h1>
@@ -63,77 +64,31 @@
 		</form>
 		
 	</div>
-	<div class="d-flex justify-content-center table-responsive-sm table-responsive-md">
-		@if(Model.Contacts.Count == 0)
-		{
-			<h4 class="text-center mb-3">No Contact Found</h4>
-		}else
-			{
-			<table class="table table-hover table-bordered table-striped mt-4 " style="width:98%;">
-				<thead>
-					<tr>
-
-
-						<th>
-							@Html.DisplayNameFor(model => model.CustomerContact.ContactName)
-						</th>
-						<th>
-							@Html.DisplayNameFor(model => model.CustomerContact.Relation)
-						</th>
-						<th>
-							@Html.DisplayNameFor(model => model.CustomerContact.ContactType)
-						</th>
-						<th>
-							@Html.DisplayNameFor(model => model.CustomerContact.Contact)
-						</th>
-						<th></th>
-					</tr>
-				</thead>
-				<tbody>
-					@foreach (var item in Model.Contacts)
-					{
-						<tr>
-							<td>
-								@Html.DisplayFor(modelItem => item.ContactName)
-							</td>
-							<td>
-								@Html.DisplayFor(modelItem => item.Relation)
-							</td>
-							<td>
-								@Html.DisplayFor(modelItem => item.ContactType)
-							</td>
-							<td>
-								@Html.DisplayFor(modelItem => item.Contact)
-							</td>
-
-							<td>
-								<div class="d-flex justify-content-center gap-1">
-									@if (User.IsInRole("admin") || User.IsInRole("salesrep"))
-									{
-										<form method="post">
-											<input type="hidden" name="selectedContactId" value=@item.Id />
-											<button type="submit" data-bs-toggle="modal" data-bs-target="#EditModal" class="btn btn-outline-success">Edit</button>
-										</form>
-
-									}
-
-									@if (User.IsInRole("admin"))
-									{
-										<form method="post">
-											<input type="hidden" name="deleteContactId" value=@item.Id />
-											<button type="submit" data-bs-toggle="modal" data-bs-target="#confirmDeleteModal" class="btn btn-outline-danger">Delete</button>
-										</form>
-									}
-								</div>
-
-							</td>
-						</tr>
-					}
-				</tbody>
-			</table>
-			}
-
-			</div>
+	<div id="partialContainer">
+		<partial  name="_ContactList" model="Model.Contacts"/>
+	</div>
+		<nav class="ms-3">
+			<ul class="pagination">
+				@if (Model.Contacts.HasPreviousPage)
+				{
+					<li class="page-item">
+						<a data-contactpageindex="@(Model.Contacts.PageIndex - 1)" data-id="@Model.Customer.Id" class="page-link contact-page-link"><strong>&lt;</strong></a>
+					</li>
+				}
+				@for (int i = Model.Contacts.StartPage; i <= Model.Contacts.EndPage; i++)
+				{
+					<li class="page-item @(i == Model.Contacts.PageIndex ? "active" : "")">
+						<a data-contactpageindex="@i" data-id="@Model.Customer.Id" class="page-link contact-page-link">@i</a>
+					</li>
+				}
+				@if (Model.Contacts.HasNextPage)
+				{
+					<li class="page-item">
+						<a data-contactpageindex="@(Model.Contacts.PageIndex + 1)" data-id="@Model.Customer.Id" class="page-link contact-page-link"><strong>&gt;</strong></a>
+					</li>
+				}
+			</ul>
+		</nav>
 </div>
 <br />
 <h1 class="text-center">Notes</h1>
@@ -158,59 +113,33 @@
 		</form>
 
 	</div>
-	<div class="d-flex justify-content-center table-responsive-sm table-responsive-md">
-		@if(Model.Notes.Count == 0)
-		{
-			<h4 class="text-center mb-3">No Note Found</h4>
-		}
-		else
-		{
-			<table class="table table-striped table-hover table-bordered mt-3 " style="width:98%;">
-				<thead>
-					<tr>
-						<th>
-							@Html.DisplayNameFor(model => model.Note.Description)
-						</th>
-						<th>
-							@Html.DisplayNameFor(model => model.Note.CreatedAt)
-						</th>
-
-						<th></th>
-					</tr>
-				</thead>
-				<tbody>
-					@foreach (var item in Model.Notes)
-					{
-						<tr>
-							<td>
-								@Html.DisplayFor(modelItem => item.Description)
-							</td>
-							<td>
-								@Html.DisplayFor(modelItem => item.CreatedAt)
-							</td>
-
-							<td class="d-flex justify-content-center gap-1">
-								<form method="post">
-									<input type="hidden" name="selectedNoteId" value=@item.Id />
-									<button type="submit" data-bs-toggle="modal" data-bs-target="#EditNoteModal" class="btn btn-outline-success">Edit</button>
-								</form>
-
-								<form method="post">
-									<input type="hidden" name="deleteNoteId" value=@item.Id />
-									<button type="submit" data-bs-toggle="modal" data-bs-target="#confirmNoteDeleteModal" class="btn btn-outline-danger">Delete</button>
-								</form>
-							</td>
-						</tr>
-					}
-				</tbody>
-			</table>
-		}
-
-		
-
+	<div id="NotePartialContainer">
+		<partial name="_NoteList" model="Model.Notes"/>
 	</div>
+	<nav class="ms-3">
+		<ul class="pagination">
+				@if (Model.Notes.HasPreviousPage)
+				{
+					<li class="page-item">
+						<a data-notepageindex="@(Model.Notes.PageIndex - 1)" data-id="@Model.Customer.Id" class="page-link note-page-link">Previous</a>
+					</li>
+				}
+				@for(int i = Model.Notes.StartPage; i <= Model.Notes.EndPage; i++)
+				{
+					<li class="page-item @(i == Model.Notes.PageIndex ? "active" : "") note-page-item">
+						<a data-notepageindex="@i" data-id="@Model.Customer.Id" class="page-link note-page-link">@i</a>
+					</li>
+				}
+				@if (Model.Notes.HasNextPage)
+				{
+					<li class="page-item">
+						<a data-notepageindex="@(Model.Notes.PageIndex + 1)" data-id="@Model.Customer.Id" class="page-link note-page-link">Next</a>
+					</li>
+				}
+			</ul>
+	</nav>
 	</div>
-
+</div>
 
 
 
@@ -218,18 +147,23 @@
 
 @{
 	bool isAddNew = false;
+	string customerName =  Model.Customer.Name; 
 	if (Context.Request.HasFormContentType)
 	{
 		isAddNew = Context.Request.Form["addNewContact"] == "true";
+		
 	}
 }
 
 @if (isAddNew)
 {
-	<div class="modal fade show d-block" id="createModal" tabindex="-1" aria-hidden="true" aria-modal="true" role="dialog">
+	<div class="modal fade show d-block" id="createModal" tabindex="-1" aria-hidden="true" aria-modal="true" role="dialog" style="z-index:100000;">
 		<div class="modal-dialog">
 			<div class="modal-content">
-				<partial name="_ContactForm" model="new CRMApp.ViewModels.CustomerViewModel{CustomerContact = new CustomerContact{Id =0 , CustomerId = Model.Customer.Id}}" />
+				<partial name="_ContactForm" model="new CRMApp.ViewModels.CustomerViewModel{
+CustomerContact = new CustomerContact{Id =0 , CustomerId = Model.Customer.Id},
+Customer = new Customer{Name = customerName}
+}" />
 			</div>
 		</div>
 	</div>
@@ -244,29 +178,34 @@
 @{
 	string selectedId = null;
 	CRMApp.Models.CustomerContact selectedContact = null;
+	
 
 	if (Context.Request.HasFormContentType)
 	{
 		selectedId = Context.Request.Form["selectedContactId"];
 		selectedContact = Model.Contacts.FirstOrDefault(c => c.Id.ToString() == selectedId);
+		
 	}
 }
 	
 @if(selectedContact != null)
 {
-	<div class="modal fade show d-block" id="EditModal" tabindex="-1" aria-hidden="true"  aria-modal="true" role="dialog">
+	<div class="modal fade show d-block" id="EditModal" tabindex="-1" aria-hidden="true" aria-modal="true" role="dialog" style="z-index:100000;">
 		<div class="modal-dialog">
 			<div class="modal-content">
-				<partial name="_ContactForm" model="new CRMApp.ViewModels.CustomerViewModel{
-							CustomerContact = new CustomerContact {
-								Id = selectedContact.Id,
-								CustomerId = selectedContact.CustomerId,
-								Contact = selectedContact.Contact,
-								ContactName = selectedContact.ContactName,
-								ContactType = selectedContact.ContactType,
-								Relation = selectedContact.Relation
-							}
-				}" />
+				@await Html.PartialAsync("_ContactForm", new CRMApp.ViewModels.CustomerViewModel()
+{
+	CustomerContact = new CustomerContact
+	{
+		Id = selectedContact.Id,
+		CustomerId = selectedContact.CustomerId,
+		Contact = selectedContact.Contact,
+		ContactName = selectedContact.ContactName,
+		ContactType = selectedContact.ContactType,
+		Relation = selectedContact.Relation
+	},
+	Customer = new Customer { Name = customerName }
+})
 			</div>
 		</div>
 	</div>
@@ -288,7 +227,7 @@
 }
 @if (deleteContact != null)
 {
-	<div class="modal fade show d-block" id="confirmDeleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true" aria-modal="true" role="dialog">
+	<div class="modal fade show d-block" id="confirmDeleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true" aria-modal="true" role="dialog" style="z-index:100000;">
 		<div class="modal-dialog">
 			<div class="modal-content">
 				<form asp-action="DeleteContact" asp-controller="Contact" method="post">
@@ -324,7 +263,7 @@
 
 @if (isAddNewNote)
 {
-	<div class="modal fade show d-block" id="createNoteModal" tabindex="-1" aria-hidden="true" aria-modal="true" role="dialog">
+	<div class="modal fade show d-block" id="createNoteModal" tabindex="-1" aria-hidden="true" aria-modal="true" role="dialog" style="z-index:100000;">
 		<div class="modal-dialog">
 			<div class="modal-content">
 				<partial name="_NoteForm" model="new CRMApp.ViewModels.CustomerViewModel{Note = new Note{Id = 0, CustomerId = Model.Customer.Id }, CurrentUsername = currentUser}" />
@@ -348,7 +287,7 @@
 
 @if (selectedNote != null)
 {
-	<div class="modal fade show d-block" id="EditNoteModal" tabindex="-1" aria-hidden="true" aria-modal="true" role="dialog">
+	<div class="modal fade show d-block" id="EditNoteModal" tabindex="-1" aria-hidden="true" aria-modal="true" role="dialog" style="z-index:100000;">
 		<div class="modal-dialog">
 			<div class="modal-content">
 				<partial name="_NoteForm" model="new CRMApp.ViewModels.CustomerViewModel{
@@ -379,7 +318,7 @@ CurrentUsername = currentUser
 }
 @if (deleteNote != null)
 {
-	<div class="modal fade show d-block" id="confirmNoteDeleteModal" tabindex="-1" aria-labelledby="deleteNoteModalLabel" aria-hidden="true" aria-modal="true" role="dialog">
+	<div class="modal fade show d-block" id="confirmNoteDeleteModal" tabindex="-1" aria-labelledby="deleteNoteModalLabel" aria-hidden="true" aria-modal="true" role="dialog" style="z-index:100000;">
 		<div class="modal-dialog">
 			<div class="modal-content">
 				<form asp-action="DeleteNote" asp-controller="Note" method="post">
@@ -405,7 +344,13 @@ CurrentUsername = currentUser
 @section Scripts {
 
 	<script>
+		
 		$(document).ready(function () {
+			$("#contactTypeList").on('change',function(){
+				var contactTypeList = $("#contactTypeList option:selected").text();
+				$("#contactType").text(contactTypeList)
+			})
+
 			$("#btnSave").click(function (e) {
 
 				debugger;
@@ -425,6 +370,45 @@ CurrentUsername = currentUser
 					form.submit()
 				}
 			})
+			$(".contact-page-link").click(function (e) {
+				e.preventDefault()
+
+				var page = $(this).data("contactpageindex");
+				var id = $(this).data("id");
+
+				$.ajax({
+					url: "/Contact/PagedData",
+					type: 'GET',
+					data: { pageIndex: page, customerId: id },
+					success: function (result) {
+						$('#partialContainer').html(result);
+
+						$('.page-item').removeClass('active');
+						$(e.target).closest('.page-item').addClass('active');
+					}
+				});
+			});
+
+			$(".note-page-link").click(function (e) {
+				e.preventDefault()
+
+				var page = $(this).data("notepageindex");
+				var id = $(this).data("id");
+
+				$.ajax({
+					url: "/Note/PagedData",
+					type: 'GET',
+					data: { pageIndex: page, customerId: id },
+					success: function (result) {
+						$('#NotePartialContainer').html(result);
+
+						$('.note-page-item').removeClass('active');
+						$(e.target).closest('.note-page-item').addClass('active');
+					}
+				})
+			})
 		});
+
+		
 	</script>
 }

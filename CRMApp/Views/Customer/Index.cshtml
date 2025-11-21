@@ -4,6 +4,8 @@
 	ViewData["Title"] = "Index";
 	Layout = "~/Views/Shared/_AdminLayout.cshtml";
 }
+<div class=" mt-4">
+
 
 <h2 class="text-center">Customer List</h2>
 @if (User.IsInRole("admin") || User.IsInRole("salesrep"))
@@ -16,10 +18,7 @@
 <div class="d-flex justify-content-center">
 	<form asp-action="Index" style="width: 100%;" method="post">
 		<div class="d-flex gap-1">
-			
-
-			
-			<select asp-for="filter" asp-items="Html.GetEnumSelectList<CRMApp.ViewModels.Filter>()" class="form-control" style="width: 8%;"></select>
+			<select asp-for="CustomerFilter" asp-items="Html.GetEnumSelectList<CRMApp.ViewModels.CustomerFilter>()" class="form-control" style="width: 8%;"></select>
 
 			<input class="form-control" asp-for="Input" placeholder="Search bar" />
 			<button type="submit" class="btn btn-outline-primary">Search</button>
@@ -38,7 +37,7 @@
 	}
 	else
 	{
-		<table class="table table-hover table-bordered table-striped table-dark">
+		<table class="table table-hover table-bordered table-striped" style="border-color:darkgray;">
 			<thead>
 				<tr>
 					<th>
@@ -95,11 +94,35 @@
 				}
 			</tbody>
 		</table>
+			<nav>
+				<ul class="pagination">
+					@if (Model.Customers.HasPreviousPage)
+					{
+						<li class="page-item">
+						<a href="?pageIndex=@(Model.Customers.PageIndex - 1)" class="page-link">Previous</a>
+						</li>
+					}
+					@if(Model.Customers.TotalPages > 1){
+					for(int i = 1; i <= Model.Customers.TotalPages; i++){
+						<li class="page-item @(i == Model.Customers.PageIndex ? "active" : "")">
+						<a href="?pageIndex=@i" class="page-link">@i</a>
+						</li>
+					}
+					}
+					@if (Model.Customers.HasNextPage)
+					{
+						<li class="page-item">
+						<a href="?pageIndex=@(Model.Customers.PageIndex + 1)" class="page-link">Next</a>
+						</li>
+					}
+				</ul>
+		</nav>
 	}
 }
+</div>
 @foreach (var item in Model.Customers)
 {
-	<div class="modal fade" id="confirmDeleteModal-@item.Id" tabindex="-1" aria-labelledby="deleteModalLabel-@item.Id" aria-hidden="true">
+	<div class="modal fade" id="confirmDeleteModal-@item.Id" tabindex="-1" aria-labelledby="deleteModalLabel-@item.Id" aria-hidden="true" style="z-index: 100000;">
 		<div class="modal-dialog">
 			<div class="modal-content">
 				<form asp-action="Delete" asp-controller="Customer" method="post">

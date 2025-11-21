@@ -5,56 +5,80 @@
 	Layout = "~/Views/Shared/_AdminLayout.cshtml";
 }
 
+<div style="position: relative; top:1rem;">
 
-<h1 class="text-center">User List</h1>
-<hr />
-<div>
-	<form asp-action="Index" asp-controller="User" method="post">
-		<div class="d-flex mb-4 mt-2 gap-1">
-			<select asp-for="UserFilter" asp-items="Html.GetEnumSelectList<CRMApp.ViewModels.UserFilter>()" class="form-control" style="width: 8%;"></select>
-			<input asp-for="UserInput" placeholder="Search Bar.." class="form-control" />
-			<button type="submit" class="btn btn-outline-primary">Search</button>
-		</div>
-	</form>
-</div>
-<table class="table table-bordered table-striped table-dark table-hover">
-	<thead>
-		<tr>
-			<th>
-				@Html.DisplayNameFor(model => model.User.UserName)
-			</th>
-			<th>
-				@Html.DisplayNameFor(model => model.User.Email)
-			</th>
-
-
-			<th></th>
-		</tr>
-	</thead>
-	<tbody>
-		@foreach (var item in Model.Users)
-		{
+	<h1 class="text-center">User List</h1>
+	<hr />
+	<div>
+		<form asp-action="Index" asp-controller="User" method="post">
+			<div class="d-flex mb-4 mt-2 gap-1">
+				<select asp-for="UserFilter" asp-items="Html.GetEnumSelectList<CRMApp.ViewModels.UserFilter>()" class="form-control" style="width: 8%;"></select>
+				<input asp-for="UserInput" placeholder="Search Bar.." class="form-control" />
+				<button type="submit" class="btn btn-outline-primary">Search</button>
+			</div>
+		</form>
+	</div>
+	<table class="table table-bordered table-striped  table-hover" style="border-color:darkgray;">
+		<thead>
 			<tr>
-				<td>
-					@Html.DisplayFor(modelItem => item.UserName)
-				</td>
-				<td>
-					@Html.DisplayFor(modelItem => item.Email)
-				</td>
+				<th>
+					@Html.DisplayNameFor(model => model.User.UserName)
+				</th>
+				<th>
+					@Html.DisplayNameFor(model => model.User.Email)
+				</th>
 
-				<td class="d-flex justify-content-center gap-2 ps-0 pe-0">
-					<button type="button" data-bs-toggle="modal" data-bs-target="#confirmDeleteModal" data-user-id="@item.Id" data-user-name="@item.UserName" class="btn btn-outline-danger">Delete</button>
-				</td>
+
+				<th></th>
 			</tr>
-		}
-	</tbody>
-</table>
+		</thead>
+		<tbody>
+			@foreach (var item in Model.Users)
+			{
+				<tr>
+					<td>
+						@Html.DisplayFor(modelItem => item.UserName)
+					</td>
+					<td>
+						@Html.DisplayFor(modelItem => item.Email)
+					</td>
+
+					<td class="d-flex justify-content-center gap-2 ps-0 pe-0">
+						<button type="button" data-bs-toggle="modal" data-bs-target="#confirmDeleteModal" data-user-id="@item.Id" data-user-name="@item.UserName" class="btn btn-outline-danger">Delete</button>
+					</td>
+				</tr>
+			}
+		</tbody>
+	</table>
+	<nav>
+		<ul class="pagination">
+			@if (Model.Users.HasPreviousPage)
+			{
+				<li class="page-item">
+					<a href="?pageIndex=@(Model.Users.PageIndex - 1)" class="page-link"><strong>&lt;</strong></a>
+				</li>
+			}
+			@for(int i = 1; i <= Model.Users.TotalPages; i++)
+			{
+				<li class="page-item @(i == Model.Users.PageIndex ? "active" : "")">
+					<a href="?pageIndex=@i" class="page-link">@i</a>
+				</li>
+			}
+			@if (Model.Users.HasNextPage)
+			{
+				<li class="page-item">
+					<a class="page-link" href="?pageIndex=@(Model.Users.PageIndex + 1)"><strong>&gt;</strong></a>
+				</li>
+			}
+		</ul>
+	</nav>
+</div>
 
 
 
 
 
-<div class="modal fade " id="confirmDeleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true" aria-modal="true" role="dialog">
+<div class="modal fade " id="confirmDeleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true" aria-modal="true" role="dialog" style="z-index:10000;">
 	<div class="modal-dialog">
 		<div class="modal-content">
 			<form asp-action="DeleteUser" asp-controller="User" method="post">
