@@ -1,106 +1,153 @@
-﻿// Basic Login Form Script
-class BasicLoginForm {
-    constructor() {
-        this.form = document.getElementById('loginForm');
-        this.emailInput = document.getElementById('email');
-        this.passwordInput = document.getElementById('password');
-        this.passwordToggle = document.getElementById('passwordToggle');
-        this.successMessage = document.getElementById('successMessage');
+﻿// CRMApp - Client-side utilities
+(function () {
+    'use strict';
 
-        this.init();
-    }
+    // Utility functions for CRM application
+    const CRMUtils = {
+        
+        // Add smooth scroll behavior to anchor links
+        initSmoothScroll: function () {
+            const anchors = document.querySelectorAll('a[href^="#"]');
+            if (!anchors || anchors.length === 0) return;
+            
+            anchors.forEach(anchor => {
+                if (!anchor) return;
+                
+                anchor.addEventListener('click', function (e) {
+                    const href = this.getAttribute('href');
+                    if (!href || href === '#') return;
+                    
+                    const target = document.querySelector(href);
+                    if (target) {
+                        e.preventDefault();
+                        target.scrollIntoView({
+                            behavior: 'smooth',
+                            block: 'start'
+                        });
+                    }
+                });
+            });
+        },
 
-    init() {
-        // Initialize shared utilities
-        FormUtils.addSharedAnimations();
-        FormUtils.setupFloatingLabels(this.form);
-        FormUtils.setupPasswordToggle(this.passwordInput, this.passwordToggle);
+        // Add loading state to buttons
+        initButtonLoading: function () {
+            const forms = document.querySelectorAll('form');
+            if (!forms || forms.length === 0) return;
+            
+            forms.forEach(form => {
+                form.addEventListener('submit', function () {
+                    const submitBtn = this.querySelector('button[type="submit"]');
+                    if (submitBtn && !submitBtn.disabled) {
+                        submitBtn.disabled = true;
+                        const originalText = submitBtn.innerHTML;
+                        submitBtn.innerHTML = '<span class="spinner"></span> Processing...';
+                        
+                        // Re-enable after 3 seconds as fallback
+                        setTimeout(() => {
+                            submitBtn.disabled = false;
+                            submitBtn.innerHTML = originalText;
+                        }, 3000);
+                    }
+                });
+            });
+        },
 
-        // Add event listeners
-        this.form.addEventListener('submit', this.handleSubmit.bind(this));
-        this.emailInput.addEventListener('input', () => this.validateField('email'));
-        this.passwordInput.addEventListener('input', () => this.validateField('password'));
+        // Initialize tooltips (if using Bootstrap)
+        initTooltips: function () {
+            if (typeof bootstrap !== 'undefined' && bootstrap.Tooltip) {
+                const tooltipTriggerList = [].slice.call(
+                    document.querySelectorAll('[data-bs-toggle="tooltip"]')
+                );
+                tooltipTriggerList.map(function (tooltipTriggerEl) {
+                    return new bootstrap.Tooltip(tooltipTriggerEl);
+                });
+            }
+        },
 
-        // Add entrance animation
-        FormUtils.addEntranceAnimation(this.form.closest('.login-card'), 100);
-    }
+        // Auto-hide alerts after 5 seconds
+        initAutoHideAlerts: function () {
+            document.querySelectorAll('.alert:not(.alert-permanent)').forEach(alert => {
+                setTimeout(() => {
+                    if (typeof bootstrap !== 'undefined' && bootstrap.Alert) {
+                        const bsAlert = new bootstrap.Alert(alert);
+                        bsAlert.close();
+                    } else {
+                        alert.style.opacity = '0';
+                        setTimeout(() => alert.remove(), 300);
+                    }
+                }, 5000);
+            });
+        },
 
-    validateField(fieldName) {
-        const input = document.getElementById(fieldName);
-        const value = input.value.trim();
-        let validation;
+        // Confirm delete actions
+        initDeleteConfirmation: function () {
+            const deleteElements = document.querySelectorAll('[data-confirm-delete]');
+            if (!deleteElements || deleteElements.length === 0) return;
+            
+            deleteElements.forEach(element => {
+                if (!element) return;
+                
+                element.addEventListener('click', function (e) {
+                    const message = this.getAttribute('data-confirm-delete') || 
+                                  'Are you sure you want to delete this item?';
+                    if (!confirm(message)) {
+                        e.preventDefault();
+                        return false;
+                    }
+                });
+            });
+        },
 
-        // Clear previous errors
-        FormUtils.clearError(fieldName);
+        // Add card hover effects
+        initCardAnimations: function () {
+            document.querySelectorAll('.card').forEach(card => {
+                card.addEventListener('mouseenter', function () {
+                    this.style.transform = 'translateY(-2px)';
+                });
+                card.addEventListener('mouseleave', function () {
+                    this.style.transform = 'translateY(0)';
+                });
+            });
+        },
 
-        // Validate based on field type
-        if (fieldName === 'email') {
-            validation = FormUtils.validateEmail(value);
-        } else if (fieldName === 'password') {
-            validation = FormUtils.validatePassword(value);
+        // Form validation helper
+        validateForm: function (formElement) {
+            const inputs = formElement.querySelectorAll('input[required], textarea[required], select[required]');
+            let isValid = true;
+
+            inputs.forEach(input => {
+                if (!input.value.trim()) {
+                    isValid = false;
+                    input.classList.add('is-invalid');
+                } else {
+                    input.classList.remove('is-invalid');
+                }
+            });
+
+            return isValid;
+        },
+
+        // Initialize all utilities
+        init: function () {
+            this.initSmoothScroll();
+            this.initButtonLoading();
+            this.initTooltips();
+            this.initAutoHideAlerts();
+            this.initDeleteConfirmation();
+            this.initCardAnimations();
         }
+    };
 
-        if (!validation.isValid && value !== '') {
-            FormUtils.showError(fieldName, validation.message);
-            return false;
-        } else if (validation.isValid) {
-            FormUtils.showSuccess(fieldName);
-            return true;
-        }
-
-        return true;
+    // Initialize when DOM is ready
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', function () {
+            CRMUtils.init();
+        });
+    } else {
+        CRMUtils.init();
     }
 
-    async handleSubmit(e) {
-        e.preventDefault();
+    // Expose CRMUtils globally for use in other scripts
+    window.CRMUtils = CRMUtils;
 
-        const email = this.emailInput.value.trim();
-        const password = this.passwordInput.value.trim();
-
-        // Validate all fields
-        const emailValid = this.validateField('email');
-        const passwordValid = this.validateField('password');
-
-        if (!emailValid || !passwordValid) {
-            FormUtils.showNotification('Please fix the errors below', 'error', this.form);
-            return;
-        }
-
-        // Show loading state
-        const submitBtn = this.form.querySelector('.login-btn');
-        submitBtn.classList.add('loading');
-
-        try {
-            // Simulate login process
-            await FormUtils.simulateLogin(email, password);
-
-            // Show success state
-            this.showSuccess();
-
-        } catch (error) {
-            // Show error notification
-            FormUtils.showNotification(error.message, 'error', this.form);
-        } finally {
-            // Remove loading state
-            submitBtn.classList.remove('loading');
-        }
-    }
-
-    showSuccess() {
-        // Hide the form
-        this.form.style.display = 'none';
-
-        // Show success message
-        this.successMessage.classList.add('show');
-
-        // Simulate redirect after 2 seconds
-        setTimeout(() => {
-            FormUtils.showNotification('Redirecting to dashboard...', 'success', this.successMessage);
-        }, 2000);
-    }
-}
-
-// Initialize the form when DOM is loaded
-document.addEventListener('DOMContentLoaded', () => {
-    new BasicLoginForm();
-});
+})();

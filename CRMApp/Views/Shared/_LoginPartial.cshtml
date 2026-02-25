@@ -4,46 +4,50 @@
 @inject SignInManager<ApplicationUser> SignInManager
 @inject UserManager<ApplicationUser> UserManager
 
-
 @if (SignInManager.IsSignedIn(User))
 {
-    
-    <div class="nav-item d-inline-flex nav-pills gap-1">
-        <div>
-            <a id="dashboard-tab" asp-action="Index" asp-controller="Dashboard" class="nav-link  active-tab" >Dashboard</a>
-        </div>
-        <div >
-            <a id="search-tab" asp-action="Index" asp-controller="Customer" class="nav-link  active-search">Customer Search</a>
-        </div>
+    <div class="d-flex align-items-center gap-2 flex-wrap">
+        <a asp-action="Index" asp-controller="Dashboard" class="btn btn-sm btn-primary">
+            Dashboard
+        </a>
+        <a asp-action="Index" asp-controller="Customer" class="btn btn-sm btn-secondary">
+            Customers
+        </a>
         
         <div class="dropdown">
-            <button class="btn btn-outline-secondary dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false"></button>
-            <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+            <button class="btn btn-sm btn-secondary dropdown-toggle" type="button" id="userMenu" data-bs-toggle="dropdown" aria-expanded="false">
+                Account
+            </button>
+            <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userMenu">
                 @if (User.IsInRole("admin"))
                 {
-                    <li class="nav-item">
-                        <a class="dropdown-item text-dark" id="register" asp-area="Identity" asp-page="/Account/Register">Register</a>
+                    <li>
+                        <a class="dropdown-item" asp-area="Identity" asp-page="/Account/Register">
+                            <span>➕</span> Register User
+                        </a>
                     </li>
+                    <li><hr class="dropdown-divider"></li>
                 }
-                
-                <li class="nav-item">
-                    <a class="dropdown-item text-dark" id="login" asp-area="Identity" asp-page="/Account/Logout">Logout</a>
+                <li>
+                    <a class="dropdown-item" asp-area="Identity" asp-page="/Account/Logout">
+                        <span>🚪</span> Logout
+                    </a>
                 </li>
             </ul>
         </div>
     </div>
-    
-    
-    
-    
 }
 else
 {
-    <div class="dropdown nav-item">
-        <button class="btn btn-outline-secondary dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false"></button>
-        <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
-            <li class="nav-item">
-                <a class="dropdown-item text-dark" id="login" asp-area="Identity" asp-page="/Account/Login">Login</a>
+    <div class="dropdown">
+        <button class="btn btn-sm btn-primary dropdown-toggle" type="button" id="guestMenu" data-bs-toggle="dropdown" aria-expanded="false">
+            Sign In
+        </button>
+        <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="guestMenu">
+            <li>
+                <a class="dropdown-item" asp-area="Identity" asp-page="/Account/Login">
+                    🔐 Login
+                </a>
             </li>
         </ul>
     </div>

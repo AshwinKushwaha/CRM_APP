@@ -1,6 +1,5 @@
 ﻿
 <!DOCTYPE html>
-
 <html>
 <head>
     <meta charset="utf-8" />
@@ -11,17 +10,30 @@
     <title>@ViewBag.Title</title>
 </head>
 <body>
-    <nav class="navbar navbar-light bg-light" style="position: fixed; top: 2rem; width: 87%; border-radius: 10px; z-index:99999;">
-        <div class="container-fluid d-flex">
-            <div class="navbar-brand align-items-start">
-               Welcome <span class="text-black fw-bold">@await Component.InvokeAsync("User")</span>
+    <!-- Responsive Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-light sticky-top" style="top: 0.5rem; z-index: 1000; margin: 0.5rem;">
+        <div class="container-fluid">
+            <div class="d-flex align-items-center">
+                <span class="navbar-brand mb-0 me-2">Welcome</span>
+                <strong class="text-primary d-none d-sm-inline">@await Component.InvokeAsync("User")</strong>
             </div>
-            <partial name="_LoginPartial" />
             
-           
+            <!-- Mobile Toggle Button -->
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#adminNavbar" 
+                    aria-controls="adminNavbar" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            
+            <!-- Collapsible Content -->
+            <div class="collapse navbar-collapse" id="adminNavbar">
+                <div class="ms-auto mt-2 mt-lg-0">
+                    <partial name="_LoginPartial" />
+                </div>
+            </div>
         </div>
     </nav>
-    <div class="container mt-5 pt-4" >
+    
+    <div class="container" style="margin-top: 1rem; min-height: calc(100vh - 150px);">
         @RenderBody()
     </div>
    
@@ -30,29 +42,18 @@
     <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/Script.js"></script>
-   <script type="text/javascript">
-       $(document).ready(function() {
-
-           var currentUrl = window.location.pathname.toLowerCase();
-            $('div.nav-item div .nav-link').css('color', '#334155')
-            $('div.nav-item div .nav-link').each(function() {
-                var linkUrl = $(this).attr('href').toLowerCase();
-                if(currentUrl == linkUrl){
-                    $('div.nav-item div .nav-link').css({
-                        'background-color' : '',
-                        'color': '#334155'
-                    })
-                    
-                    $(this).css({
-                        'background-color': '#2c3e50',
-                        'color': '#ecf0f1'
-                    })
-                    
-                    
+    <script type="text/javascript">
+        $(document).ready(function() {
+            // Highlight active nav link
+            var currentUrl = window.location.pathname.toLowerCase();
+            $('.btn-primary, .btn-secondary').not('.dropdown-toggle').each(function() {
+                var linkUrl = $(this).attr('href');
+                if (linkUrl && currentUrl.includes(linkUrl.toLowerCase())) {
+                    $(this).removeClass('btn-secondary').addClass('btn-primary');
                 }
-            })
-       })
-   </script>
+            });
+        });
+    </script>
 
     @await RenderSectionAsync("Scripts", required: false)
 </body>

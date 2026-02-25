@@ -11,13 +11,15 @@ namespace CRMApp.Controllers
         private readonly IContactService _contactService;
         private readonly IActivityLogger _activityLogger;
         private readonly IContactInquiryService _contactInquiryService;
+        private readonly IWebsiteVisitService _websiteVisitService;
 
-        public DashboardController(ICustomerService customerService, IContactService contactService, IActivityLogger activityLogger, IContactInquiryService contactInquiryService)
+        public DashboardController(ICustomerService customerService, IContactService contactService, IActivityLogger activityLogger, IContactInquiryService contactInquiryService, IWebsiteVisitService websiteVisitService)
         {
             _customerService = customerService;
             _contactService = contactService;
             _activityLogger = activityLogger;
             _contactInquiryService = contactInquiryService;
+            _websiteVisitService = websiteVisitService;
         }
 
 
@@ -30,6 +32,15 @@ namespace CRMApp.Controllers
             ViewBag.CustomerCount = _customerService.GetCustomerCount();
             ViewBag.ContactCount = _contactService.GetContactCount();
             ViewBag.UserCount = _customerService.GetUserCount();
+            
+            // Add visit statistics for admin
+            if (User.IsInRole("admin"))
+            {
+                ViewBag.VisitsToday = _websiteVisitService.GetTotalVisitsToday();
+                ViewBag.VisitsThisWeek = _websiteVisitService.GetTotalVisitsThisWeek();
+                ViewBag.VisitsThisMonth = _websiteVisitService.GetTotalVisitsThisMonth();
+                ViewBag.DailyVisitStats = System.Text.Json.JsonSerializer.Serialize(_websiteVisitService.GetDailyVisitStats(30));
+            }
 
 
             if (User.IsInRole("admin"))

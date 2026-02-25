@@ -13,6 +13,7 @@ namespace CRMApp.Configurations
 			services.AddScoped<IUserService, UserService>();
 			services.AddScoped<INoteService, NoteService>();
 			services.AddScoped<IContactInquiryService, ContactInquiryService>();
+			services.AddScoped<IWebsiteVisitService, WebsiteVisitService>();
 			services.AddScoped<IAppLogger, AppExceptionHandlerAndLogger>();
 			return services;
 		}

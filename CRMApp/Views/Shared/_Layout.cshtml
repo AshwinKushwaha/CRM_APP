@@ -8,42 +8,36 @@
     <link rel="stylesheet" href="~/css/crm_main.css" asp-append-version="true" />
     <link href="~/lib/toastr/toastr.min.css" rel="stylesheet" />
 </head>
-<body class="d-flex flex-column">
-    <header style="width: 88%; ">
-        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3" style="border-radius: 10px;">
+<body>
+    <header>
+        <nav class="navbar navbar-expand-lg navbar-light">
             <div class="container-fluid">
-                <a class="navbar-brand" asp-area="" asp-controller="home" asp-action="index">crmapp</a>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarsupportedcontent"
-                        aria-expanded="false" aria-label="toggle navigation">
+                <a class="navbar-brand" asp-area="" asp-controller="home" asp-action="index">CRMApp</a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarContent" 
+                        aria-controls="navbarContent" aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button>
-                <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
-                    @* <ul class="navbar-nav flex-grow-1">
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="home" asp-action="index">home</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="home" asp-action="privacy">privacy</a>
-                        </li>
-                    </ul> *@
+                <div class="collapse navbar-collapse" id="navbarContent">
+                    <div class="ms-auto">
+                        <partial name="_LoginPartial"/>
+                    </div>
                 </div>
-                <partial name="_LoginPartial"/>
             </div>
         </nav>
     </header>
 
-   
-        <div class=" container ">
-            <main role="main">
-                @RenderBody()
-            </main>
-        </div>
-        <br />
-        <footer class="container d-flex justify-content-center">
-            &copy; 2025 - CRMApp - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
-        </footer>
-    
+    <div class="container" style="margin-top: 2rem; min-height: calc(100vh - 200px);">
+        <main role="main">
+            @RenderBody()
+        </main>
+    </div>
 
+    <footer class="container">
+        <div class="d-flex flex-column flex-sm-row justify-content-between align-items-center">
+            <span>&copy; 2025 CRMApp. All rights reserved.</span>
+            <a asp-area="" asp-controller="Home" asp-action="Privacy" style="color: var(--text-light); text-decoration: none;">Privacy Policy</a>
+        </div>
+    </footer>
 
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>

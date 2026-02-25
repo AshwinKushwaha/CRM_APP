@@ -1,102 +1,124 @@
 ﻿@model CRMApp.Models.ContactInquiry;
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "Home";
     Layout = "_Layout";
 }
 
-
-<section class="hero text-center bg-primary text-white p-5" style="border-radius: 10px;">
+<!-- Hero Section -->
+<section class="hero text-center text-white">
     <h1>Streamline Your Customer Relationships</h1>
-    <p>CRMTool helps you manage contacts, track interactions, and grow your business efficiently.</p>
-    <a href="Identity/Account/Login" class="btn btn-secondary">Get Started</a>
+    <p class="mb-4">Manage contacts, track interactions, and grow your business efficiently with our powerful CRM solution.</p>
+    <a href="Identity/Account/Login" class="btn btn-secondary btn-lg">Get Started</a>
 </section>
-<section id="features" class="container py-5 card mb-3 mt-3 d-flex justify-content-center">
-    <h2 class="text-center mb-4">Key Features</h2>
-    <div class="row d-flex justify-content-center" >
 
-        
-        <div class="col-md-4 card me-3 ms-5 shadow-sm bg-light">
-            <h4 class="text-center">Contact Management</h4>
+<!-- Features Section -->
+<section id="features" class="py-5">
+    <h2 class="text-center mb-5">Key Features</h2>
+    <div class="features-grid">
+        <div class="card feature-card">
+            <div style="font-size: 2.5rem; margin-bottom: 1rem;">📋</div>
+            <h4>Contact Management</h4>
             <p>Store and organize customer details with powerful search and filter options.</p>
         </div>
-        <div class="col-md-4 card me-3 shadow-sm bg-light">
-            <h4 class="text-center">Notes & Activity Logs</h4>
-           Store and updates with time-stamped notes for each customer.</p>
+        <div class="card feature-card">
+            <div style="font-size: 2.5rem; margin-bottom: 1rem;">📝</div>
+            <h4>Notes & Activity Logs</h4>
+            <p>Keep track of all interactions with time-stamped notes for each customer.</p>
         </div>
-        <div class="col-md-4 card shadow-sm mt-2 bg-light">
-            <h4 class="text-center">Role-Based Access</h4>
+        <div class="card feature-card">
+            <div style="font-size: 2.5rem; margin-bottom: 1rem;">🔒</div>
+            <h4>Role-Based Access</h4>
             <p>Secure your data with admin, sales, and support roles tailored to your team.</p>
         </div>
     </div>
 </section>
 
-<section id="benefits" class="bg-light py-5" style="border-radius: 10px;">
-    <div class="container text-center">
-        <h2>Why Choose CRMTool?</h2>
-        <p>Our CRM is designed to be simple, fast, and scalable for growing businesses.</p>
-        <ul class="list-unstyled">
-            <li>✅ Easy to use interface</li>
-            <li>✅ Real-time updates and filtering</li>
-            <li>✅ Secure and scalable architecture</li>
-        </ul>
+<!-- Benefits Section -->
+<section id="benefits" class="card py-5">
+    <div class="text-center px-4">
+        <h2 class="mb-3">Why Choose CRMApp?</h2>
+        <p class="text-muted mb-4">Our CRM is designed to be simple, fast, and scalable for growing businesses.</p>
+        <div class="d-flex flex-column align-items-center gap-2">
+            <div class="d-flex align-items-center gap-2">
+                <span style="color: #10b981; font-size: 1.5rem;">✓</span>
+                <span>Easy to use interface</span>
+            </div>
+            <div class="d-flex align-items-center gap-2">
+                <span style="color: #10b981; font-size: 1.5rem;">✓</span>
+                <span>Real-time updates and filtering</span>
+            </div>
+            <div class="d-flex align-items-center gap-2">
+                <span style="color: #10b981; font-size: 1.5rem;">✓</span>
+                <span>Secure and scalable architecture</span>
+            </div>
+        </div>
     </div>
 </section>
-<section id="contact" class="container py-5 card mt-3 shadow-sm ">
-    <h2 class="text-center mb-4">Get in Touch</h2>
-    <form asp-action="SaveInquiry" asp-controller="ContactInquiry" id="contactForm" method="post">
-        <div asp-validation-summary="ModelOnly"></div>
-        <div class="mb-3 form-group">
-            <input asp-for="Name" class="form-control" placeholder="Your Name" />
-            <span asp-validation-for="Name" class="text-danger"></span>
+
+<!-- Contact Form Section -->
+<section id="contact" class="card py-5">
+    <div class="px-4">
+        <h2 class="text-center mb-4">Get in Touch</h2>
+        <div class="row justify-content-center">
+            <div class="col-lg-8">
+                <form asp-action="SaveInquiry" asp-controller="ContactInquiry" id="contactForm" method="post">
+                    <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
+                    <div class="form-group">
+                        <label asp-for="Name" class="form-label">Your Name</label>
+                        <input asp-for="Name" class="form-control" placeholder="Enter your name" />
+                        <span asp-validation-for="Name" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="Email" class="form-label">Your Email</label>
+                        <input asp-for="Email" class="form-control" placeholder="Enter your email" />
+                        <span asp-validation-for="Email" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="Message" class="form-label">Your Message</label>
+                        <textarea asp-for="Message" class="form-control" rows="5" placeholder="Tell us how we can help you"></textarea>
+                        <span asp-validation-for="Message" class="text-danger"></span>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Send Message</button>
+                </form>
+            </div>
         </div>
-        <div class="mb-3 form-group">
-            <input asp-for="Email" class="form-control" placeholder="Your Email" />
-            <span asp-validation-for="Email" class="text-danger"></span>
-        </div>
-        <div class="mb-3 form-group">
-            <textarea asp-for="Message" class="form-control" rows="4" placeholder="Your Message"></textarea>
-            <span asp-validation-for="Message" class="text-danger"></span>
-        </div>
-        <button type="submit" class="btn btn-primary" id="liveToastBtn">Send Message</button>
-    </form>
+    </div>
 </section>
 
-
+<!-- Toast Notification -->
 <div class="position-fixed top-0 end-0 p-3" style="z-index: 1050">
     <div id="messageToast" class="toast align-items-center text-bg-success border-0" role="alert" aria-live="assertive" aria-atomic="true">
         <div class="d-flex">
             <div class="toast-body">
                 Your message has been sent successfully!
             </div>
-            <button type="button" class="btn-close btn-close me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+            <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
         </div>
     </div>
 </div>
 
-
 @section Scripts{
 <script>
+    $(document).ready(function () {
+        $('#contactForm').on('submit', function (e) {
+            e.preventDefault();
 
-        $(document).ready(function () {
-            $('#contactForm').on('submit', function (e) {
-                e.preventDefault(); 
-
-                $.ajax({
-                    type: 'POST',
-                    url: $(this).attr('action'),
-                    data: $(this).serialize(),
-                    success: function (response) {
-                        var toastEl = document.getElementById('messageToast');
-                        var toast = new bootstrap.Toast(toastEl);
-                        toast.show();
-                        $('#contactForm')[0].reset();
-                    },
-                    error: function () {
-                        alert('Something went wrong. Please try again.');
-                    }
-                });
+            $.ajax({
+                type: 'POST',
+                url: $(this).attr('action'),
+                data: $(this).serialize(),
+                success: function (response) {
+                    var toastEl = document.getElementById('messageToast');
+                    var toast = new bootstrap.Toast(toastEl);
+                    toast.show();
+                    $('#contactForm')[0].reset();
+                },
+                error: function () {
+                    alert('Something went wrong. Please try again.');
+                }
             });
         });
-
+    });
 </script>
 }
+

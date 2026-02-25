@@ -59,6 +59,7 @@ else
 app.UseSession();
 app.UseHttpsRedirection();
 app.UseStaticFiles();
+app.UseVisitTracking();
 app.UseExceptionHandler(_ => { });
 app.UseRouting();
 

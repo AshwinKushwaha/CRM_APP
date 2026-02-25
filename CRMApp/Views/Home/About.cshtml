@@ -3,11 +3,33 @@
     ViewData["Title"] = "About";
 }
 
-<h1>About</h1>
+<div class="card p-5">
+    <div class="text-center mb-4">
+        <h1 class="mb-3">About CRMApp</h1>
+        <p class="text-muted">Learn more about our customer relationship management solution</p>
+    </div>
 
-@{
-    if (TempData["message"] != null)
+    @if (TempData["message"] != null)
     {
-        <h2>@TempData["message"]</h2>
+        <div class="alert alert-info">
+            @TempData["message"]
+        </div>
     }
-}
+
+    <div class="row g-4 mt-3">
+        <div class="col-md-6">
+            <h3 class="h5 mb-3">Our Mission</h3>
+            <p class="text-muted">
+                To provide businesses with an intuitive and powerful CRM solution that helps them 
+                build stronger relationships with their customers and drive growth.
+            </p>
+        </div>
+        <div class="col-md-6">
+            <h3 class="h5 mb-3">Why Choose Us</h3>
+            <p class="text-muted">
+                We focus on simplicity, performance, and security to deliver a CRM platform 
+                that grows with your business needs.
+            </p>
+        </div>
+    </div>
+</div>
